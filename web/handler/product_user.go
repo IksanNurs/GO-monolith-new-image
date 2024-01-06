@@ -61,7 +61,6 @@ func NewProductUser(c *gin.Context) {
 func CreateProductUser(c *gin.Context, db *gorm.DB) {
 	var inputTutor model.InputProductUser
 	var product model.Product
-	IsPrice, _ := strconv.Atoi(c.PostForm("is_price"))
 	session := sessions.Default(c)
 	err := c.ShouldBind(&inputTutor)
 	if err != nil {
@@ -87,13 +86,6 @@ func CreateProductUser(c *gin.Context, db *gorm.DB) {
 		c.Redirect(http.StatusSeeOther, "/product-user")
 		return
 	}
-	if IsPrice == 0 {
-		inputTutor.PriceMember = 0
-		inputTutor.PriceNonmember = product.PriceNonmember
-	} else {
-		inputTutor.PriceMember = product.PriceMember
-		inputTutor.PriceNonmember = 0
-	}
 	err = db.Debug().Create(&inputTutor).Error
 	if err != nil {
 		session.Set("error", err.Error())
@@ -110,7 +102,6 @@ func UpdateProductUser(c *gin.Context, db *gorm.DB) {
 	var product model.Product
 	var productuser model.ProductUser
 	id := c.Param("id")
-	IsPrice, _ := strconv.Atoi(c.PostForm("is_price"))
 	session := sessions.Default(c)
 	err := c.ShouldBind(&inputTutor)
 	if err != nil {
@@ -133,6 +124,7 @@ func UpdateProductUser(c *gin.Context, db *gorm.DB) {
 		c.Redirect(http.StatusSeeOther, "/product-user")
 		return
 	}
+	if *inputTutor.Quantity != productuser.Quantity {
 	if product.Stock != 0 {
 		k := 0
 		if *inputTutor.Quantity < productuser.Quantity {
@@ -158,13 +150,8 @@ func UpdateProductUser(c *gin.Context, db *gorm.DB) {
 		c.Redirect(http.StatusSeeOther, "/product-user")
 		return
 	}
-	if IsPrice == 0 {
-		inputTutor.PriceMember = 0
-		inputTutor.PriceNonmember = product.PriceNonmember
-	} else {
-		inputTutor.PriceMember = product.PriceMember
-		inputTutor.PriceNonmember = 0
-	}
+   }
+
 
 	err = db.Debug().Model(&inputTutor).Where("id=?", id).Updates(&inputTutor).Error
 	if err != nil {

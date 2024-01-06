@@ -13,8 +13,7 @@ type ProductUser struct {
 	UserID    int32 `gorm:"column:user_id;type:int(11);not null" json:"user_id"`
 	User      User `gorm:"foreignkey:UserID" json:"User"`
 	Quantity    int32 `gorm:"column:quantity;type:int(11);not null" json:"quantity"`
-	PriceNonmember int32  `gorm:"column:price_nonmember;type:int(11);not null" json:"price_nonmember"`
-	PriceMember    int32  `gorm:"column:price_member;type:int(11);not null" json:"price_member"`
+	CategoriPrice int32  `gorm:"column:categori_price;type:int(11);not null" json:"categori_price"`
 	Product   Product  `gorm:"foreignkey:ProductID" json:"Product"`
 }
 
@@ -22,8 +21,7 @@ type InputProductUser struct {
 	ProductID int32 `gorm:"column:product_id;type:int(11);not null" json:"product_id" form:"product_id"`
 	UserID    int32 `gorm:"column:user_id;type:int(11);not null" json:"user_id" form:"user_id"`
 	Quantity    *int32 `gorm:"column:quantity;type:int(11);not null" json:"quantity" form:"quantity"`
-	PriceNonmember int32  `gorm:"column:price_nonmember;type:int(11);not null" json:"price_nonmember"`
-	PriceMember    int32  `gorm:"column:price_member;type:int(11);not null" json:"price_member"`
+	CategoriPrice int32  `gorm:"column:categori_price;type:int(11);not null" json:"categori_price" form:"categori_price"`
 	CreatedAt int32 `gorm:"column:created_at;type:int(11);autoCreateTime;loc:UTC" json:"created_at"`
 	UpdatedAt int32 `gorm:"column:updated_at;type:int(11);autoUpdateTime;loc:UTC" json:"updated_at"`
 }

@@ -52,11 +52,11 @@
                 <input type="number" name="quantity" value="{{ .Data.Quantity }}" placeholder="Masukkan banyak produk" required="required" class="form-control">
             </div>
             <div class="form-group">
-                <label for="is_price">Kategori Harga</label>
-                <select name="is_price" required="required" class="form-control">
+                <label for="categori_price">Kategori Harga</label>
+                <select name="categori_price" required="required" class="form-control">
                     <option value="" selected="selected">Pilih</option>
-                    <option {{ if ne .Data.PriceMember 0 }} selected="selected" {{ end }} value="1">Harga Member</option>
-                    <option {{ if ne .Data.PriceNonmember 0 }} selected="selected" {{ end }} value="0">Harga Non Member</option>
+                    <option {{ if eq .Data.CategoriPrice 1 }} selected="selected" {{ end }} value="1">Harga Member</option>
+                    <option {{ if eq .Data.CategoriPrice 2 }} selected="selected" {{ end }} value="2">Harga Non Member</option>
                 </select>
             </div>
             <div>

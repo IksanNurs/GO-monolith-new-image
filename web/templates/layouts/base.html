@@ -2687,8 +2687,50 @@
 
         ///===================================================================
     const urlParams = new URLSearchParams(window.location.search);
-    const month = urlParams.get('month');
-    const year = urlParams.get('year');
+    let month1 = urlParams.get('month');
+    switch (month1) {
+            case '1':
+                month1 = 'Januari';
+                break;
+            case '2':
+                month1 = 'Februari';
+                break;
+            case '3':
+                month1 = 'Maret';
+                break;
+            case '4':
+                month1 = 'April';
+                break;
+            case '5':
+                month1 = 'Mei';
+                break;
+            case '6':
+                month1 = 'Juni';
+                break;
+            case '7':
+                month1 = 'Juli';
+                break;
+            case '8':
+                month1 = 'Agustus';
+                break;
+            case '9':
+                month1 = 'September';
+                break;
+            case '10':
+                month1 = 'Oktober';
+                break;
+            case '11':
+                month1 = 'November';
+                break;
+            case '12':
+                month1 = 'Desember';
+                break;
+            default:
+                // Jika nomor bulan tidak valid
+                month1 = null;
+                break;
+        }
+    const year1 = urlParams.get('year');
         $('#dataproductuser').DataTable({
             "language": {
                 "search": "",
@@ -2783,8 +2825,8 @@
                  {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                       if (data.price_member != 0 && data.price_member != null) {
-                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price_member)
+                       if (data.Product.price_member != 0 && data.Product.price_member != null) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.price_member)
                                 }</div>`
                         }
                         return ""
@@ -2793,8 +2835,8 @@
                  {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
-                         if (data.price_nonmember != 0 && data.price_nonmember != null) {
-                        return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price_nonmember)
+                         if (data.Product.price_nonmember != 0 && data.Product.price_nonmember != null) {
+                        return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.price_nonmember)
                             }</div>`
                         }
                         return ""
@@ -2803,8 +2845,8 @@
                   {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                       if(data.price_nonmember != 0 && data.price_nonmember != null ){
-                         return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format((data.price_nonmember - data.Product.price_member)*2)
+                       if(data.categori_price==2){
+                         return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format((data.Product.price_nonmember - data.Product.price_member))
                                }</div>`
                        }
                        return ""
@@ -2813,7 +2855,7 @@
                   {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                           if (data.price_member != 0 && data.price_member != null) {
+                           if (data.categori_price==1) {
                                 return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.pv)
                                    }</div>`
                            }
@@ -2823,7 +2865,7 @@
                   {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                         if (data.price_member != 0 && data.price_member != null) {
+                         if (data.categori_price == 1) {
                             return`<div class="text-right" style="white-space:nowrap">5%</div>`
                         }
                         return ""
@@ -2832,7 +2874,7 @@
                           {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                        if (data.price_member != 0 && data.price_member != null) {
+                        if (data.categori_price == 1) {
                             return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format((data.Product.pv * data.quantity) * (5 / 100))
                                 }</div>`
                         }
@@ -2847,11 +2889,11 @@
         });
     
         var title_name= 'product-user'
-        if (month!=null){
-           title_name += "_"+month
+        if (month1!=null){
+           title_name += "_"+month1
         }
-        if (year!=null){
-            title_name += '/' + year
+        if (year1!=null){
+            title_name += '/' + year1
         }
         
         $('#dataproductuser1').DataTable({
@@ -2868,14 +2910,7 @@
                     className:
                         'bg-success border rounded fa fa-file-excel text-success py-2',
                     footer: true,
-                     customize: function (xlsx) {
-                        var sheet = xlsx.xl.worksheets['sheet1.xml'];
-                        $('row c', sheet).attr('s', '25'); // Adding border to all cells
-
-                        // Alternatively, you can add borders to specific cells using their coordinates
-                        // For example, adding a border to cell B2
-                        // $('row:nth-child(2) c[r^="B"]', sheet).attr('s', '25');
-                    }
+                    
                
                 },
                 // {
@@ -2954,8 +2989,8 @@
                 {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                        if (data.price_member != 0 && data.price_member != null) {
-                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price_member)
+                        if (data.Product.price_member != 0 && data.Product.price_member != null) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.price_member)
                                 }</div>`
                         }
                         return ""
@@ -2964,8 +2999,8 @@
                 {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
-                        if (data.price_nonmember != 0 && data.price_nonmember != null) {
-                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price_nonmember)
+                        if (data.Product.price_nonmember != 0 && data.Product.price_nonmember != null) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.price_nonmember)
                                 }</div>`
                         }
                         return ""
@@ -2974,8 +3009,8 @@
                 {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                        if (data.price_nonmember != 0 && data.price_nonmember != null) {
-                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price_nonmember - data.price_member)
+                        if (data.categori_price==2) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.price_nonmember - data.Product.price_member)
                                 }</div>`
                         }
                         return ""
@@ -2984,7 +3019,7 @@
                 {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                        if (data.price_member != 0 && data.price_member != null) {
+                        if (data.categori_price==1) {
                             return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.pv)
                                 }</div>`
                         }
@@ -2994,7 +3029,7 @@
                 {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                        if (data.price_member != 0 && data.price_member != null) {
+                        if (data.categori_price==1) {
                             return `<div class="text-right" style="white-space:nowrap">5%</div>`
                         }
                         return ""
@@ -3003,7 +3038,7 @@
                 {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                        if (data.price_member != 0 && data.price_member != null) {
+                        if (data.categori_price==1) {
                             return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.pv * (5 / 100))
                                 }</div>`
                         }
@@ -3148,11 +3183,11 @@
     });
 
     var title_name= 'product'
-    if (month!=null){
-        title_name += "_"+month
+    if (month1!=null){
+        title_name += "_"+month1
     }
-    if (year!=null){
-        title_name += '/' + year
+    if (year1!=null){
+        title_name += '/' + year1
     }
     $('#dataproduct1').DataTable({
             "processing": true,
@@ -3471,11 +3506,11 @@
         });
 
         var title_name = 'laporan laba-rugi'
-        if (month != null) {
-            title_name += "_" + month
+        if (month1 != null) {
+            title_name += "_" + month1
         }
-        if (year != null) {
-            title_name += '/' + year
+        if (year1 != null) {
+            title_name += '/' + year1
         }
         $('#datareport1').DataTable({
             "processing": true,
@@ -3490,6 +3525,25 @@
                     filename: title_name,
                     className:
                         'bg-success border rounded fa fa-file-excel text-success py-2',
+                     customize: function (xlsx) {
+                        var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                        var data = xlsx.xl['workbook.xml'].getElementsByTagName('sheet')[0];
+
+                        // Mengiterasi melalui baris
+                       $('row c[r^="A"]', sheet).each(function (index) {
+                             if (index > 0) { // Mulai dari baris ke-2 (indeks 1)
+                                 var cellValue = $('is t', this).text().trim();
+
+                                 // Contoh: Jika nilai sel di kolom A sama dengan "Pendapatan Usaha", beri format cetak tebal
+                                 if (cellValue === "Pendapatan Usaha" || cellValue === "Beban Usaha" || cellValue === "Pendapatan di Luar Usaha" || cellValue === "Beban di Luar Usaha" || cellValue === "Laba Usaha" || cellValue === "Laba di Luar Usaha" || cellValue==="Laba Bersih") {
+                                     $(this).attr('s', '2');
+                                 } else {
+                                     $(this).attr('s', '3');
+                                     $(this).attr('t', 's');
+                                 }
+                             }
+                         });
+                    }
                       
                 },
                 // {
