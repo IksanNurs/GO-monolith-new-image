@@ -1,0 +1,40 @@
+{{ define "content" }}
+<h2 class="mb-4">Order</h2>
+
+<a value="/order/new" class="btn btn-primary mb-3 showModalButton" title="Tambah Order"
+    size="modal-lg">
+    <i class="fa fa-plus"></i>
+    Tambah</a>
+{{ if .Error }}
+<div class="alert alert-danger">
+    {{ .Error }}
+</div>
+{{ end }}
+
+{{ if .Info }}
+<div class="alert alert-info">
+    {{ .Info }}
+</div>
+{{ end }}
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table mb-0" id="dataorder" style="width:100%">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="min-width: 1px; white-space: nowrap;">#</th>
+                        <th style="min-width: 1px; white-space: nowrap;"></th>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>Institution</th>
+                        <th>Package/Class</th>
+                        <th class="text-right">Amount</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Channel</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+{{ end }}

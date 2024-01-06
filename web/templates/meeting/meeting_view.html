@@ -1,0 +1,129 @@
+{{ define "content" }}
+<div class="row ">
+    <div class="col-12">
+        <ol class="breadcrumb mb-0 p-0 pb-1" style="background-color: transparent;">
+            <li class="breadcrumb-item">
+                <a href="/bundle" style="color:black">Bundle</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="/bundle/view/{{ .Data.BundleID }}" style="color:black">View</a>
+            </li>
+            <li class="breadcrumb-item active" style="color: #007bff;">Meeting view</li>
+        </ol>
+    </div>
+    <div class="mb-1 col-12">
+        <h2>{{ .Data.Name }}</h2>
+    </div>
+</div>
+
+{{ if .Error }}
+<div class="alert alert-danger">
+    {{ .Error }}
+</div>
+{{ end }}
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-borderless table-striped mb-0" style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <th width="140px">ID</th>
+                        <td>{{ .Data.ID }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Class</th>
+                        <td>{{ .Data.Bundle.Name }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Nama</th>
+                        <td>{{ .Data.Name }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Description</th>
+                        <td>{{ call .NilToEmptyString .Data.Description }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Started At</th>
+                        <td>{{ call .NilToEmptyString .Data.StartedAtTe }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Ended At</th>
+                        <td>{{ call .NilToEmptyString .Data.EndedAtTe }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Tutor</th>
+                        <td>{{ call .NilToEmptyString .Data.Tutor.Name }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">URL Zoom</th>
+                        <td>{{ call .NilToEmptyString .Data.URL }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Sequence</th>
+                        <td>{{ call .NilToEmptyString .Data.Sequence }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <div class="card-title w-100 d-flex justify-content-between align-items-center mb-0">
+            <div>
+                <h5>Recording</h5>
+            </div>
+            <div>
+                <a value="/recording/new?id={{ .Data.ID }}&&bd_id={{ .Data.BundleID }}" class=" btn btn-primary showModalButton" title="Tambah Recording" size="modal-lg">
+                    <i class="fa fa-plus"></i>
+                    Tambah Recording</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table mb-0" id="datarecording" style="width:100%">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="min-width: 1px; white-space: nowrap;">#</th>
+                        <th></th>
+                        <th>Name</th>
+                        <th>URL</th>
+                        <th>Embed</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="card mb-4">
+    <div class="card-header">
+        <div class="card-title">
+            <h5>Presence</h5>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table mb-0" id="datapresence" style="width:100%">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="min-width: 1px; white-space: nowrap;">#</th>
+                        <th>Status</th>
+                        <th>User</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Rate</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{{ end }}

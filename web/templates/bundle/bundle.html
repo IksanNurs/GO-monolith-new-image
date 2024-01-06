@@ -1,0 +1,45 @@
+{{ define "content" }}
+<h2 class="mb-4">Class</h2>
+
+<a value="/bundle/new" class="btn btn-primary mb-3 showModalButton" title="Tambah Class"
+    size="modal-lg">
+    <i class="fa fa-plus"></i>
+    Tambah</a>&nbsp;
+<a href="#" class=" btn btn-light mb-3 bg-white">
+    Active: {{ .totalrecords }}</a>
+
+{{ if .Error }}
+<div class="alert alert-danger">
+    {{ .Error }}
+</div>
+{{ end }}
+
+{{ if .Info }}
+<div class="alert alert-info">
+    {{ .Info }}
+</div>
+{{ end }}
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table mb-0" id="databundle" style="width:100%">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="min-width: 1px; white-space: nowrap;">#</th>
+                        <th style="min-width: 1px; white-space: nowrap;"></th>
+                        <th style="min-width: 1px; white-space: nowrap;">ID</th>
+                        <th>Name</th>
+                        <th style="min-width: 1px; white-space: nowrap;"><i class="fa fa-info-circle"></i></th>
+                        <th style="min-width: 1px; white-space: nowrap;" class="text-right">Price</th>
+                        <th style="min-width: 100px; white-space: nowrap;">Tipe</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Is Public</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Is Active</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{ end }}

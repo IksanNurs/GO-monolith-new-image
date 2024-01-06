@@ -1,0 +1,63 @@
+<div class="row ">
+    <!-- <div class="col-12">
+        <ol class="breadcrumb mb-0 p-0 pb-1" style="background-color: transparent;">
+            <li class="breadcrumb-item">
+                <a href="/dashboard" style="color:black">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="/bundle" style="color:black">Kelas</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="/bundle/view/{{ .Data.BundleID }}" style="color:black">View</a>
+            </li>
+        </ol>
+    </div> -->
+    <div class="mb-1 col-12">
+        <h2>Form Edit Kelas Package</h2>
+    </div>
+</div>
+
+
+{{ if .Error }}
+<div class="alert alert-danger">
+    {{ .Error }}
+</div>
+{{ end }}
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form action="/api/update-bundle-package/{{ .id }}" method="POST">
+            <input type="number" name="bundle_id" class="form-control" aria-hidden="true" hidden="hidden"
+                value="{{ .Data.BundleID }}">
+            <div class="form-group">
+                <label>Package</label>
+                <select id="userPackage" name="package_id" class="form-control select2" disabled="disabled"
+                    style="width: 100%;" aria-hidden="true">
+            </div>
+            <div class="form-group">
+                <label>Package</label>
+                <select id="userPackage" name="package_id" class="form-control select2" disabled="disabled"
+                    style="width: 100%;" aria-hidden="true">
+            </div>
+            <div class="form-group">
+                <label for="date_start">Date Start</label>
+                <input type="datetime-local" name="starte" id="date_start" required="required" class="form-control"
+                    aria-hidden="true" value="{{.Data.Starte }}">
+            </div>
+            <div class="form-group">
+                <label for="date_start">Date End</label>
+                <input type="datetime-local" name="ende" required="required" id="date_end" class="form-control"
+                    aria-hidden="true" value="{{.Data.Ende }}">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+       if ("{{ .PackageName }}" !== "" && "{{ .PackageName }}" !== null) {
+            $("#userPackage").append(new Option("{{ .PackageName }}", "{{ .PackageID }}"));
+        }
+</script>

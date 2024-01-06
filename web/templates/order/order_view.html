@@ -1,0 +1,111 @@
+{{ define "content" }}
+
+<div class="row ">
+    <div class="col-sm-6">
+        <ol class="breadcrumb mb-0 p-0 pb-1" style="background-color: transparent;">
+            <!-- <li class="breadcrumb-item">
+                                                                                                                                                                        <a href="#">Home</a>
+                                                                                                                                                                    </li> -->
+            <li class="breadcrumb-item">
+                <a href="/admin/users">Users</a>
+            </li>
+            <li class="breadcrumb-item active">Reset Password</li>
+        </ol>
+    </div>
+    <div class="mb-1 col-12">
+        <h2>{{ .oldUser.Name.String }}</h2>
+    </div>
+</div>
+
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-borderless table-striped mb-0" style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <th width="140px">ID</th>
+                        <td>{{ .oldUser.ID }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Nama</th>
+                        <td>{{ .oldUser.Name.String }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Phone</th>
+                        <td>{{ .oldUser.Phone.String }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Email</th>
+                        <td>{{ .oldUser.Email }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Jenis Kelamin</th>
+                        <td>
+                            {{if eq .oldUser.Sex.Int64 1}}Laki-laki
+                            {{ end }}
+                            {{if eq .oldUser.Sex.Int64 2}}Perempuan
+                            {{ end }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Username</th>
+                        <td>{{ .oldUser.Username }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Nama Institusi</th>
+                        <td>{{ .oldUser.Institution_name.String }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Status</th>
+                        <td>
+                            {{ if eq .oldUser.Status.Int64 0 }}Deleted
+                            {{ end }}
+                            {{ if eq .oldUser.Status.Int64 1 }}Inactive
+                            {{ end }}
+                            {{ if eq .oldUser.Status.Int64 2 }}Registered
+                            {{ end }}
+                            {{ if eq .oldUser.Status.Int64 3 }}Active
+                            {{ end }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Alamat</th>
+                        <td>{{.oldUser.AddressStreet.String}}
+                            {{ if .oldUser.Village_name.String }},
+                            {{ .oldUser.Village_name.String }}
+                            {{ end }}
+                            {{ if .oldUser.Subdistrict_name.String }},
+                            {{ .oldUser.Subdistrict_name.String }}
+                            {{ end }}
+                            {{ if .oldUser.District_name.String }},
+                            {{ .oldUser.District_name.String }}
+                            {{ end }}
+                            {{ if .oldUser.Province_name.String }},
+                            {{ .oldUser.Province_name.String }}
+                            {{ end }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="card mb-4">
+    <div class="card-body">
+        <form action="/admin/users/update/{{ .oldUser.ID }}" method="POST">
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="text" name="password" placeholder="Masukkan password" class="form-control">
+            </div>
+
+
+            <div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{{ end }}

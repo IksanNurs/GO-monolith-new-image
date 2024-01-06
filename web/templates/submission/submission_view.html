@@ -1,0 +1,106 @@
+{{ define "content" }}
+<div class="row ">
+    <div class="col-12">
+        <ol class="breadcrumb mb-0 p-0 pb-1" style="background-color: transparent;">
+            <li class="breadcrumb-item">
+                <a href="/dashboard" style="color:black">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="/submission" style="color:black">Submission</a>
+            </li>
+        </ol>
+    </div>
+    <div class="mb-1 col-12">
+        <h2>{{ .Data.UserID }}</h2>
+    </div>
+</div>
+
+<div class="card mb-4">
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-borderless table-striped mb-0" style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <th width="140px" style="white-space: nowrap;">UserID</th>
+                        <td>{{ .Data.UserID }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px" style="white-space: nowrap;">Nama</th>
+                        <td>{{ call .NilToEmptyString .Data.UserFromID.Name }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px" style="white-space: nowrap;">Email</th>
+                        <td>{{call .NilToEmptyString .Data.UserFromID.Email}}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px" style="white-space: nowrap;">Phone</th>
+                        <td>{{call .NilToEmptyString .Data.UserFromID.Phone }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px" style="white-space: nowrap;">Province Name</th>
+                        <td>{{ call .NilToEmptyString .Data.Province.Name }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px" style="white-space: nowrap;">District Name</th>
+                        <td>{{ call .NilToEmptyString .Data.District.Name }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px" style="white-space: nowrap;">Institution Name</th>
+                        <td>{{call .NilToEmptyString .Data.Institution.Name }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px" style="white-space: nowrap;">Formation Quota</th>
+                        <td>{{call .NilToEmptyString .Data.FormationQuota }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px" style="white-space: nowrap;">Basic Score</th>
+                        <td>{{ call .NilToEmptyString .Data.BasicScore }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px" style="white-space: nowrap;">Basic Rank</th>
+                        <td>{{ call .NilToEmptyString .Data.BasicRank }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px" style="white-space: nowrap;">Advanced Score</th>
+                        <td>{{ call .NilToEmptyString .Data.AdvancedScore }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px" style="white-space: nowrap;">Advanced Rank</th>
+                        <td>{{ call .NilToEmptyString .Data.AdvancedRank }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px" style="white-space: nowrap;">Status</th>
+                        <td>
+                            {{ if eq .Data.IsPublic 0 }}Private
+                            {{ end }}
+                            {{ if eq .Data.IsPublic 1 }}Publik
+                            {{ end }}
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- <div class="card mb-4">
+                                            <div class="card-body">
+                                                <form action="/admin/users/update/{{ .oldUser.ID }}" method="POST">
+                                                    <div class="form-group">
+                                                        <label for="password">Password</label>
+                                                        <input type="text" name="password" placeholder="Masukkan password" class="form-control">
+                                                    </div>
+                                            
+                                        
+                                                    <div>
+                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div> -->
+
+
+{{ end }}

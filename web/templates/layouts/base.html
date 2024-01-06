@@ -1,0 +1,3919 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="/css/select2custom.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" />
+    <!-- <link rel="stylesheet" href="/css/bootadmin.min.css"> -->
+    <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css" />
+
+    <title>Admin Panel Akuntansi</title>
+    <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 0;
+            /* Hapus margin agar tidak ada ruang tambahan */
+        }
+
+        /* Gaya tambahan untuk memberikan padding pada input number */
+        input[type=number] {
+            padding-right: 0.5rem;
+            /* Tambahkan padding di sisi kanan agar angka tidak terlalu dekat dengan tepi */
+        }
+
+        /* Custom styles to show logo only in mini-sidebar mode */
+        .sidebar-mini.sidebar-collapse .main-sidebar .brand-link {
+            justify-content: center;
+        }
+
+        .sidebar-mini.sidebar-collapse .main-sidebar .brand-link .brand-text {
+            display: none;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .alert-info {
+            color: #0c5460;
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+        }
+    </style>
+
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-dark bg-primary fixed-top">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#">
+                        <i class="fas fa-bars"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user"></i>
+                        User
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <a href="/logout" class="dropdown-item">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <a href="#" class="brand-link d-flex justify-content-start">
+                <img src="/media/logo.svg" alt="Logo" style="border-radius:1px;"
+                    class="brand-image img-circle  mr-2">
+                <span class="brand-text font-weight-light">SISFO AKUNTAN</span>
+            </a>
+
+
+            <div class="sidebar">
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                        <li class="nav-item">
+                            <a href="/dashboard" class="nav-link">
+                                <i class="nav-icon fa fa-fw fa-home"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/user" class="nav-link">
+                                <i class="nav-icon fa fa-fw fa-user"></i>
+                                <p>User</p>
+                            </a>
+                        </li>
+                           <li class="nav-item">
+                            <a href="/product" class="nav-link">
+                                <i class="nav-icon fa fa-fw fa-cart-plus"></i>
+                                <p>Product</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/product-user" class="nav-link">
+                                <i class="nav-icon fa fa-fw fa-user-circle"></i>
+                                <p>Product User</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/report" class="nav-link">
+                                <i class="nav-icon fa fa-fw fa-file-archive"></i>
+                                <p>Laporan Laba/Rugi</p>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a href="/tutor" class="nav-link">
+                                <i class="nav-icon fa fa-fw fa-chalkboard-teacher"></i>
+                                <p>Tutor</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/question" class="nav-link">
+                                <i class="nav-icon fa fa-fw fa-question"></i>
+                                <p>Question</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/package" class="nav-link">
+                                <i class="nav-icon fa fa-fw fa-book"></i>
+                                <p>Package</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/bundle" class="nav-link">
+                                <i class="nav-icon fa fa-fw fa-archive"></i>
+                                <p>Class</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/order" class="nav-link">
+                                <i class="nav-icon fa fa-fw  fa-shopping-cart"></i>
+                                <p>Order</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/material" class="nav-link">
+                                <i class="nav-icon fa-fw fa fa-wrench"></i>
+                                <p>Material</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/exam" class="nav-link">
+                                <i class="nav-icon fa fa-fw fa-hourglass-half"></i>
+                                <p>Exam</p>
+                            </a>
+                        </li> -->
+                        <!-- <li class="nav-item">
+                            <a href="/submission" class="nav-link">
+                                <i class="nav-icon fa fa-fw fa-upload"></i>
+                                <p>Submission</p>
+                            </a>
+                        </li> -->
+                        <!-- <li class="nav-item">
+                            <a href="{{ .AuthURL }}/admin/institution" class="nav-link" target="_blank">
+                                <i class="nav-icon fa fa-fw fa-university"></i>
+                                <p>Institution</p>
+                                <i class="fas fa-external-link-alt fa-xs float-right"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ .AuthURL }}/admin/users" class="nav-link" target="_blank">
+                                <i class="nav-icon fa fa-fw fa-user"></i>
+                                <p>User</p>
+                                <i class="fas fa-external-link-alt fa-xs float-right"></i>
+                            </a>
+                        </li> -->
+                        <!-- Add more menu items as needed -->
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper p-4" style="margin-top: 57px;">
+            {{ template "content" . }}
+            <div id="modal-universe" class="fade modal" role="dialog" tabindex="-1" aria-hidden="true"
+                aria-labelledby="modal-universe-label">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div id="modalHeader" class="modal-header" style="background:#eee">
+                            <h5 id="modal-universe-label" class="modal-title"></h5>
+                            <button type="button" class="close" data-dismiss="modal"><span
+                                    aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="modalContent">
+                                <!-- <div style="text-align:center"><img src="/img/loader.gif"></div> -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.content-wrapper -->
+
+        <!-- Footer -->
+        <footer class="main-footer"><!-- Add footer content if needed -->
+        </footer>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/bootadmin.min.js"></script>
+    <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/admin-lte@3.1.0/dist/js/adminlte.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+
+
+    <script>
+        // ===
+        $(document).ready(function () {
+            var currentUrl = window.location.href;
+            var urlParts = currentUrl.split('/');
+            var packageId = urlParts[urlParts.length - 1];
+            var bundleId = urlParts[urlParts.length - 1];
+            // const queryString = window.location.search;
+            // const urlParams = new URLSearchParams(queryString);
+            const paramId = urlParts[urlParts.length - 1];
+
+            // ====section
+            $('#dataversionsection').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/api/data-version-section/" + paramId, // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            return '<div style="white-space: nowrap;">' + '<a value="/section/edit/' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Section" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + '</div>';
+                        }
+                    },
+                    {
+                        "data": "sequence"
+                    },
+                    {
+                        "data": "name"
+                    }, {
+                        "data": "duration"
+                    }, {
+                        "data": "minimum_score"
+                    },
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [2, "asc"]
+                ]
+            });
+
+
+            // ====version
+            $('#dataversion').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+
+
+                },
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/api/data-version", // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            return '<div style="white-space: nowrap;">' + '<a href="/version/view/' + data.id + '" class="btn btn-xs btn-light text-primary"><i class="fa fa-eye"></i></a>&nbsp;' + '<a value="/version/edit/' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Version" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + '</div>';
+                        }
+                    },
+                    {
+                        "data": "name"
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.type == 1) {
+                                return 'CPNS'
+                            } else if (data.type == 2) {
+                                return 'PPPK'
+                            } else {
+                                return ''
+                            }
+                        }
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.is_active == 1) {
+                                return '<span class="badge badge-success">Active</span>'
+                            } else {
+                                return '<span class="badge badge-danger">Inactive</span>'
+                            }
+                        }
+                    },
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+
+            // ===tutor
+            $('#datatutor').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/api/data-tutor", // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            return '<div style="white-space: nowrap;">' + '<a value="/tutor/edit/' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Tutor" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + '</div>';
+                        }
+                    },
+                    {
+                        "data": "name"
+                    },
+                    {
+                        "data": "user_id",
+                        "render": function (data, type, row) {
+                            if (data != 0) {
+                                return data
+                            }
+                            return null
+
+                        }
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.is_active == 1) {
+                                return '<span class="badge badge-success">Active</span>'
+                            } else {
+                                return '<span class="badge badge-danger">Inactive</span>'
+                            }
+                        }
+                    },
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+
+            // =====question
+            $('#dataquestion').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/api/data-question", // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    }
+                },
+                "lengthMenu": [
+                    [
+                        10,
+                        50,
+                        100,
+                        500,
+                        1000
+                    ],
+                    [
+                        10,
+                        50,
+                        100,
+                        500,
+                        1000
+                    ]
+                ],
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            return '<div style="white-space: nowrap;">' + '<a value="/question/edit?id=' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Question" size="modal-xl"><i class="fa fa-pen"></i></a>&nbsp;' + '</div>';
+                        }
+                    },
+                    {
+                        "data": "id"
+                    },
+                    // { "data": "question",
+                    //    "render": function(data, type, row) {
+                    // if (type === 'display') {
+                    //     return $('<div/>').text(data).html();
+                    // }
+                    // return data;
+                    //     }
+                    //     },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (type === 'display') {
+                                var replacedData = data.question.replace(/\{\{([^}]+)\}\}/g, '<img src="{{ .PUBLIC_URL_S3 }}{{ .AWS_DESTINATION_PREFIX }}/' + data.batch + '/$1.png"/>').replace(/\n/g, "<br/>");
+                                var optionHTML = data.Option.map((e) => {
+                                    var replacedOption = e.description.replace(/\{\{([^}]+)\}\}/g, '<img src="{{ .PUBLIC_URL_S3 }}{{ .AWS_DESTINATION_PREFIX }}/' + data.batch + '/$1.png"/>').replace(/\n/g, "<br/>");
+                                    return `<div class="ml-3 mb-2"><span class="badge badge-secondary">${e.is_true
+                                        }</span>&nbsp;&nbsp;${e.name
+                                        }.&nbsp;&nbsp;&nbsp;${replacedOption}</div>`;
+                                }).join('');
+                                return replacedData + '<br/><br/>' + optionHTML;
+                            }
+                            return data;
+                        }
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (type === 'display') {
+                                if (data.explanation != null) {
+                                    var replacedData = data.explanation.replace(/\{\{([^}]+)\}\}/g, '<img src="{{ .PUBLIC_URL_S3 }}{{ .AWS_DESTINATION_PREFIX }}/' + data.batch + '/$1.png"/>').replace(/\n/g, "<br/>");
+                                    return replacedData;
+                                }
+
+                            }
+                            return null;
+                        }
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (type === 'display') {
+                                let data_batch = ""
+                                let data_topic = ""
+                                let data_subtopic = ""
+                                if (data.batch != null) {
+                                    data_batch = '<span class="badge badge-light font-weight-normal">' + data.batch + '</span>'
+                                }
+                                if (data.topic != null) {
+                                    data_topic = data.topic + '<br/>'
+                                }
+                                if (data.subtopic != null) {
+                                    data_subtopic = '<span class="small">' + data.subtopic + '</span><br/>'
+                                }
+                                return '<div style="white-space: nowrap;">' + data_topic + data_subtopic + data_batch + '</div>'
+
+                            }
+                            return null;
+                        }
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.Tutor.name === "") {
+                                return data.tutor_name
+                            } else {
+                                return data.Tutor.name
+                            }
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.is_active == 1) {
+                                return '<span class="badge badge-success">Active</span>'
+                            } else {
+                                return '<span class="badge badge-danger">Inactive</span>'
+                            }
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            // Render HTML for the cell with added styles
+
+                            return data.PackageQuestion.map((e) => '* No.[' + e.sequence + ']-' + e.Package.name + ' <br/>').join("")
+                        }
+                    },
+                     {
+                        "data": "competency_area"
+                    },
+                    {
+                        "data": "domain"
+                    },
+                    {
+                        "data": "science"
+                    },
+                    {
+                        "data": "nursing_process"
+                    },
+                    {
+                        "data": "effort"
+                    },
+                    {
+                        "data": "need"
+                    },
+                    {
+                        "data": "body_system"
+                    },
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+            // exam
+            $('#dataexam').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/api/data-exam", // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    },
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            return '<div style="white-space: nowrap;">' + '<a href="/exam/view/' + data.id + '" class="btn btn-xs btn-light text-primary"><i class="fa fa-eye"></i></a>&nbsp;' + '<a value="/exam/edit/' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Exam" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + '</div>';
+                        }
+                    },
+                    {
+                        "data": "id"
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            let data_show = ""
+                            if (data.UserFromCreatedBy.name != null) {
+                                data_show = "<b>" + data.UserFromCreatedBy.name + "</b>"
+                            }
+                            if (data.UserFromCreatedBy.email != null) {
+                                if (data_show != "") {
+                                    data_show += "<br/>" + data.UserFromCreatedBy.email
+                                } else {
+                                    data_show = data.UserFromCreatedBy.email
+                                }
+                            }
+                            if (data.UserFromCreatedBy.phone != null) {
+                                if (data_show != "") {
+                                    data_show += "<br/>" + data.UserFromCreatedBy.phone
+                                } else {
+                                    data_show = data.UserFromCreatedBy.phone
+                                }
+                            }
+                            return data_show
+                        }
+                    },
+                    {
+                        "data": "UserFromCreatedBy.Institution.name",
+                        // "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        //     if (data != null) {
+                        //         return `<div style="white-space:nowrap">` + data + `</div>`
+                        //     }
+                        //     return null
+                        // }
+                    },
+                    {
+                        "data": "Package.name"
+                    }, {
+                        "data": "extra_time"
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.score_summarized != null) {
+                                return data.score_summarized
+                            }
+                            if (data.score_percentaged != null) {
+                                return data.score_percentaged
+                            }
+                            return null
+                        }
+                    },
+                    {
+                        "data": "started_at_t"
+                    },
+                    {
+                        "data": "ended_at_t"
+                    }
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+            // exam question
+            $('#dataexamquestion').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "processing": true,
+                "serverSide": true,
+                "pageLength": 500,
+                "ajax": {
+                    "url": "/api/data-exam-question/" + packageId, // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 500;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    },
+                    // "error": function (xhr, error, thrown) {
+
+                    //     fetch('/logout', { method: 'GET' });
+                    //     window.location.href = "{{ .urllogout }}"
+
+                    // }
+                },
+                "lengthMenu": [
+                    [
+                        10,
+                        50,
+                        100,
+                        500,
+                        1000
+                    ],
+                    [
+                        10,
+                        50,
+                        100,
+                        500,
+                        1000
+                    ]
+                ],
+                "columns": [
+                    {
+                        "data": "sequence"
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row, meta) {
+                            if (type === 'display') {
+                                return data.Question.question.replace(/\{\{([^}]+)\}\}/g, '<img src="{{ .PUBLIC_URL_S3 }}{{ .AWS_DESTINATION_PREFIX }}/' + data.Question.batch + '/$1.png"/>').replace(/\n/g, "<br/>");
+                            }
+                            return data
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row, meta) {
+                            if (type === 'display') {
+                                if (data.Option.description != null && data.Option.description != "") {
+                                    var replacedOption = data.Option.description.replace(/\{\{([^}]+)\}\}/g, '<img src=" {{ .PUBLIC_URL_S3 }}{{ .AWS_DESTINATION_PREFIX }}/' + data.Question.batch + '/$1.png"/>').replace(/\n/g, "<br/>");
+                                    return `<div class="ml-3 mb-2"><span class="badge badge-secondary">${data.Option.is_true
+                                        }</span>&nbsp;&nbsp;${data.Option.name
+                                        }.&nbsp;&nbsp;&nbsp;${replacedOption}</div>`;
+                                }
+                            }
+                            return null
+                        }
+                    },
+                    //  {
+                    //     "data": "Option.name"
+                    // },
+                    {
+                        "data": "updated_at_t",
+                        "render": function (data, type, row, meta) {
+                            return '<div style="white-space: nowrap;">' + data + '</div>'
+                        }
+                    },
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "asc"]
+                ]
+            });
+            //
+            $('#datapackage').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/api/data-package", // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            return '<div style="white-space: nowrap;">' + '<a href="/package/view/' + data.id + '" class="btn btn-xs btn-light text-primary"><i class="fa fa-eye"></i></a>&nbsp;' + '<a value="/package/edit/' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Package" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-package/` + data.id + `" method="POST" class="d-inline">
+                                                              <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
+                                                             </form>` +
+                                // '<a href="/admin/users/view/' + data.id + '" class="btn btn-xs btn-light text-primary"><i class="fa fa-eye"></i></a>&nbsp;' +
+                                '</div>';
+                        }
+                    },
+                    {
+                        "data": "id"
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            let is_complete = ""
+                            let is_shuffle_type = ""
+                            let data_description = ""
+                            if (data.is_complete == 1) {
+                                is_complete = '<span class="badge badge-light">Lengkap</span>';
+                            } else {
+                                is_complete = '<span class="badge badge-light text-info">Mini TO</span>';
+                            }
+                            if (data.shuffle_type === 1) {
+                                is_shuffle_type = '<span class="badge badge-light">Berurutan </span>';
+                            }
+                            if (data.shuffle_type === 2) {
+                                is_shuffle_type = '<span class="badge badge-light">Acak Keseluruhan </span>';
+                            }
+                            if (data.shuffle_type === 3) {
+                                is_shuffle_type = '<span class="badge badge-light">Acak Per Section </span>';
+                            }
+                            if (data.shuffle_type === 4) {
+                                is_shuffle_type = '<span class="badge badge-light">Acak Per Topik</span>';
+                            }
+                            return data.name + '<br/>' + is_complete + '&nbsp;<span class="badge badge-light">' + data.Version.name + '</span>&nbsp;' + is_shuffle_type
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.description != "") {
+                                return `<span class="badge badge-light text-success"><i class="fas fa-check"></i></span>`
+                            } else {
+                                return `<span class="badge badge-light"><i class="fas fa-exclamation-circle text-warning"></i></span>`
+                            }
+                            return null
+                        }
+                    },
+                    {
+                        "data": "duration",
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            return `<div class="text-right">${new Intl.NumberFormat().format(data)
+                                }</div>`
+                        }
+                    }, {
+                        "data": "price",
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            return `<div class="text-right">${new Intl.NumberFormat().format(data)
+                                }</div>`
+                        }
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            if (data.scoring_method === 1) {
+                                return 'Percentaged<br/>Min: ' + data.minimum_score;
+                            }
+                            if (data.scoring_method === 2) {
+                                return 'Summarized<br/>Min: ' + data.minimum_score;
+                            }
+                        }
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            if (data.is_independent === 0) {
+                                return 'Dependent';
+                            }
+                            if (data.is_independent === 1) {
+                                return 'Independent';
+                            }
+                            return ""
+                        }
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.is_active == 1) {
+                                return '<span class="badge badge-success">Active</span>'
+                            } else {
+                                return '<span class="badge badge-danger">Inactive</span>'
+                            }
+                        }
+                    },
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+            //
+
+            $('#dataorder').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/api/data-order", // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    },
+                    "error": function (xhr, error, thrown) {
+
+                        fetch('/logout', { method: 'GET' });
+                        window.location.href = "{{ .urllogout }}"
+
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            if (data.midtrans_payment_url == null) {
+                                return '<div style="white-space: nowrap;">' + '<a value="/order/edit/' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Order" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-order/` + data.id + `" method="POST" class="d-inline">
+                                                                <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
+                                                            </form>` + '</div>';
+                            }
+                            return null
+                        }
+                    },
+                    {
+                        "data": "id"
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            let data_show = ""
+                            if (data.UserFromID.name != null) {
+                                data_show = "<b>" + data.UserFromID.name + "</b>"
+                            }
+                            if (data.UserFromID.email != null) {
+                                if (data_show != "") {
+                                    data_show += "<br/>" + data.UserFromID.email
+                                } else {
+                                    data_show = data.UserFromID.email
+                                }
+                            }
+                            if (data.UserFromID.phone != null) {
+                                if (data_show != "") {
+                                    data_show += "<br/>" + data.UserFromID.phone
+                                } else {
+                                    data_show = data.UserFromID.phone
+                                }
+                            }
+                            return data_show
+                        }
+                    }, {
+                        "data": "UserFromID.Institution.name"
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.Package.name != "") {
+                                return data.Package.name + `<br/><span class="badge badge-primary">Package</span>`
+                            } else {
+                                return data.Bundle.name + `<br/><span class="badge badge-info">Class</span>`
+                            }
+                        }
+                    }, {
+                        "data": "amount",
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            return `<div class="text-right">${new Intl.NumberFormat().format(data)
+                                }</div>`
+                        }
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            // console.log(data)
+                            let concatestring = ""
+                            let concatestringstatus = ""
+                            if (data.midtrans_payment_url != null) {
+                                concatestring = `Midtrans`
+                            } else {
+                                if (data.created_by == null) {
+                                    concatestring = ``
+                                } else if (data.user_id == data.created_by) {
+                                    concatestring = data.UserFromCreatedBy.name
+                                } else {
+                                    concatestring = data.UserFromCreatedBy.name
+                                }
+                            }
+                            if (data.midtrans_payment_url != null) {
+                                concatestringstatus = `<span class="badge badge-warning">Pending</span><br/>`
+                                if (data.checked_out_at == null && data.cancelled_at == null && data.expired_at == null && data.paid_at == null) {
+                                    concatestringstatus = `<span class="badge badge-warning">Pending</span>&nbsp;` + `<form action="/api/cancel-order?id=` + data.id + `&bd_id=?` + data.bundle_id + `" method="POST" class="d-inline">
+                                                                <button type="submit" class="btn btn-xs btn-light text-danger py-0" onclick="return confirm('Apakah anda yakin ingin membatalkan pembayaran?')"><i class="fa fa-times"></i></button>
+                                                            </form>`+ ` <br/>`
+                                }
+                                if (data.cancelled_at !== 0 && data.cancelled_at !== null) {
+                                    concatestringstatus = `<span class="badge badge-danger">Cancel</span><br/>`
+                                }
+                                if (data.expired_at !== 0 && data.expired_at !== null) {
+                                    concatestringstatus = `<span class="badge badge-danger">Expire</span><br/>`
+                                }
+                                if (data.paid_at !== 0 && data.paid_at !== null) {
+                                    concatestringstatus = `<span class="badge badge-success">Success</span><br/>`
+                                }
+                            }
+                            if (concatestring != "" || concatestringstatus != "") {
+                                return '<div style="white-space: nowrap;">' + concatestring + '<br/>' + concatestringstatus + `<span class="small">` + data.paid_string + `</span>` + `</div>`
+                            }
+                            return null
+                        }
+                    },
+
+
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+
+            //
+            $('#dataorderbundle').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/api/data-order-bundle/" + paramId, // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    },
+                    // "error": function (xhr, error, thrown) {
+
+                    //     fetch('/logout', { method: 'GET' });
+                    //     window.location.href = "{{ .urllogout }}"
+
+                    // }
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            if (data.midtrans_payment_url == null) {
+                                return '<div style="white-space: nowrap;">' + '<a value="/bundle/edit/user?id=' + data.bundle_id + '&order_id=' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit User" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-bundle-order?id=` + data.id + `&bd_id=` + data.bundle_id + `" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
+                        </form>` + '</div>';
+                            }
+                            return null
+                        }
+                    },
+                    {
+                        "data": "id"
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            let data_show = ""
+                            if (data.UserFromID.name != null) {
+                                data_show = "<b>" + data.UserFromID.name + "</b>"
+                            }
+                            if (data.UserFromID.email != null) {
+                                if (data_show != "") {
+                                    data_show += "<br/>" + data.UserFromID.email
+                                } else {
+                                    data_show = data.UserFromID.email
+                                }
+                            }
+                            if (data.UserFromID.phone != null) {
+                                if (data_show != "") {
+                                    data_show += "<br/>" + data.UserFromID.phone
+                                } else {
+                                    data_show = data.UserFromID.phone
+                                }
+                            }
+                            return data_show
+                        }
+                    }, {
+                        "data": "UserFromID.Institution.name"
+                    }, {
+                        "data": "amount",
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            return `<div class="text-right">${new Intl.NumberFormat().format(data)
+                                }</div>`
+                        }
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            // console.log(data)
+                            let concatestring = ""
+                            let concatestringstatus = ""
+                            if (data.midtrans_payment_url != null) {
+                                concatestring = `Midtrans`
+                            } else {
+                                if (data.created_by == null) {
+                                    concatestring = ``
+                                } else if (data.user_id == data.created_by) {
+                                    concatestring = data.UserFromCreatedBy.name
+                                } else {
+                                    concatestring = data.UserFromCreatedBy.name
+                                }
+                            }
+                            if (data.midtrans_payment_url != null) {
+                                concatestringstatus = `<span class="badge badge-warning">Pending</span><br/>`
+                                if (data.checked_out_at == null && data.cancelled_at == null && data.expired_at == null && data.paid_at == null) {
+                                    concatestringstatus = '<span class="badge badge-warning">Pending</span>&nbsp;' +
+                                        '<form action="/api/cancel-order?id=' + data.id + '&bd_id=' + data.bundle_id + '&a=add" method="POST" class="d-inline">' +
+                                        '<button type="submit" class="btn btn-xs btn-light text-danger py-0" onclick="return confirm(\'Apakah anda yakin ingin membatalkan pembayaran?\')"><i class="fa fa-times"></i></button>' +
+                                        '</form>' +
+                                        ' <br/>';
+                                }
+                                if (data.cancelled_at !== 0 && data.cancelled_at !== null) {
+                                    concatestringstatus = `<span class="badge badge-danger">Cancel</span><br/>`
+                                }
+                                if (data.expired_at !== 0 && data.expired_at !== null) {
+                                    concatestringstatus = `<span class="badge badge-danger">Expire</span><br/>`
+                                }
+                                if (data.paid_at !== 0 && data.paid_at !== null) {
+                                    concatestringstatus = `<span class="badge badge-success">Success</span><br/>`
+                                }
+                            }
+                            if (concatestring != "" || concatestringstatus != "") {
+                                return '<div style="white-space: nowrap;">' + concatestring + '<br/>' + concatestringstatus + `<span class="small">` + data.paid_string + `</span>` + `</div>`
+                            }
+                            return null
+                        }
+                    },
+
+
+
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+            $('#dataorderbundle1').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "bPaginate": false,
+                "dom": 'B',
+                "buttons": [
+                    {
+                        extend: 'excel',
+                        text: ' Export',
+                        title: '',
+                        filename: 'User {{ .BundleName }}',
+                        className:
+                            'bg-success border rounded fa fa-file-excel text-success py-2',
+                    },
+                    // {
+                    //     extend: 'print',
+                    //     text: ' print',
+                    //     title: "data order class",
+                    //     className:
+                    //         'btn btn-secondary border rounded fa fa-print mb-4 py-2',
+                    // },
+                ],
+                "ajax": {
+                    "url": "/api/data-order-bundle/" + paramId, // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    },
+                    "error": function (xhr, error, thrown) {
+
+                        fetch('/logout', { method: 'GET' });
+                        window.location.href = "{{ .urllogout }}"
+
+                    }
+                },
+                "aoColumns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": "id"
+                    },
+                    {
+                        "data": "UserFromID.name"
+                    },
+                    {
+                        "data": "UserFromID.email"
+                    },
+                    {
+                        "data": "UserFromID.phone"
+                    },
+                    {
+                        "data": "UserFromID.Institution.name"
+                    }, {
+                        "data": "amount",
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            return `<div class="text-right">${new Intl.NumberFormat().format(data)
+                                }</div>`
+                        }
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.midtrans_payment_url != null) {
+                                return `Midtrans`
+                            } else {
+                                if (data.created_by == null) {
+                                    return ``
+                                } else if (data.user_id == data.created_by) {
+                                    return data.UserFromCreatedBy.name
+                                } else {
+                                    return data.UserFromCreatedBy.name
+                                }
+                            }
+                            return null
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return '<div style="white-space: nowrap;"><span class="small">' + data.paid_string + '</span></div>'
+                        }
+                    },
+
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.midtrans_payment_url != null) {
+                                let concatestringstatus = ""
+                                concatestringstatus = `<span class="badge badge-warning">Pending</span><br/>`
+                                if (data.cancelled_at !== 0 && data.cancelled_at !== null) {
+                                    concatestringstatus = `<span class="badge badge-danger">Cancel</span><br/>`
+                                }
+                                if (data.expired_at !== 0 && data.expired_at !== null) {
+                                    concatestringstatus = `<span class="badge badge-danger">Expire</span><br/>`
+                                }
+                                if (data.paid_at !== 0 && data.paid_at !== null) {
+                                    concatestringstatus = `<span class="badge badge-success">Success</span><br/>`
+                                }
+                                if (data.checked_out_at == null && data.cancelled_at == null && data.expired_at == null && data.paid_at == null) {
+                                    concatestringstatus = '<span class="badge badge-warning">Pending</span>'
+                                }
+                                return concatestringstatus
+                            }
+                            return null
+                        }
+                    },
+
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+
+            //
+            $('#datapackagequestion').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "pageLength": 500,
+                "ajax": {
+                    "url": "/api/data-package-question/" + packageId, // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 500;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    }
+                },
+                "lengthMenu": [
+                    [
+                        10,
+                        50,
+                        100,
+                        500,
+                        1000
+                    ],
+                    [
+                        10,
+                        50,
+                        100,
+                        500,
+                        1000
+                    ]
+                ],
+                "columns": [
+                    {
+                        "data": null,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return `<div class='text-center'>` + `<span class="badge badge-primary">` + data.sequence + `</span></div>`
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            let action_delete = ""
+                            if (data.is_delete == 1) {
+                                action_delete = `<form action="/api/delete-package-question/` + data.id + `" method="POST" class="d-inline">
+                                                              <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
+                                 </form>`
+                            }
+                            return '<div style="white-space: nowrap;">' + '<a value="/question/edit?id=' + data.question_id + '&&pv_id=' + data.package_id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Question" size="modal-xl"><i class="fa fa-pen"></i></a>&nbsp;' + action_delete
+                                +
+                                // '<a href="/admin/users/view/' + data.id + '" class="btn btn-xs btn-light text-primary"><i class="fa fa-eye"></i></a>&nbsp;' +
+                                '</div>';
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (type === 'display') {
+                                var replacedData = data.Question.question.replace(/\{\{([^}]+)\}\}/g, '<img src="{{ .PUBLIC_URL_S3 }}{{ .AWS_DESTINATION_PREFIX }}/' + data.Question.batch + '/$1.png"/>').replace(/\n/g, "<br/>");
+                                var optionHTML = data.Question.Option.map((e) => {
+                                    var replacedOption = e.description.replace(/\{\{([^}]+)\}\}/g, '<img src=\"{{ .PUBLIC_URL_S3 }}{{ .AWS_DESTINATION_PREFIX }}/' + data.Question.batch + '/$1.png\"/>').replace(/\n/g, "<br/>");
+                                    return `<div class="ml-3 mb-2"><span class="badge badge-secondary">${e.is_true
+                                        }</span>&nbsp;&nbsp;${e.name
+                                        }.&nbsp;&nbsp;&nbsp;${replacedOption}</div>`;
+                                }).join('');
+                                return replacedData + '<br/><br/>' + optionHTML;
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        "data": "Section.name"
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (type === 'display') {
+                                if (data.Question.explanation != null) {
+                                    var replacedData = data.Question.explanation.replace(/\{\{([^}]+)\}\}/g, '<img src=\"{{ .PUBLIC_URL_S3 }}{{ .AWS_DESTINATION_PREFIX }}/' + data.Question.batch + '/$1.png\"/>').replace(/\n/g, "<br/>");
+                                    return replacedData;
+                                } else {
+                                    return data.Question.explanation;
+                                }
+                            }
+                            return data
+                        }
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (type === 'display') {
+                                let data_batch = ""
+                                let data_topic = ""
+                                let data_subtopic = ""
+                                if (data.Question.batch != null) {
+                                    data_batch = '<span class="badge badge-light font-weight-normal">' + data.Question.batch + '</span>'
+                                }
+                                if (data.Question.topic != null) {
+                                    data_topic = data.Question.topic + '<br/>'
+                                }
+                                if (data.Question.subtopic != null) {
+                                    data_subtopic = '<span class="small">' + data.Question.subtopic + '</span><br/>'
+                                }
+                                return '<div style="white-space: nowrap;">' + data_topic + data_subtopic + data_batch + '</div>'
+
+                            }
+                            return null;
+                        }
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.Question.Tutor.name === "") {
+                                return data.Question.tutor_name
+                            } else {
+                                return data.Question.Tutor.name
+                            }
+                        }
+                    }, {
+                        "data": "question_id"
+                    },
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "asc"]
+                ]
+            });
+
+            //
+            $('#datapackagequestion1').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "pageLength": 500,
+                "dom": "B",
+                "buttons": [
+                    {
+                        extend: 'excel',
+                        text: ' Export',
+                        title: '',
+                        filename: '{{ .PackageName }}',
+                        className:
+                            'bg-success border rounded fa fa-file-excel text-success py-2',
+                    },
+                    // {
+                    //     extend: 'print',
+                    //     text: ' print',
+                    //     title: "data order class",
+                    //     className:
+                    //         'btn btn-secondary border rounded fa fa-print mb-4 py-2',
+                    // },
+                ],
+                "ajax": {
+                    "url": "/api/data-package-question/" + packageId, // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 500;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    }
+                },
+                "lengthMenu": [
+                    [
+                        10,
+                        50,
+                        100,
+                        500,
+                        1000
+                    ],
+                    [
+                        10,
+                        50,
+                        100,
+                        500,
+                        1000
+                    ]
+                ],
+                "columns": [
+                    {
+                        "data": null,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return `<div class='text-center'>` + `<span class="badge badge-primary">` + data.sequence + `</span></div>`
+                        }
+                    },
+                    // {
+                    //     "data": null,
+                    //     "orderable": false,
+                    //     "render": function (data, type, row) { // Render HTML for the cell with added styles
+                    //         return '<div style="white-space: nowrap;">' + '<a href="/question/edit?id=' + data.question_id + '&&pv_id=' + data.package_id + '" class="btn btn-xs btn-light text-warning"><i class="fa fa-pen"></i></a>&nbsp;' +
+                    //         // '<a href="/admin/users/view/' + data.id + '" class="btn btn-xs btn-light text-primary"><i class="fa fa-eye"></i></a>&nbsp;' +
+                    //         '</div>';
+                    //     }
+                    // },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (type === 'display') {
+                                var replacedData = data.Question.question.replace(/\{\{([^}]+)\}\}/g, '<img src="{{ .PUBLIC_URL_S3 }}{{ .AWS_DESTINATION_PREFIX }}/' + data.Question.batch + '/$1.png"/>').replace(/\n/g, "<br/>");
+                                var optionHTML = data.Question.Option.map((e) => {
+                                    var replacedOption = e.description.replace(/\{\{([^}]+)\}\}/g, '<img src=\"{{ .PUBLIC_URL_S3 }}{{ .AWS_DESTINATION_PREFIX }}/' + data.Question.batch + '/$1.png\"/>').replace(/\n/g, "<br/>");
+                                    return `<div class="ml-3 mb-2"><span class="badge badge-secondary">${e.is_true
+                                        }</span>&nbsp;&nbsp;${e.name
+                                        }.&nbsp;&nbsp;&nbsp;${replacedOption}</div>`;
+                                }).join('');
+                                return replacedData + '<br/><br/>' + optionHTML;
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        "data": "Section.name"
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (type === 'display') {
+                                if (data.Question.explanation != null) {
+                                    var replacedData = data.Question.explanation.replace(/\{\{([^}]+)\}\}/g, '<img src=\"{{ .PUBLIC_URL_S3 }}{{ .AWS_DESTINATION_PREFIX }}/' + data.Question.batch + '/$1.png\"/>').replace(/\n/g, "<br/>");
+                                    return replacedData;
+                                } else {
+                                    return data.Question.explanation;
+                                }
+                            }
+                            return data
+                        }
+                    }, {
+                        "data": "Question.batch"
+                    }, {
+                        "data": "Question.topic"
+                    }, {
+                        "data": "Question.subtopic"
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.Question.Tutor.name === "") {
+                                return data.Question.tutor_name
+                            } else {
+                                return data.Question.Tutor.name
+                            }
+                        }
+                    }, {
+                        "data": "question_id"
+                    },
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "asc"]
+                ]
+            });
+
+
+            //
+            $('#databundlepackage').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "ajax": {
+                    "url": "/api/data-bundle-package/" + bundleId, // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            if ("{{ .UserIDT }}" == 1) {
+                                return '<div style="white-space: nowrap;">' + '<a value="/bundle/package/edit/' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Bundle Package" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-bundle-package?id=` + data.id + `&bd_id=` + data.bundle_id + `&pkg_id=` + data.package_id + `" method="POST" class="d-inline">
+                                                              <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
+                                                             </form>` +
+                                    `<form action="/api/delete-bundle-package-exam?id=` + data.package_id + `&bd_id=` + data.bundle_id + `" method="POST" class="d-inline">
+                                                              <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data exam dari package ini?')"><i class="fa fa-times"></i></button>
+                                                             </form>`+
+
+                                    // '<a href="/admin/users/view/' + data.id + '" class="btn btn-xs btn-light text-primary"><i class="fa fa-eye"></i></a>&nbsp;' +
+                                    '</div>';
+                            }
+                            if ("{{ .UserIDT }}" != 1) {
+                                return '<div style="white-space: nowrap;">' + '<a value="/bundle/package/edit/' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Bundle Package" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-bundle-package?id=` + data.id + `&bd_id=` + data.bundle_id + `&pkg_id=` + data.package_id + `" method="POST" class="d-inline">
+                                                              <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
+                                                             </form>` +
+
+                                    // '<a href="/admin/users/view/' + data.id + '" class="btn btn-xs btn-light text-primary"><i class="fa fa-eye"></i></a>&nbsp;' +
+                                    '</div>';
+                            }
+                        }
+                    },
+                    {
+                        "data": "Package.id"
+                    },
+                    {
+                        "data": "Package.name"
+                    }, {
+                        "data": "starte"
+                    }, {
+                        "data": "ende"
+                    },
+                    {
+                        "data": "count_to"
+                    }
+
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+            //
+            $('#databundlemeeting').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "ajax": {
+                    "url": "/api/data-bundle-meeting/" + bundleId, // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) {
+                            return '<div style="white-space: nowrap;">' + '<a onclick="navigator.clipboard.writeText(\'    {{ .URL_PRESENCE }}/presence-start?id=' + data.id + '\');alert(\'Berhasil salin link absensi datang\')" class="btn btn-xs btn-light text-black fw-bold"><i class="px-1">S</i></a>&nbsp;' + '<a onclick="navigator.clipboard.writeText(\'    {{ .URL_PRESENCE }}/presence-end?id=' + data.id + '\');alert(\'Berhasil salin link absensi pulang\')" class="btn btn-xs btn-light text-black fw-bold"><i class="px-1">E</i></a>&nbsp;' + '<a href="/bundle/meeting/view/' + data.id + '" class="btn btn-xs btn-light text-primary"><i class="fa fa-eye"></i></a>&nbsp;' + '<a value="/bundle/meeting/edit/' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Bundle Meeting" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-meeting?id=` + data.id + `&bd_id=` + data.bundle_id + `" method="POST" class="d-inline">
+                                                            <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
+                                                        </form>` + '</div>';
+                        }
+                    },
+                    {
+                        "data": "sequence"
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            let data_description = ""
+                            if (data.description != null && data.description != "") {
+                                data_description = '<br/><span class="small">' + data.description + '</span>'
+                            }
+                            if (data.url != null && data.url != "") {
+                                data_description += '<br/><span class="text-muted small">' + data.url + '</span>'
+                            }
+                            return data.name + '' + data_description
+                        }
+                    }, {
+                        "data": "started_at_t"
+                    }, {
+                        "data": "ended_at_t"
+                    }, {
+                        "data": "Tutor.name"
+                    },
+                    {
+                        "data": "count"
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.is_recording > 0) {
+                                return `<div class="text-center"><span class="badge badge-light text-success"><i class="fas fa-check"></i></span></div>`
+                            } else {
+                                return `<div class="text-center"><span class="badge badge-light"><i class="fas fa-exclamation-circle text-warning"></i></span></div>`
+                            }
+                            return null
+                        }
+                    },
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [
+                        2, "asc"
+                    ],
+                    [
+                        3, "asc"
+                    ]
+                ]
+            });
+
+            //
+            $('#datapresence').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/api/data-presences/" + paramId, // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    },
+                    "error": function (xhr, error, thrown) {
+
+                        fetch('/logout', { method: 'GET' });
+                        window.location.href = "{{ .urllogout }}"
+
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) {
+                            if (data.start == 0 && data.end == 0) {
+                                return '<span class="badge badge-danger">Tidak hadir</span>'
+                            }
+                            let start = data.start - data.Meeting.started_at
+                            let end = data.end - data.Meeting.ended_at
+                            if (start > 0 && start < 900) {
+                                return '<span class="badge badge-success">Hadir</span>'
+                            } else if (end > 0 && end < 900) {
+                                return '<span class="badge badge-success">Hadir</span>'
+                            } else {
+                                return '<span class="badge badge-warning">Terlambat</span>'
+                            }
+                        }
+                    },
+                    {
+                        "data": "UserFromID.email"
+                    },
+                    {
+                        "data": "starte"
+                    }, {
+                        "data": "ende"
+                    }, {
+                        "data": "rate"
+                    }, {
+                        "data": "comment"
+                    },
+
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+            //
+            $('#datarecording').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/api/data-recording/" + paramId, // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            return '<div style="white-space: nowrap;">' +
+                                // '<a href="/bundle/meeting/view?id=' + data.id + '&bd_id='+data.bundle_id+'" class="btn btn-xs btn-light text-primary"><i class="fa fa-eye"></i></a>&nbsp;' +
+                                '<a value="/recording/edit/' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Recording" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-recording?id=` + data.id + `&me_id=` + data.meeting_id + `" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
+                        </form>` + '</div>';
+
+                        }
+                    },
+                    {
+                        "data": "name"
+                    },
+                    {
+                        "data": "url"
+                    }, {
+                        "data": "embed"
+                    },
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+            //
+            $('#databundle').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/api/data-bundle", // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            return '<div style="white-space: nowrap;">' + '<a href="/bundle/view/' + data.id + '" class="btn btn-xs btn-light text-primary"><i class="fa fa-eye"></i></a>&nbsp;' + '<a value="/bundle/edit/' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Bundle" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' +
+                                // '<a href="/admin/users/view/' + data.id + '" class="btn btn-xs btn-light text-primary"><i class="fa fa-eye"></i></a>&nbsp;' +
+                                '</div>';
+                        }
+                    },
+                    {
+                        "data": "id"
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return data.name
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.description != "") {
+                                return `<span class="badge badge-light text-success"><i class="fas fa-check"></i></span>`
+                            } else {
+                                return `<span class="badge badge-light"><i class="fas fa-exclamation-circle text-warning"></i></span>`
+                            }
+                            return null
+                        }
+                    },
+                    {
+                        "data": "price",
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            return `<div class="text-right">${new Intl.NumberFormat().format(data)
+                                }</div>`
+                        }
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.type == 1) {
+                                return 'Kelas Intensif'
+                            }
+                            if (data.type == 2) {
+                                return 'Belajar Mandiri'
+                            }
+                            return ''
+                        }
+                    }, 
+                       {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.is_public == 1) {
+                                return '<span class="badge badge-success">Public</span>'
+                            } else {
+                                return '<span class="badge badge-danger">Private</span>'
+                            }
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.is_active == 1) {
+                                return '<span class="badge badge-success">Active</span>'
+                            } else {
+                                return '<span class="badge badge-danger">Inactive</span>'
+                            }
+                        }
+                    },
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+            // submission
+            $('#datasubmission').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/api/data-submission", // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    }
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            return '<div style="white-space: nowrap;">' + '<a href="/submission/view/' + data.user_id + '" class="btn btn-xs btn-light text-primary"><i class="fa fa-eye"></i></a>&nbsp;' + '</div>';
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            let data_show = ""
+                            if (data.UserFromID.name != null) {
+                                data_show = "<b>" + data.UserFromID.name + "</b>"
+                            }
+                            if (data.UserFromID.email != null) {
+                                if (data_show != "") {
+                                    data_show += "<br/>" + data.UserFromID.email
+                                } else {
+                                    data_show = data.UserFromID.email
+                                }
+                            }
+                            if (data.UserFromID.phone != null) {
+                                if (data_show != "") {
+                                    data_show += "<br/>" + data.UserFromID.phone
+                                } else {
+                                    data_show = data.UserFromID.phone
+                                }
+                            }
+                            return data_show
+                        }
+                    },
+                    {
+                        "data": "formation_quota"
+                    }, {
+                        "data": "basic_score"
+                    }, {
+                        "data": "basic_rank"
+                    }, {
+                        "data": "advanced_score"
+                    }, {
+                        "data": "advanced_score"
+                    }, {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.is_public == 1) {
+                                return '<span class="badge badge-primary">Public</span>'
+                            }
+                            if (data.is_public == 0) {
+                                return '<span class="badge badge-secondary">Private</span>'
+                            }
+                            return ''
+                        }
+                    },
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+
+            // material
+            $('#datamaterial').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/api/data-material", // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    },
+                    // "error": function (xhr, error, thrown) {
+
+                    //     fetch('/logout', { method: 'GET' });
+                    //     window.location.href = "{{ .urllogout }}"
+
+                    // }
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            return '<div style="white-space: nowrap;">' + '<a href="/material/view/' + data.id + '" class="btn btn-xs btn-light text-primary"><i class="fa fa-eye"></i></a>' + '<a value="/material/edit/' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Material" size="modal-lg"><i class="fa fa-pen"></i></a>' + `<form action="/api/delete-material/` + data.id + `" method="POST" class="d-inline">
+                                                              <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
+                                                             </form>`+ '</div>';
+                        }
+                    },
+                    {
+                        "data": "id"
+                    },
+                    {
+                        "data": "name"
+                    },
+                    {
+                        "data": "description",
+                        "render": function (data, type, row) {
+                            if (data != "" && data != null) {
+                                return data.replace(/\n/g, "<br/>")
+                            }
+                            return null
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            if (data.is_active == 1) {
+                                return '<span class="badge badge-success">Active</span>'
+                            } else {
+                                return '<span class="badge badge-danger">Inactive</span>'
+                            }
+                        }
+                    },
+
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+            // material-content
+            $('#datamaterialcontent').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "processing": true,
+                "serverSide": true,
+                "pageLength": 100,
+                "ajax": {
+                    "url": "/api/data-material-content/" + paramId, // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 100;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    },
+
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            return '<div style="white-space: nowrap;">' + '<a value="/material-content/edit/' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Material Content" size="modal-lg"><i class="fa fa-pen"></i></a>' + `<form action="/api/delete-material-content?id=` + data.id + `&m_id=` + data.material_id + `" method="POST" class="d-inline">
+                                                              <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
+                                                             </form>` + '</div>';
+                        }
+                    },
+                    {
+                        "data": "id"
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            let data_name = ""
+                            if (data.name != null && data.name != "") {
+                                data_name = data.name
+                                if (data.description != "" && data.description != null) {
+                                    data_name += "<br/><small>" + data.description.replace(/\n/g, "<br/>") + "</small>"
+                                }
+                                return data_name
+                            }
+                            return null
+                        }
+                    },
+                    {
+                        "data": "type",
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            if (data == 2) {
+                                return "PDF"
+                            }
+                            if (data == 4) {
+                                return "Video"
+                            }
+                            return null
+                        }
+                    },
+                    {
+                        "data": "group"
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+                            if (type === 'display') {
+                                let showdata = ""
+                                if (data.file != null && data.file != "") {
+                                    var fileExtension = data.file.toLowerCase().split('.').pop();
+                                    if (['jpg', 'jpeg', 'png', 'gif', 'bmp'].indexOf(fileExtension) === -1) {
+                                        showdata = '<a target="_blank" href=\"{{ .PUBLIC_URL_S3 }}{{ .AWS_DESTINATION_PREFIX }}/material_content/' + data.file + '\">' + data.file.substring(data.file.indexOf('_') + 1) + '</a>'
+                                    } else {
+                                        showdata = '<a target="_blank" href=\"{{ .PUBLIC_URL_S3 }}{{ .AWS_DESTINATION_PREFIX }}/material_content/' + data.file + '\"><img src=\"{{ .PUBLIC_URL_S3 }}{{ .AWS_DESTINATION_PREFIX }}/material_content/' + data.file + '\"></a>'
+                                    }
+
+                                }
+                                if (data.link != null && data.link != "") {
+                                    if (showdata != "") {
+                                        showdata += "<br/>" + data.link
+                                    } else {
+                                        showdata = data.link
+                                    }
+                                }
+                                if (data.embed != null && data.embed != "") {
+                                    if (showdata != "") {
+                                        showdata += "<br/>" + data.embed
+                                    } else {
+                                        showdata = data.embed
+                                    }
+
+                                }
+                                return showdata
+                            }
+                            return null
+                        }
+                    },
+                    {
+                        "data": "sequence"
+                    },
+
+
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "asc"]
+                ]
+            });
+
+            //
+            $('#databundlematerial').DataTable({
+                "language": {
+                    "search": "",
+                    "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+                },
+                "initComplete": function () {
+                    const searchInput = $('.dataTables_filter input');
+                    searchInput.attr('placeholder', 'Search');
+                },
+                "ajax": {
+                    "url": "/api/data-bundle-material/" + packageId, // Ganti dengan URL endpoint server Golang Anda
+                    "type": "POST",
+                    "data": function (d) {
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.draw = d.draw || 1;
+                        d.search = d.search || {};
+                        d.search.value = d.search.value || '';
+
+                        // Mengambil informasi pengurutan dari DataTable
+                        d.order = d.order || [];
+                        if (d.order.length > 0) {
+                            var orderColumnIdx = d.order[0].column;
+                            var orderDir = d.order[0].dir;
+                            d['order[0][column]'] = orderColumnIdx;
+                            d['order[0][dir]'] = orderDir;
+                        }
+                    },
+                    "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                        if (json.data) {
+                            console.log(json)
+                            return json.data;
+                        } else {
+                            return [];
+                        }
+                    },
+
+                },
+                "columns": [
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "orderable": false,
+                        "render": function (data, type, row) { // Render HTML for the cell with added styles
+
+                            return '<div style="white-space: nowrap;">' + '<a value="/bundle/edit/material/' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Bundle Material" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-bundle-material?id=` + data.id + `&bd_id=` + data.bundle_id + `" method="POST" class="d-inline">
+                                                              <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
+                                                             </form>` +
+
+                                // '<a href="/admin/users/view/' + data.id + '" class="btn btn-xs btn-light text-primary"><i class="fa fa-eye"></i></a>&nbsp;' +
+                                '</div>';
+
+                        }
+                    },
+                    {
+                        "data": "id"
+                    },
+                    {
+                        "data": "Material.name"
+                    },
+
+
+
+                ],
+                "ordering": true, // Enable sorting
+                "order": [
+                    [0, "desc"]
+                ]
+            });
+
+        });
+
+
+        ///===================================================================
+    const urlParams = new URLSearchParams(window.location.search);
+    const month = urlParams.get('month');
+    const year = urlParams.get('year');
+        $('#dataproductuser').DataTable({
+            "language": {
+                "search": "",
+                "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+            },
+            "initComplete": function () {
+                const searchInput = $('.dataTables_filter input');
+                searchInput.attr('placeholder', 'Search');
+            },
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "/api/data-product-user", // Ganti dengan URL endpoint server Golang Anda
+                "type": "POST",
+                "data": function (d) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const month = urlParams.get('month');
+                    const year = urlParams.get('year');
+                    document.getElementById('monthSelect').value=month || '';
+                    document.getElementById('yearSelect').value=year|| '';
+
+
+                    // Menetapkan nilai parameter ke dalam objek d untuk dikirim ke server
+                    d.month = month || d.month || '';
+                    d.year = year || d.year || '';
+                    d.start = d.start || 0;
+                    d.length = d.length || 10;
+                    d.draw = d.draw || 1;
+                    d.search = d.search || {};
+                    d.search.value = d.search.value || '';
+
+                    // Mengambil informasi pengurutan dari DataTable
+                    d.order = d.order || [];
+                    if (d.order.length > 0) {
+                        var orderColumnIdx = d.order[0].column;
+                        var orderDir = d.order[0].dir;
+                        d['order[0][column]'] = orderColumnIdx;
+                        d['order[0][dir]'] = orderDir;
+                    }
+                },
+                "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                    if (json.data) {
+                        console.log(json)
+                        return json.data;
+                    } else {
+                        return [];
+                    }
+                },
+                // "error": function (xhr, error, thrown) {
+
+                //     fetch('/logout', { method: 'GET' });
+                //     window.location.href = "{{ .urllogout }}"
+
+                // }
+            },
+            "columns": [
+                {
+                    "data": null,
+                    "orderable": false,
+                    "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+          {
+                    "data": null,
+                    "orderable": false,
+                    "render": function (data, type, row) { // Render HTML for the cell with added styles
+                        if (data.midtrans_payment_url == null) {
+                            return '<div style="white-space: nowrap;">' + '<a value="/product-user/edit?id=' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit User" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-product-user?id=` + data.id + `" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
+                    </form>` + '</div>';
+                        }
+                        return null
+                    }
+                },
+                {
+                    "data": "User.name"
+                }, 
+                {
+                    "data": "Product.name"
+                }, 
+                 {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                       if (data.quantity != 0 && data.quantity!= null) {
+                            return `<div class="text-center" style="white-space:nowrap"> ${new Intl.NumberFormat().format(data.quantity)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                }, 
+                 {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                       if (data.price_member != 0 && data.price_member != null) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price_member)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                }, 
+                 {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
+                         if (data.price_nonmember != 0 && data.price_nonmember != null) {
+                        return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price_nonmember)
+                            }</div>`
+                        }
+                        return ""
+                    }
+                }, 
+                  {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                       if(data.price_nonmember != 0 && data.price_nonmember != null ){
+                         return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format((data.price_nonmember - data.Product.price_member)*2)
+                               }</div>`
+                       }
+                       return ""
+                    }
+                }, 
+                  {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                           if (data.price_member != 0 && data.price_member != null) {
+                                return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.pv)
+                                   }</div>`
+                           }
+                           return ""
+                    }
+                },
+                  {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                         if (data.price_member != 0 && data.price_member != null) {
+                            return`<div class="text-right" style="white-space:nowrap">5%</div>`
+                        }
+                        return ""
+                    }
+                },  
+                          {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.price_member != 0 && data.price_member != null) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format((data.Product.pv * data.quantity) * (5 / 100))
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },  
+            ],
+            "ordering": true, // Enable sorting
+            "order": [
+                [0, "desc"]
+            ]
+        });
+    
+        var title_name= 'product-user'
+        if (month!=null){
+           title_name += "_"+month
+        }
+        if (year!=null){
+            title_name += '/' + year
+        }
+        
+        $('#dataproductuser1').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "bPaginate": false,
+            "dom": 'B',
+            "buttons": [
+                {
+                    extend: 'excel',
+                    text: ' Export',
+                    title: title_name,
+                    filename: title_name,
+                    className:
+                        'bg-success border rounded fa fa-file-excel text-success py-2',
+                    footer: true,
+                     customize: function (xlsx) {
+                        var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                        $('row c', sheet).attr('s', '25'); // Adding border to all cells
+
+                        // Alternatively, you can add borders to specific cells using their coordinates
+                        // For example, adding a border to cell B2
+                        // $('row:nth-child(2) c[r^="B"]', sheet).attr('s', '25');
+                    }
+               
+                },
+                // {
+                //     extend: 'print',
+                //     text: ' print',
+                //     title: "data order class",
+                //     className:
+                //         'btn btn-secondary border rounded fa fa-print mb-4 py-2',
+                // },
+            ],
+            "ajax": {
+                "url": "/api/data-product-user", // Ganti dengan URL endpoint server Golang Anda
+                "type": "POST",
+                "data": function (d) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const month = urlParams.get('month');
+                    const year = urlParams.get('year');
+
+                    // Menetapkan nilai parameter ke dalam objek d untuk dikirim ke server
+                    d.month = month || d.month || '';
+                    d.year = year || d.year || '';
+                    d.start = d.start || 0;
+                    d.length = d.length || 10;
+                    d.draw = d.draw || 1;
+                    d.search = d.search || {};
+                    d.search.value = d.search.value || '';
+
+                    // Mengambil informasi pengurutan dari DataTable
+                    d.order = d.order || [];
+                    if (d.order.length > 0) {
+                        var orderColumnIdx = d.order[0].column;
+                        var orderDir = d.order[0].dir;
+                        d['order[0][column]'] = orderColumnIdx;
+                        d['order[0][dir]'] = orderDir;
+                    }
+                },
+                "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                    if (json.data) {
+                        console.log(json)
+                        return json.data;
+                    } else {
+                        return [];
+                    }
+                },
+                "error": function (xhr, error, thrown) {
+
+                    fetch('/logout', { method: 'GET' });
+                    window.location.href = "{{ .urllogout }}"
+
+                }
+            },
+                "aoColumns": [
+                {
+                    "data": null,
+                    "orderable": false,
+                    "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {
+                    "data": "User.name"
+                },
+                {
+                    "data": "Product.name"
+                },
+                   {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.quantity != 0 && data.quantity != null) {
+                                return `<div class="text-center" style="white-space:nowrap">${new Intl.NumberFormat().format(data.quantity)
+                                    }</div>`
+                            }
+                            return ""
+                        }
+                    }, 
+                {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.price_member != 0 && data.price_member != null) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price_member)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
+                {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
+                        if (data.price_nonmember != 0 && data.price_nonmember != null) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price_nonmember)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
+                {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.price_nonmember != 0 && data.price_nonmember != null) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price_nonmember - data.price_member)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
+                {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.price_member != 0 && data.price_member != null) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.pv)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
+                {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.price_member != 0 && data.price_member != null) {
+                            return `<div class="text-right" style="white-space:nowrap">5%</div>`
+                        }
+                        return ""
+                    }
+                },
+                {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.price_member != 0 && data.price_member != null) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.pv * (5 / 100))
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
+            ],
+            "ordering": true, // Enable sorting
+            "order": [
+                [0, "desc"]
+            ]
+        });
+
+
+        //
+
+    $('#dataproduct').DataTable({
+        "language": {
+            "search": "",
+            "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+        },
+        "initComplete": function () {
+            const searchInput = $('.dataTables_filter input');
+            searchInput.attr('placeholder', 'Search');
+        },
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "/api/data-product", // Ganti dengan URL endpoint server Golang Anda
+            "type": "POST",
+            "data": function (d) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const month = urlParams.get('month');
+                const year = urlParams.get('year');
+                document.getElementById('monthSelect').value = month || '';
+                document.getElementById('yearSelect').value = year || '';
+
+
+                // Menetapkan nilai parameter ke dalam objek d untuk dikirim ke server
+                d.month = month || d.month || '';
+                d.year = year || d.year || '';
+                d.start = d.start || 0;
+                d.length = d.length || 10;
+                d.draw = d.draw || 1;
+                d.search = d.search || {};
+                d.search.value = d.search.value || '';
+
+                // Mengambil informasi pengurutan dari DataTable
+                d.order = d.order || [];
+                if (d.order.length > 0) {
+                    var orderColumnIdx = d.order[0].column;
+                    var orderDir = d.order[0].dir;
+                    d['order[0][column]'] = orderColumnIdx;
+                    d['order[0][dir]'] = orderDir;
+                }
+            },
+            "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                if (json.data) {
+                    console.log(json)
+                    return json.data;
+                } else {
+                    return [];
+                }
+            },
+            // "error": function (xhr, error, thrown) {
+
+            //     fetch('/logout', { method: 'GET' });
+            //     window.location.href = "{{ .urllogout }}"
+
+            // }
+        },
+        "columns": [
+            {
+                "data": null,
+                "orderable": false,
+                "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            {
+                "data": null,
+                "orderable": false,
+                "render": function (data, type, row) { // Render HTML for the cell with added styles
+                    if (data.midtrans_payment_url == null) {
+                        return '<div style="white-space: nowrap;">' + '<a value="/product/edit?id=' + data.id+'" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Product" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-product?id=` + data.id +`" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
+                    </form>` + '</div>';
+                    }
+                    return null
+                }
+            },
+            {
+                "data": "name"
+            },
+        
+            {
+                "data": null,
+                "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                    if (data.stock != 0 && data.stock != null) {
+                        return `<div class="text-center" style="white-space:nowrap"> ${new Intl.NumberFormat().format(data.stock)
+                            }</div>`
+                    }
+                    return ""
+                }
+            },
+            {
+                "data": null,
+                "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
+                    if (data.pv != 0 && data.pv != null) {
+                        return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.pv)
+                            }</div>`
+                    }
+                    return ""
+                }
+            },
+            {
+                "data": null,
+                "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                    if (data.price_member != 0 && data.price_member != null) {
+                        return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price_member)
+                            }</div>`
+                    }
+                    return ""
+                }
+            },
+            {
+                "data": null,
+                "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                    if (data.price_nonmember != 0 && data.price_nonmember != null) {
+                        return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price_nonmember)
+                            }</div>`
+                    }
+                    return ""
+                }
+            },
+           
+        ],
+        "ordering": true, // Enable sorting
+        "order": [
+            [0, "desc"]
+        ]
+    });
+
+    var title_name= 'product'
+    if (month!=null){
+        title_name += "_"+month
+    }
+    if (year!=null){
+        title_name += '/' + year
+    }
+    $('#dataproduct1').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "bPaginate": false,
+            "dom": 'B',
+            "buttons": [
+                {
+                    extend: 'excel',
+                    text: ' Export',
+                    title: title_name,
+                    filename: title_name,
+                    className:
+                        'bg-success border rounded fa fa-file-excel text-success py-2',
+                },
+                // {
+                //     extend: 'print',
+                //     text: ' print',
+                //     title: "data order class",
+                //     className:
+                //         'btn btn-secondary border rounded fa fa-print mb-4 py-2',
+                // },
+            ],
+            "ajax": {
+                "url": "/api/data-product", // Ganti dengan URL endpoint server Golang Anda
+                "type": "POST",
+                "data": function (d) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const month = urlParams.get('month');
+                    const year = urlParams.get('year');
+
+                    // Menetapkan nilai parameter ke dalam objek d untuk dikirim ke server
+                    d.month = month || d.month || '';
+                    d.year = year || d.year || '';
+                    d.start = d.start || 0;
+                    d.length = d.length || 10;
+                    d.draw = d.draw || 1;
+                    d.search = d.search || {};
+                    d.search.value = d.search.value || '';
+
+                    // Mengambil informasi pengurutan dari DataTable
+                    d.order = d.order || [];
+                    if (d.order.length > 0) {
+                        var orderColumnIdx = d.order[0].column;
+                        var orderDir = d.order[0].dir;
+                        d['order[0][column]'] = orderColumnIdx;
+                        d['order[0][dir]'] = orderDir;
+                    }
+                },
+                "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                    if (json.data) {
+                        console.log(json)
+                        return json.data;
+                    } else {
+                        return [];
+                    }
+                },
+              
+            },
+            "aoColumns": [
+                    {
+                    "data": null,
+                    "orderable": false,
+                    "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {
+                    "data": "name"
+                },
+
+                {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.stock != 0 && data.stock != null) {
+                            return `<div class="text-center" style="white-space:nowrap"> ${new Intl.NumberFormat().format(data.stock)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
+                {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
+                        if (data.pv != 0 && data.pv != null) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.pv)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
+                {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.price_member != 0 && data.price_member != null) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price_member)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
+                {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.price_nonmember != 0 && data.price_nonmember != null) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price_nonmember)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
+                    
+            ],
+            "ordering": true, // Enable sorting
+            "order": [
+                [0, "desc"]
+            ]
+        });
+    //
+     $('#datauser').DataTable({
+            "language": {
+                "search": "",
+                "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+            },
+            "initComplete": function () {
+                const searchInput = $('.dataTables_filter input');
+                searchInput.attr('placeholder', 'Search');
+            },
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "/api/data-user", // Ganti dengan URL endpoint server Golang Anda
+                "type": "POST",
+                "data": function (d) {
+                    d.start = d.start || 0;
+                    d.length = d.length || 10;
+                    d.draw = d.draw || 1;
+                    d.search = d.search || {};
+                    d.search.value = d.search.value || '';
+
+                    // Mengambil informasi pengurutan dari DataTable
+                    d.order = d.order || [];
+                    if (d.order.length > 0) {
+                        var orderColumnIdx = d.order[0].column;
+                        var orderDir = d.order[0].dir;
+                        d['order[0][column]'] = orderColumnIdx;
+                        d['order[0][dir]'] = orderDir;
+                    }
+                },
+                "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                    if (json.data) {
+                        console.log(json)
+                        return json.data;
+                    } else {
+                        return [];
+                    }
+                },
+                // "error": function (xhr, error, thrown) {
+
+                //     fetch('/logout', { method: 'GET' });
+                //     window.location.href = "{{ .urllogout }}"
+
+                // }
+            },
+            "columns": [
+                {
+                    "data": null,
+                    "orderable": false,
+                    "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                 {
+                    "data": null,
+                    "orderable": false,
+                    "render": function (data, type, row) { // Render HTML for the cell with added styles
+                        if (data.midtrans_payment_url == null) {
+                            return '<div style="white-space: nowrap;">' + '<a value="/user/edit?id=' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit User" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-user?id=` + data.id + `" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
+                    </form>` + '</div>';
+                        }
+                        return null
+                    }
+                },
+                  {
+                    "data": "name"
+                },
+                {
+                    "data": "email"
+                },
+
+           
+            ],
+            "ordering": true, // Enable sorting
+            "order": [
+                [0, "desc"]
+            ]
+        });
+
+
+        //
+        $('#datareport').DataTable({
+            "language": {
+                "search": "",
+                "lengthMenu": '_MENU_ <span style="font-weight:400">entries per page</span>',
+            },
+            "initComplete": function () {
+                const searchInput = $('.dataTables_filter input');
+                searchInput.attr('placeholder', 'Search');
+            },
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "/api/data-report", // Ganti dengan URL endpoint server Golang Anda
+                "type": "POST",
+                "data": function (d) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const month = urlParams.get('month');
+                    const year = urlParams.get('year');
+                    document.getElementById('monthSelect').value = month || '';
+                    document.getElementById('yearSelect').value = year || '';
+
+
+                    // Menetapkan nilai parameter ke dalam objek d untuk dikirim ke server
+                    d.month = month || d.month || '';
+                    d.year = year || d.year || '';
+                    d.start = d.start || 0;
+                    d.length = d.length || 10;
+                    d.draw = d.draw || 1;
+                    d.search = d.search || {};
+                    d.search.value = d.search.value || '';
+
+                    // Mengambil informasi pengurutan dari DataTable
+                    d.order = d.order || [];
+                    if (d.order.length > 0) {
+                        var orderColumnIdx = d.order[0].column;
+                        var orderDir = d.order[0].dir;
+                        d['order[0][column]'] = orderColumnIdx;
+                        d['order[0][dir]'] = orderDir;
+                    }
+                },
+                "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                    if (json.data) {
+                        console.log(json)
+                        return json.data;
+                    } else {
+                        return [];
+                    }
+                },
+                // "error": function (xhr, error, thrown) {
+
+                //     fetch('/logout', { method: 'GET' });
+                //     window.location.href = "{{ .urllogout }}"
+
+                // }
+            },
+            "columns": [
+                {
+                    "data": null,
+                    "orderable": false,
+                    "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {
+                    "data": null,
+                    "orderable": false,
+                    "render": function (data, type, row) { // Render HTML for the cell with added styles
+                        if (data.midtrans_payment_url == null) {
+                            return '<div style="white-space: nowrap;">' + '<a value="/report/edit?id=' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Product" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-report?id=` + data.id + `" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
+                    </form>` + '</div>';
+                        }
+                        return null
+                    }
+                },
+                {
+                    "data": "name"
+                },
+
+                {
+                    "data": null,
+                    "render": function (data, type, row, meta) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        // console.log(meta.row)
+                        let j=""
+                        if (data.categori_id == 1) {
+                             j= "Pendapatan Usaha"
+                        }
+                         if (data.categori_id == 2) {
+                             j= "Beban Usaha"
+                        }
+                         if (data.categori_id == 3) {
+                              j= "Pendapatan di Luar Usaha"
+                        }
+                         if (data.categori_id == 4) {
+                             j= "Beban di Luar Usaha"
+                        }
+                        return `<div class="text-right" style="white-space:nowrap">`+j+`</div>`
+                    }
+                },
+                {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
+                        if (data.price != 0 && data.price != null) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
+            ],
+            "ordering": true, // Enable sorting
+            "order": [
+                [0, "desc"]
+            ]
+        });
+
+        var title_name = 'laporan laba-rugi'
+        if (month != null) {
+            title_name += "_" + month
+        }
+        if (year != null) {
+            title_name += '/' + year
+        }
+        $('#datareport1').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "bPaginate": false,
+            "dom": 'B',
+            "buttons": [
+                {
+                    extend: 'excel',
+                    text: ' Export',
+                    title: title_name,
+                    filename: title_name,
+                    className:
+                        'bg-success border rounded fa fa-file-excel text-success py-2',
+                      
+                },
+                // {
+                //     extend: 'print',
+                //     text: ' print',
+                //     title: "data order class",
+                //     className:
+                //         'btn btn-secondary border rounded fa fa-print mb-4 py-2',
+                // },
+            ],
+            "ajax": {
+                "url": "/api/data-report1", // Ganti dengan URL endpoint server Golang Anda
+                "type": "POST",
+                "data": function (d) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const month = urlParams.get('month');
+                    const year = urlParams.get('year');
+
+                    // Menetapkan nilai parameter ke dalam objek d untuk dikirim ke server
+                    d.month = month || d.month || '';
+                    d.year = year || d.year || '';
+                    d.start = d.start || 0;
+                    d.length = d.length || 10;
+                    d.draw = d.draw || 1;
+                    d.search = d.search || {};
+                    d.search.value = d.search.value || '';
+
+                    // Mengambil informasi pengurutan dari DataTable
+                    d.order = d.order || [];
+                    if (d.order.length > 0) {
+                        var orderColumnIdx = d.order[0].column;
+                        var orderDir = d.order[0].dir;
+                        d['order[0][column]'] = orderColumnIdx;
+                        d['order[0][dir]'] = orderDir;
+                    }
+                },
+                "dataSrc": function (json) { // Mendapatkan data dari JSON response yang diterima dari server Golang
+                    if (json.data) {
+                        console.log(json)
+                        return json.data;
+                    } else {
+                        return [];
+                    }
+                },
+
+            },
+            "aoColumns": [
+                {
+                    "data": null,
+                     render: function (data, type, row, meta) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        // console.log(meta.row)
+                        if (data.categori_id==5 || data.categori_id == 6){
+                            return "<b>"+data.name+"</b>"
+                        }
+                        return `<div class="text-right" >`+ data.name +`</div>`
+                    }
+                },
+                 {
+                    "data": null,
+                    render: function (data, type, row, meta) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        // console.log(meta.row)
+                      return ""
+                    }
+                },
+
+                {
+                    "data": null,
+                    "render": function (data, type, row, meta) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        // console.log(meta.row)
+                          if (data.categori_id != 5 && data.categori_id != 6 && data.categori_id != 1) {
+                              return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price)
+                                  }</div>`
+                          }
+                           return ``
+                    }
+                },
+                 {
+                    "data": null,
+                    render: function (data, type, row, meta) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        // console.log(meta.row)
+                        return ""
+                    }
+                },
+
+                {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
+                        if (data.categori_id == 5 || data.categori_id == 1) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
+                  {
+                    "data": null,
+                    render: function (data, type, row, meta) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        // console.log(meta.row)
+                        return ""
+                    }
+                },
+
+            ],
+          
+        });
+
+
+        //====================================================================
+
+        window.onload = function () { // Lakukan permintaan ke server untuk menghapus sesi saat halaman dimuat ulang
+            fetch('/api/clear-session-info', { method: 'GET' });
+        }
+
+        //update
+
+        $(function () {
+            $(document).on('click', '.showModalButton', function () {
+                $('#modal-universe .modal-dialog').addClass($(this).attr('size'));
+                $('#modal-universe').find('#modalContent').html('');
+                $('#modal-universe').find('#modalContent').html("<div id='modalContent'><div style='text-align:center'><img src='/media/loader.gif'></div></div>");
+                $('#modal-universe-label').html($(this).attr('title'));
+
+                // if ($('#modal-universe').data('bs.modal')?._isShown == false) {
+                $('#modal-universe').modal('show')
+                //  }
+                function addModal() {
+
+                    var userPackageSelect = $('#userPackage');
+                    var userBundleSelect = $('#userBundle');
+
+                    // Tambahkan event listener untuk pemilihan elemen di userPackageSelect
+                    userPackageSelect.on('change', async function () { // Jika elemen dipilih, periksa apakah ada nilai yang dipilih
+                        if ($(this).val()) {
+                            let resp = await fetch('/api/price?package_id=' + $(this).val(), { method: 'GET' });
+                            if (resp.ok) {
+                                let data = await resp.json(); // Parsing response as JSON
+                                $('#inputPrice').val(data.packagePrice) // Data returned from the API
+                            } else {
+                                console.log('Error in fetching data');
+                            }
+                            // Jika ada nilai yang dipilih, nonActivekan userBundleSelect
+                            userBundleSelect.prop('disabled', true);
+                        } else {
+                            $('#inputPrice').val('')
+                            // Jika tidak ada nilai yang dipilih, Activekan kembali userBundleSelect
+                            userBundleSelect.prop('disabled', false);
+                        }
+                    });
+
+                    // Tambahkan event listener untuk pemilihan elemen di userBundleSelect
+                    userBundleSelect.on('change', async function () { // Jika elemen dipilih, periksa apakah ada nilai yang dipilih
+                        if ($(this).val()) { // Jika ada nilai yang dipilih, nonActivekan userPackageSelect
+                            let resp = await fetch('/api/price?bundle_id=' + $(this).val(), { method: 'GET' });
+                            if (resp.ok) {
+                                let data = await resp.json(); // Parsing response as JSON
+                                $('#inputPrice').val(data.bundlePrice) // Data returned from the API
+                            } else {
+                                console.log('Error in fetching data');
+                            } userPackageSelect.prop('disabled', true);
+                        } else { // Jika tidak ada nilai yang dipilih, Activekan kembali userPackageSelect
+                            $('#inputPrice').val('')
+                            userPackageSelect.prop('disabled', false);
+                        }
+                    });
+
+                    // $('.select2').select2({});
+
+                    // ======
+                    // async function dd() {
+                    //     let resp = await fetch('/api/user/{{ .UserID }}', {
+                    //         method: 'GET',
+                    //         headers: {
+                    //             "Authorization": "Bearer {{ .JWTToken }}"
+                    //         }
+                    //     });
+                    //     if (resp.ok) {
+                    //         let data = await resp.json();
+                    //         // Parsing response as JSON
+                    //         // console.log(data.data.user[0].text)
+                    //         $("#userSelect").append(new Option(data.data.user.email, "{{ .UserID }}"));
+                    //     } else {
+                    //         console.log('Error in fetching data');
+                    //     }
+                    // }
+                    // if ("{{ .UserID }}" != "" && "{{ .UserID }}" != null) {
+                    //     // dd()
+                    //     $("#userSelect").append(new Option("{{ .email }}", "{{ .UserID }}"));
+                    // }
+                    // if ("{{ .PackageName }}" !== "" && "{{ .PackageName }}" !== null) {
+                    //     $("#userPackage").append(new Option("{{ .PackageName }}", "{{ .PackageID }}"));
+                    //     $("#userPackageBundle").append(new Option("{{ .PackageName }}", "{{ .PackageID }}"));
+                    //     userBundleSelect.prop('disabled', true);
+                    // }
+
+                    // if ("{{ .BundleName }}" !== "" && "{{ .BundleName }}" !== null) {
+                    //     $("#userBundle").append(new Option("{{ .BundleName }}", "{{ .BundleID }}"));
+                    //     userPackageSelect.prop('disabled', true);
+                    // }
+
+                    // if ("{{ .TutorName }}" !== "" && "{{ .TutorName }}" !== null) {
+                    //     $("#tutorSelect").append(new Option("{{ .TutorName }}", "{{ .TutorID }}"));
+                    //     // userPackageSelect.prop('disabled', true);
+                    // }
+                    // if ("{{ .MaterialName }}" !== "" && "{{ .MaterialName }}" !== null) {
+                    //     $("#materialSelect").append(new Option("{{ .MaterialName }}", "{{ .MaterialID }}"));
+                    //     // userPackageSelect.prop('disabled', true);
+                    // }
+
+                    // =====
+                    $("#materialSelect").select2({
+                        placeholder: "Search for a material ...",
+                        allowClear: true,
+                        dropdownParent: $("#modal-universe"),
+                        ajax: {
+                            url: "/api/data-material-select",
+                            dataType: "json",
+                            type: "GET",
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    q: params.term || ""
+                                };
+                            },
+                            processResults: function (data) {
+                                return { results: data.data };
+                            },
+                            cache: true
+                        }
+                    });
+
+                    $("#versionSelect").select2({
+                        placeholder: "Search for a version...",
+                        allowClear: false,
+                        dropdownParent: $("#modal-universe"),
+                        ajax: {
+                            url: "/api/data-version-select",
+                            dataType: "json",
+                            type: "GET",
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    q: params.term || ""
+                                };
+                            },
+                            processResults: function (data) {
+                                return { results: data.data };
+                            },
+                            cache: true
+                        }
+                    });
+
+                    
+                    $("#productSelect").select2({
+                        placeholder: "Search for a product...",
+                        allowClear: true,
+                        dropdownParent: $("#modal-universe"),
+                        ajax: {
+                            url: "/api/data-product-select",
+                            dataType: "json",
+                            type: "GET",
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    q: params.term || ""
+                                };
+                            },
+                            processResults: function (data) {
+                                return { results: data.data };
+                            },
+                            cache: true
+                        }
+                    });
+
+                    $("#tutorSelect").select2({
+                        placeholder: "Search for a tutor...",
+                        minimumInputLength: 3,
+                        allowClear: true,
+                        dropdownParent: $("#modal-universe"),
+                        ajax: {
+                            url: "/api/data-tutor-select",
+                            dataType: "json",
+                            type: "GET",
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    q: params.term || ""
+                                };
+                            },
+                            processResults: function (data) {
+                                return { results: data.data };
+                            },
+                            cache: true
+                        }
+                    });
+
+
+                    $("#userSelect").select2({
+                        placeholder: "Search for a user...",
+                        minimumInputLength: 3,
+                        allowClear: true,
+                        dropdownParent: $("#modal-universe"),
+                        ajax: {
+                            url: "/api/users",
+                            dataType: "json",
+                            type: "GET",
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    q: params.term || ""
+                                };
+                            },
+                            beforeSend: function (xhr) { // Ganti 'YOUR_JWT_TOKEN' dengan token JWT yang valid
+                                xhr.setRequestHeader("Authorization", "Bearer {{ .JWTToken }}");
+                            },
+                            processResults: function (data) {
+                                console.log(data)
+                                return { results: data.data.user };
+                            },
+                            cache: true
+                        }
+                    });
+
+                    $("#userPackage").select2({
+                        placeholder: "Search for a package...",
+                        minimumInputLength: 3,
+                        allowClear: true,
+                        dropdownParent: $("#modal-universe"),
+                        ajax: {
+                            url: "/api/data-package-select",
+                            dataType: "json",
+                            type: "GET",
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    q: params.term || ""
+                                };
+                            },
+                            beforeSend: function (xhr) { // Ganti 'YOUR_JWT_TOKEN' dengan token JWT yang valid
+                                var jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkJpbnRhbmdAZ21haWwuY29tIiwiZXZlbnRfaXNfb3JnYW5pemVyIjoxLCJleHBpcmVkX2F0IjoxNjkzMjk0NDAxLCJ1c2VyX2lkIjoxNjkwODgsInVzZXJuYW1lIjoidXNlci1iOTViMzRkNC01MzFiLTQzZDctODZkNi1mMzcwNjI1MmVmNGEifQ.cMj0antqQweiDogWlkj8Rmykg-_cU9DVLvD2Y4rq7wU';
+
+                                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+                            },
+                            processResults: function (data) {
+                                return { results: data.data };
+                            },
+                            cache: true
+                        }
+                    });
+
+                    $("#userPackageBundle").select2({
+                        placeholder: "Search for a package...",
+                        minimumInputLength: 3,
+                        allowClear: true,
+                        dropdownParent: $("#modal-universe"),
+                        ajax: {
+                            url: "/api/data-package-select-bundle",
+                            dataType: "json",
+                            type: "GET",
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    q: params.term || ""
+                                };
+                            },
+                            beforeSend: function (xhr) { // Ganti 'YOUR_JWT_TOKEN' dengan token JWT yang valid
+                                var jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkJpbnRhbmdAZ21haWwuY29tIiwiZXZlbnRfaXNfb3JnYW5pemVyIjoxLCJleHBpcmVkX2F0IjoxNjkzMjk0NDAxLCJ1c2VyX2lkIjoxNjkwODgsInVzZXJuYW1lIjoidXNlci1iOTViMzRkNC01MzFiLTQzZDctODZkNi1mMzcwNjI1MmVmNGEifQ.cMj0antqQweiDogWlkj8Rmykg-_cU9DVLvD2Y4rq7wU';
+
+                                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+                            },
+                            processResults: function (data) {
+                                return { results: data.data };
+                            },
+                            cache: true
+                        }
+                    });
+
+                    $("#userBundle").select2({
+                        placeholder: "Search for a bundle...",
+                        minimumInputLength: 3,
+                        allowClear: true,
+                        dropdownParent: $("#modal-universe"),
+                        ajax: {
+                            url: "/api/data-bundle-select",
+                            dataType: "json",
+                            type: "GET",
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    q: params.term || ""
+                                };
+                            },
+                            beforeSend: function (xhr) { // Ganti 'YOUR_JWT_TOKEN' dengan token JWT yang valid
+                                var jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkJpbnRhbmdAZ21haWwuY29tIiwiZXZlbnRfaXNfb3JnYW5pemVyIjoxLCJleHBpcmVkX2F0IjoxNjkzMjk0NDAxLCJ1c2VyX2lkIjoxNjkwODgsInVzZXJuYW1lIjoidXNlci1iOTViMzRkNC01MzFiLTQzZDctODZkNi1mMzcwNjI1MmVmNGEifQ.cMj0antqQweiDogWlkj8Rmykg-_cU9DVLvD2Y4rq7wU';
+
+                                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+                            },
+                            processResults: function (data) {
+                                return { results: data.data };
+                            },
+                            cache: true
+                        }
+                    });
+
+                }
+
+                $('#modal-universe').find('#modalContent')
+                    .load($(this).attr('value'), function (response, status, xhr) {
+                        if (status == "error") {
+                            $('#modal-universe .modal-dialog').addClass('modal-xl');
+                            var msg = 'An error was encountered while processing your request. ';
+                            if (xhr.status == 403) msg = 'Anda tidak diizinkan untuk mengakses fitur ini. ';
+                            $('#modalContent').html('<div class="alert bg-light pb-0"><div class="mt-2 mb-6 alert alert-custom alert-light-danger border-light-danger"><big><b class="alert-text">' + xhr.status + '</b> ' + xhr.statusText + '</big> <br><span class="text-muted">' + msg + '</span></div><div class="p-2">'
+                                + response +
+                                '</div></div>'
+                                + '<div><button type="button" class="btn btn-secondary float-right" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</button></div>' +
+                                '');
+                        } else {
+                            addModal();
+                        }
+                    }
+                    );
+            });
+        });
+    </script>
+</body>
+
+</html>

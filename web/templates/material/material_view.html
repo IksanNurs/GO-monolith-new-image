@@ -1,0 +1,110 @@
+{{ define "content" }}
+<div class="row ">
+    <div class="col-12">
+        <ol class="breadcrumb mb-0 p-0 pb-1" style="background-color: transparent;">
+            <li class="breadcrumb-item">
+                <a href="/dashboard" style="color:black">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="/material" style="color:black">Material</a>
+            </li>
+
+        </ol>
+    </div>
+    <div class="mb-1 col-12">
+        <h2>{{ .Data.Name }}</h2>
+    </div>
+</div>
+
+<a value="/material/edit/{{ .Data.ID }}" class="btn btn-warning text-white mb-4 showModalButton" title="Edit Material"
+    size="modal-lg">
+    <i class="fa fa-pen"></i>
+    Edit</a> &nbsp;
+<form action="/api/delete-material/{{ .Data.ID }}" method="POST" class="d-inline">
+    <button type="submit" class="btn btn-danger text-white mb-4"
+        onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')">
+        <i class="fa fa-trash"></i>
+        Delete
+    </button>
+</form>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-borderless table-striped mb-0" style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <th width="140px">ID</th>
+                        <td>{{ .Data.ID }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Nama</th>
+                        <td>{{ .Data.Name }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Description</th>
+                        <td>{{ call .ReplaceNewlinesWithBr .Data.Description }}</td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Is Active</th>
+                        <td>
+                            {{ if eq .Data.IsActive 0 }}Inactive
+                            {{ end }}
+                            {{ if eq .Data.IsActive 1 }}Active
+                            {{ end }}
+                            <small class="form-text text-muted">active: bisa ditambahkan ke kelas<br />
+                                inactive: tidak bisa ditambahkan ke kelas</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="140px">Class</th>
+                        <td>
+                                {{range $i, $e := .DataBundle }}
+                                <li>{{ .Bundle.Name }}</li>
+                                {{ end }}
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <div class="card-title w-100 d-flex justify-content-between align-items-center mb-0">
+            <div>
+                <h5>Material Content</h5>
+            </div>
+            <div>
+                <a value="/material-content/new/{{ .Data.ID }}" class="btn btn-primary showModalButton" title="Tambah Material Content"
+    size="modal-lg">
+                    <i class="fa fa-plus"></i>
+                    Tambah</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table mb-0" id="datamaterialcontent" style="width:100%">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="min-width: 1px; white-space: nowrap;">#</th>
+                        <th style="min-width: 1px; white-space: nowrap;"></th>
+                        <th style="width: 1px; white-space: nowrap;">ID</th>
+                        <th>Name</th>
+                        <th style="width: 1px; white-space: nowrap;">Type</th>
+                        <th style="width: 1px; white-space: nowrap;">Group</th>
+                        <!-- <th>Content</th> -->
+                        <th>Content</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Seq</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{{ end }}

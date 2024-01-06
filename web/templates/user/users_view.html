@@ -1,0 +1,88 @@
+{{ define "content" }}
+<h2 class="mb-4">Data User ID {{ .oldUser.ID }}</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+         <table class="table" style="width: 100%;"> 
+            <tbody>
+            <tr>
+             <th width="140px">Nama</th>
+             <td >{{ .oldUser.Name.String }}</td>
+            </tr>
+            <tr>
+             <th width="140px">Phone</th>
+             <td>{{ .oldUser.Phone.String }}</td>
+            </tr>
+            <tr>
+             <th width="140px">Email</th>
+             <td>{{ .oldUser.Email }}</td>
+            </tr>
+             <tr>
+             <th width="140px">Username</th>
+             <td>{{ .oldUser.Username }}</td>
+            </tr>
+             <tr>
+             <th width="140px">Nickname</th>
+             <td>{{ .oldUser.Nickname.String }}</td>
+            </tr>
+            <tr>
+             <th width="140px">Tempat lahir</th>
+             <td>{{ .oldUser.Birthplace.String }}</td>
+            </tr>
+               <tr>
+             <th width="140px">Tanggal lahir</th>
+             <td>{{ .oldUser.Birthdate.String }}</td>
+            </tr>
+               <tr>
+             <th width="140px">Jenis kelamin</th>
+             <td>{{ .oldUser.Sex.Int64  }}</td>
+            </tr>
+               <tr>
+             <th width="140px">Province</th>
+             <td>{{ .oldUser.AddressProvinceID.Int64  }}</td>
+            </tr>
+               <tr>
+             <th width="140px">Kabupaten</th>
+             <td>{{ .oldUser.AddressDistrictID.Int64  }}</td>
+            </tr>
+               <tr>
+             <th width="140px">Kecamatan</th>
+             <td>{{ .oldUser.AddressSubdistrictID.Int64  }}</td>
+            </tr>
+               <tr>
+             <th width="140px">Lurah/Desa</th>
+             <td>{{ .oldUser.AddressVillageID.Int64  }}</td>
+            </tr>
+                <tr>
+             <th width="140px">Jalan</th>
+             <td>{{ .oldUser.AddressStreet.String  }}</td>
+            </tr>
+              <tr>
+             <th width="140px">Tingkat pendidikan</th>
+             <td>{{ .oldUser.EducationLevel.Int64  }}</td>
+            </tr>
+              <tr>
+             <th width="140px">Institusi</th>
+             <td>{{ .oldUser.EducationInstitutionID.Int64  }}</td>
+            </tr>
+    
+            <!-- <div class="row mb-4">
+            <div div class = "col-2" >Email</div>
+             <div class = "col-10" >{{ .oldUser.Email }}</div>
+            </div>
+              <div class="row mb-4">
+            <div div class = "col-2" >Username</div>
+             <div class = "col-10" >{{ .old.Username.String }}</div>
+            </div> -->
+            </tbody>
+        </table>
+        </div>
+              <div>
+                <a href="/admin/users" class="btn btn-primary">Kembali</a>
+            </div>
+    </div>
+</div>
+
+
+{{ end }}

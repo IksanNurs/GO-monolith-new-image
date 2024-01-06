@@ -1,0 +1,37 @@
+@media (max-width: 575.98px) {
+  .card-center {
+    max-width: 100%; /* mengubah maksimum lebar card */
+    padding: 0 10px; /* menambah padding kiri dan kanan */
+  }
+}
+
+/* media query untuk layar kecil (sm) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .card-center {
+    max-width: 100%; /* mengubah maksimum lebar card */
+    padding: 0 15px; /* menambah padding kiri dan kanan */
+  }
+}
+
+/* media query untuk layar sedang (md) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .card-center {
+    max-width: 100%; /* mengubah maksimum lebar card */
+    padding: 0 20px; /* menambah padding kiri dan kanan */
+  }
+}
+
+@media (min-width: 992px) {
+ .card-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 500px; /* maksimum lebar card */
+}
+}
+
+.invalid-feedback {
+    position: absolute;
+}

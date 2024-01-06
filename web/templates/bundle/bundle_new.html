@@ -1,0 +1,74 @@
+<!-- <div class="row ">
+    <div class="col-12">
+        <ol class="breadcrumb mb-0 p-0 pb-1" style="background-color: transparent;">
+            <li class="breadcrumb-item">
+                <a href="/dashboard" style="color:black">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="/bundle" style="color:black">Kelas</a>
+            </li>
+        </ol>
+    </div>
+    <div class="mb-1 col-12">
+        <h2>Form Tambah Kelas</h2>
+    </div>
+</div> -->
+
+
+{{ if .Error }}
+<div class="alert alert-danger">
+    {{ .Error }}
+</div>
+{{ end }}
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form action="/api/create-bundle" method="POST">
+            <div class="form-group">
+                <label for="name">Nama</label>
+                <input type="text" name="name" placeholder="Masukkan nama" required="required" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea name="description" rows="4" placeholder="Masukkan description"
+                    class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" name="price" placeholder="Masukkan price" required="required" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="type">Tipe</label>
+                <select name="type" required="required" class="form-control">
+                    <option value="" selected="selected">Pilih</option>
+                    <option value="1">Kelas Intensif</option>
+                    <option value="2">Belajar Mandiri</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="is_public">Is Public</label>
+                <select name="is_public" required="required" class="form-control">
+                    <option value="" selected="selected">Pilih</option>
+                    <option value="1">Public</option>
+                    <option value="0">Private</option>
+                </select>
+                <small class="form-text text-muted">public: tampil di website dan dapat dibeli user secara mandiri via
+                    midtrans<br />
+                    private: tidak tampil di website dan hanya dapat dibeli via marketing/admin</small>
+            </div>
+            <div class="form-group">
+                <label for="is_active">Is Active</label>
+                <select name="is_active" required="required" class="form-control">
+                    <option value="" selected="selected">Pilih</option>
+                    <option value="1">Active</option>
+                    <option value="0">Inactive</option>
+                </select>
+                <small class="form-text text-muted">active: Dapat melihat pembahasan package soal dalam class<br />
+                    inactive: tidak dapat melihat pembahasan package soal dalam class</small>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>

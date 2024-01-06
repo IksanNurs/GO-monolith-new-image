@@ -1,0 +1,31 @@
+{{ define "content" }}
+    <h2 class="mb-4">User</h2>
+
+    {{ if .Error }}
+    <div class="alert alert-danger">
+        {{ .Error }}
+    </div>
+    {{ end }}
+
+    <a value="/user/new" class=" btn btn-primary mb-3 showModalButton" title="Tambah User"
+                    size="modal-lg">
+            <i class="fa fa-plus"></i>
+            Tambah</a>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                 <table class="table mb-0" id="datauser" style="width:100%">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="min-width: 1px; white-space: nowrap;">No</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Action</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+            </table>
+            </div>
+        </div>
+    </div>
+{{ end }}

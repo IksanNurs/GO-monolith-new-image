@@ -1,0 +1,52 @@
+{{ define "content" }}
+<h2 class="mb-4">Package</h2>
+
+<a value="/package/new" class="btn btn-primary mb-3 showModalButton" title="Tambah Package" size="modal-lg">
+    <i class="fa fa-plus"></i>
+    Tambah</a> &nbsp;
+<a href="#" class=" btn btn-light mb-3 bg-white">
+    Independent: {{ .totalIndependent }}</a>
+
+{{ if .Error }}
+<div class="alert alert-danger">
+    {{ .Error }}
+</div>
+{{ end }}
+
+{{ if .success }}
+<div class="alert alert-success">
+    {{ .success }}
+</div>
+{{ end }}
+
+{{ if .Info }}
+<div class="alert alert-info">
+    {{ .Info }}
+</div>
+{{ end }}
+
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table mb-0" id="datapackage" style="width:100%">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="min-width: 1px; white-space: nowrap;">#</th>
+                        <th style="min-width: 1px; white-space: nowrap;"></th>
+                        <th style="min-width: 1px; white-space: nowrap;">ID</th>
+                        <th>Name</th>
+                        <th style="min-width: 1px; white-space: nowrap;"><i class="fa fa-info-circle"></i></th>
+                        <th style="min-width: 1px; white-space: nowrap;" class="text-right">Duration</th>
+                        <th style="min-width: 1px; white-space: nowrap;" class="text-right">Price</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Scoring</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Dependency</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Is Active</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{ end }}
