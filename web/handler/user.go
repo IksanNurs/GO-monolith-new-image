@@ -96,7 +96,7 @@ func ActionGetAllUserCPNS(c *gin.Context, db *gorm.DB) {
 	var User []model.UserSelect
 	params := c.Query("q")
 	err := db.
-		Where("email like ?", "%"+params+"%").
+		Where("name like ?", "%"+params+"%").
 		Order("id desc").
 		Limit(20).
 		Find(&User).Error

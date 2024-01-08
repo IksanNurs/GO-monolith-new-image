@@ -14,6 +14,8 @@ type Product struct {
 	PriceMember    int32  `gorm:"column:price_member;type:int(11);not null" json:"price_member"`
 	Pv             int32  `gorm:"column:pv;type:int(11);not null" json:"pv"`
 	Stock          int32  `gorm:"column:stock;type:int(11);not null" json:"stock"`
+	CreatedAt int32 `gorm:"column:created_at;type:int(11);" json:"created_at"`
+	CreatedAt_t string `gorm:"column:created_at;type:int(11);" json:"created_at_t"`
 }
 
 

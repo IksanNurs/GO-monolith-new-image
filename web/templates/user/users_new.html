@@ -8,14 +8,45 @@
     <div class="card-body">
         <form action="/api/create-user" method="POST">
             <div class="form-group">
+                <label for="id">ID/No.Member</label>
+                <input type="number" name="id" placeholder="Masukkan id" required class="form-control">
+            </div>
+            <div class="form-group">
                 <label for="username">Nama</label>
-                <input type="text" name="name" placeholder="Masukkan nama" required class="form-control"
-                    value="{{ .Name }}">
+                <input type="text" name="name" placeholder="Masukkan nama" required class="form-control">
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" name="email" placeholder="Masukkan email" required="required" class="form-control" value="{{ .Email }}">
+                <input type="email" name="email" placeholder="Masukkan email" required="required" class="form-control">
             </div>
+            <div class="form-group">
+                <label for="phone">No HP/WA</label>
+                <input type="text" name="phone" placeholder="Masukkan no HP/WA" required="required"
+                    class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="state">Negara</label>
+                <input type="text" name="state" placeholder="Masukkan no negara" required="required"
+                    class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="alamat">Alamat</label>
+                <input type="text" name="alamat" placeholder="Masukkan alamat" required="required"
+                    class="form-control">
+            </div>
+             <div class="form-group">
+                <label for="join_date">Tanggal Bergabung</label>
+                <input type="text" name="join_date" placeholder="Masukkan tanggal bergabung" required="required"
+                    class="form-control">
+            </div>
+                <div class="form-group">
+                    <label for="categori_user">Kategori</label>
+                    <select name="categori_user" required="required" class="form-control">
+                        <option value="" selected="selected">Pilih</option>
+                        <option value="2">Member</option>
+                        <option value="3">Non Member</option>
+                    </select>
+                </div>
             <div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>

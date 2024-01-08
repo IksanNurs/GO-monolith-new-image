@@ -1,5 +1,5 @@
 {{ define "content" }}
-<h2 class="mb-4">Product User</h2>
+<h2 class="mb-4">Penjualan</h2>
 
 {{ if .Error }}
 <div class="alert alert-danger">
@@ -20,13 +20,15 @@
                                 <th style="min-width: 1px; white-space: nowrap;">#</th>
                                 <th>User</th>
                                 <th>Product</th>
-                                <th class="text-center" style="min-width: 1px; white-space: nowrap;">Banyak Product</th>
+                                <th class="text-center" style="min-width: 1px; white-space: nowrap;">Stok keluar</th>
+                                <th class="text-center" style="min-width: 1px; white-space: nowrap;">Sisa Stok</th>
                                 <th class="text-right" style="min-width: 1px; white-space: nowrap;">Harga Member</th>
                                 <th class="text-right" style="min-width: 1px; white-space: nowrap;">Harga Non Member</th>
                                 <th style="min-width: 1px; white-space: nowrap;">Selisih Harga</th>
                                 <th style="min-width: 1px; white-space: nowrap;">PV</th>
                                 <th style="min-width: 1px; white-space: nowrap;">Bonus 5%</th>
                                 <th style="min-width: 1px; white-space: nowrap;">Hasil</th>
+                                <th style="min-width: 1px; white-space: nowrap;">Tanggal</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -42,6 +44,42 @@
             </div>
             <div class="d-flex flex-column flex-sm-row">
             <form id="filterForm" class="d-flex flex-column flex-sm-row">
+                <div class="mr-3">
+                    <select id="daySelect" name="day" class="form-control">
+                        <option value="" selected="selected">All Day</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                        <option value="25">25</option>
+                        <option value="26">26</option>
+                        <option value="27">27</option>
+                        <option value="28">28</option>
+                        <option value="29">29</option>
+                        <option value="30">30</option>
+                        <option value="31">31</option>
+                    </select>
+                </div>
                 <div class="mr-3">
                     <select id="monthSelect" name="month"  class="form-control">
                         <option value="" selected="selected">All Month</option>
@@ -67,7 +105,7 @@
                         <option value="2022">2022</option>
                     </select>
                 </div>
-                <div class="mr-5">
+                <div class="mr-3">
                     <button type="submit" class="btn btn-secondary mb-3">Apply</button>
                 </div>
             </form>
@@ -86,16 +124,22 @@
                         <th style="min-width: 1px; white-space: nowrap;"></th>
                         <th>User</th>
                         <th>Product</th>
-                        <th class="text-center" style="min-width: 1px; white-space: nowrap;">Banyak Product</th>
+                        <th class="text-center" style="min-width: 1px; white-space: nowrap;">Stok Keluar</th>
+                        <th class="text-center" style="min-width: 1px; white-space: nowrap;">Sisa Stok</th>
                         <th class="text-right" style="min-width: 1px; white-space: nowrap;">Harga Member</th>
                         <th class="text-right" style="min-width: 1px; white-space: nowrap;">Harga Non Member</th>
                         <th style="min-width: 1px; white-space: nowrap;">Selisih Harga</th>
                         <th style="min-width: 1px; white-space: nowrap;">PV</th>
                         <th style="min-width: 1px; white-space: nowrap;">Bonus 5%</th>
                         <th style="min-width: 1px; white-space: nowrap;">Hasil</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Tanggal</th>
                     </tr>
                 </thead>
             </table>
+        </div>
+        <div class="mr-1">
+            <div>Total Penjualan Member : Rp {{ .totmember }}</div>
+            <div>Total Penjualan Non Member: Rp {{ .totnonmember }}</div>
         </div>
     </div>
 </div>
@@ -105,11 +149,12 @@
 
         var month = document.getElementById('monthSelect').value;
         var year = document.getElementById('yearSelect').value;
+        var day = document.getElementById('daySelect').value;
 
         // Membuat URL dengan parameter berdasarkan bulan dan tahun yang dipilih
         var url = '/product-user';
 
-        if (month !== '') {
+          if (month !== '') {
             url += '?month=' + encodeURIComponent(month);
         }
 
@@ -118,6 +163,14 @@
                 url += '&year=' + encodeURIComponent(year);
             } else {
                 url += '?year=' + encodeURIComponent(year);
+            }
+        }
+
+        if (day !== '') {
+            if (url.includes('?')) {
+                url += '&day=' + encodeURIComponent(day);
+            } else {
+                url += '?day=' + encodeURIComponent(day);
             }
         }
 

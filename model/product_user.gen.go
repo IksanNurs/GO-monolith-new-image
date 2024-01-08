@@ -15,6 +15,8 @@ type ProductUser struct {
 	Quantity    int32 `gorm:"column:quantity;type:int(11);not null" json:"quantity"`
 	CategoriPrice int32  `gorm:"column:categori_price;type:int(11);not null" json:"categori_price"`
 	Product   Product  `gorm:"foreignkey:ProductID" json:"Product"`
+	CreatedAt int32 `gorm:"column:created_at;type:int(11);" json:"created_at"`
+	CreatedAt_t string `gorm:"column:created_at;type:int(11);" json:"created_at_t"`
 }
 
 type InputProductUser struct {

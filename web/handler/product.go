@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -93,6 +94,7 @@ func IndexProduct(c *gin.Context) {
 
 func GetDataProduct(c *gin.Context, db *gorm.DB) {
 	month, _ := strconv.Atoi(c.PostForm("month"))
+	day, _ := strconv.Atoi(c.PostForm("day"))
 	year, _ := strconv.Atoi(c.PostForm("year"))
 	page, _ := strconv.Atoi(c.PostForm("start"))
 	pageSize, _ := strconv.Atoi(c.PostForm("length"))
@@ -110,18 +112,23 @@ func GetDataProduct(c *gin.Context, db *gorm.DB) {
 		Limit(pageSize).Offset(page).
 		Order(orderColumn + " " + orderDir).
 		Find(&productusers)
-	if month != 0 && year != 0 {
-		query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year).
+	if day != 0 && month != 0 && year != 0 {
+		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+	} else if day != 0 && month != 0 {
+		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
 			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
-	} else {
-		if month != 0 {
-			query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
-		}
-		if year != 0 {
-			query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
-		}
+	} else if month != 0 && year != 0 {
+		query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+	} else if day != 0 {
+		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
+	} else if month != 0 {
+		query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+	} else if year != 0 {
+		query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
 	}
-
 	query.Count(&totalRecords).
 		Limit(pageSize).Offset(page).
 		Order(orderColumn + " " + orderDir).
@@ -130,6 +137,20 @@ func GetDataProduct(c *gin.Context, db *gorm.DB) {
 	if query.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": query.Error.Error()})
 		return
+	}
+
+	for i := range productusers {
+		jakartaLocation, err1 := time.LoadLocation("Asia/Jakarta")
+		if err1 != nil {
+			// Handle error jika gagal memuat zona waktu
+			c.JSON(http.StatusInternalServerError, gin.H{"error": query.Error.Error()})
+			return
+		}
+		if productusers[i].CreatedAt != 0 {
+			date := time.Unix(int64(productusers[i].CreatedAt), 0)
+			date = date.In(jakartaLocation)
+			productusers[i].CreatedAt_t = date.Format("2006-01-02 15:04")
+		}
 	}
 
 	numPages := int(math.Ceil(float64(totalRecords) / float64(pageSize)))

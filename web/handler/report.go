@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -93,6 +94,7 @@ func IndexReport(c *gin.Context) {
 
 func GetDataReport(c *gin.Context, db *gorm.DB) {
 	month, _ := strconv.Atoi(c.PostForm("month"))
+	day, _ := strconv.Atoi(c.PostForm("day"))
 	year, _ := strconv.Atoi(c.PostForm("year"))
 	page, _ := strconv.Atoi(c.PostForm("start"))
 	pageSize, _ := strconv.Atoi(c.PostForm("length"))
@@ -110,16 +112,22 @@ func GetDataReport(c *gin.Context, db *gorm.DB) {
 		Limit(pageSize).Offset(page).
 		Order(orderColumn + " " + orderDir).
 		Find(&reportusers)
-	if month != 0 && year != 0 {
-		query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year).
+	if day != 0 && month != 0 && year != 0 {
+		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+	} else if day != 0 && month != 0 {
+		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
 			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
-	} else {
-		if month != 0 {
-			query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
-		}
-		if year != 0 {
-			query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
-		}
+	} else if month != 0 && year != 0 {
+		query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+	} else if day != 0 {
+		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
+	} else if month != 0 {
+		query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+	} else if year != 0 {
+		query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
 	}
 
 	query.Count(&totalRecords).
@@ -130,6 +138,19 @@ func GetDataReport(c *gin.Context, db *gorm.DB) {
 	if query.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": query.Error.Error()})
 		return
+	}
+	for i := range reportusers {
+		jakartaLocation, err1 := time.LoadLocation("Asia/Jakarta")
+		if err1 != nil {
+			// Handle error jika gagal memuat zona waktu
+			c.JSON(http.StatusInternalServerError, gin.H{"error": query.Error.Error()})
+			return
+		}
+		if reportusers[i].CreatedAt != 0 {
+			date := time.Unix(int64(reportusers[i].CreatedAt), 0)
+			date = date.In(jakartaLocation)
+			reportusers[i].CreatedAt_t = date.Format("2006-01-02 15:04")
+		}
 	}
 
 	numPages := int(math.Ceil(float64(totalRecords) / float64(pageSize)))
@@ -147,6 +168,7 @@ func GetDataReport(c *gin.Context, db *gorm.DB) {
 
 func GetDataReport1(c *gin.Context, db *gorm.DB) {
 	month, _ := strconv.Atoi(c.PostForm("month"))
+	day, _ := strconv.Atoi(c.PostForm("day"))
 	year, _ := strconv.Atoi(c.PostForm("year"))
 	page, _ := strconv.Atoi(c.PostForm("start"))
 	pageSize, _ := strconv.Atoi(c.PostForm("length"))
@@ -165,16 +187,22 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 		Limit(pageSize).Offset(page).
 		Order(orderColumn + " " + orderDir).
 		Find(&reportusers)
-	if month != 0 && year != 0 {
-		query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year).
+	if day != 0 && month != 0 && year != 0 {
+		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+	} else if day != 0 && month != 0 {
+		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
 			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
-	} else {
-		if month != 0 {
-			query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
-		}
-		if year != 0 {
-			query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
-		}
+	} else if month != 0 && year != 0 {
+		query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+	} else if day != 0 {
+		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
+	} else if month != 0 {
+		query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+	} else if year != 0 {
+		query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
 	}
 
 	query.Count(&totalRecords).
@@ -195,10 +223,9 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 	db.Table("report").Where("categori_id=?", 3).Select("SUM(price)").Scan(&totalk3)
 	db.Table("report").Where("categori_id=?", 4).Select("SUM(price)").Scan(&totalk4)
 
-    labausaha:=totalk1-totalk2
-    labadiluarusaha:=totalk3-totalk4
-	lababersih:=labausaha-labadiluarusaha
-
+	labausaha := totalk1 - totalk2
+	labadiluarusaha := totalk3 - totalk4
+	lababersih := labausaha - labadiluarusaha
 
 	i1 := false
 	i2 := false
@@ -233,7 +260,7 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 			repo1 := model.Report{
 				Name:       "Laba Usaha",
 				CategoriID: 5,
-				Price: int32(labausaha),
+				Price:      int32(labausaha),
 			}
 			reportusersbaru = append(reportusersbaru, reportusers[i])
 			reportusersbaru = append(reportusersbaru, repo1)
@@ -241,7 +268,7 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 				repo1 := model.Report{
 					Name:       "Laba Bersih",
 					CategoriID: 5,
-					Price: int32(lababersih),
+					Price:      int32(lababersih),
 				}
 				reportusersbaru = append(reportusersbaru, repo1)
 			}
@@ -266,12 +293,12 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 				repo := model.Report{
 					Name:       "Jumlah Beban Usaha",
 					CategoriID: 5,
-					Price: int32(-totalk2),
+					Price:      int32(-totalk2),
 				}
 				repo1 := model.Report{
 					Name:       "Laba Usaha",
 					CategoriID: 5,
-					Price: int32(labausaha),
+					Price:      int32(labausaha),
 				}
 				reportusersbaru = append(reportusersbaru, reportusers[i])
 				reportusersbaru = append(reportusersbaru, repo)
@@ -280,7 +307,7 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 					repo1 := model.Report{
 						Name:       "Laba Bersih",
 						CategoriID: 5,
-						Price: int32(lababersih),
+						Price:      int32(lababersih),
 					}
 					reportusersbaru = append(reportusersbaru, repo1)
 				}
@@ -316,12 +343,12 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 			repo1 := model.Report{
 				Name:       "Laba di Luar Usaha",
 				CategoriID: 5,
-				Price: int32(-labadiluarusaha),
+				Price:      int32(-labadiluarusaha),
 			}
 			repo2 := model.Report{
 				Name:       "Laba Bersih",
 				CategoriID: 5,
-				Price: int32(lababersih),
+				Price:      int32(lababersih),
 			}
 			reportusersbaru = append(reportusersbaru, reportusers[i])
 			reportusersbaru = append(reportusersbaru, repo1)
@@ -348,12 +375,12 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 				repo1 := model.Report{
 					Name:       "Laba di Luar Usaha",
 					CategoriID: 5,
-					Price: int32(-labadiluarusaha),
+					Price:      int32(-labadiluarusaha),
 				}
 				repo2 := model.Report{
 					Name:       "Laba Bersih",
 					CategoriID: 5,
-					Price: int32(lababersih),
+					Price:      int32(lababersih),
 				}
 				reportusersbaru = append(reportusersbaru, reportusers[i])
 				reportusersbaru = append(reportusersbaru, repo1)

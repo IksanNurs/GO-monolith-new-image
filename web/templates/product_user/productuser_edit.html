@@ -69,7 +69,7 @@
 <script>
     if ("{{ .Data.UserID }}" != "" && "{{ .Data.UserID }}" != null && "{{ .Data.UserID }}" != "<nil>") {
         // dd()
-        $("#userSelect").append(new Option("{{ .Data.User.Email }}", "{{ .Data.UserID }}"));
+        $("#userSelect").append(new Option("{{ .Data.User.Name }}", "{{ .Data.UserID }}"));
     }
     if ("{{ .Data.ProductID }}" != "" && "{{ .Data.ProductID }}" != null && "{{ .Data.ProductID }}" != "<nil>") {
                 // dd()

@@ -22,6 +22,7 @@ type Report struct {
 	UpdatedAt  int32 `gorm:"column:updated_at;type:int(11);not null" json:"updated_at"`
 	CreatedBy  int32 `gorm:"column:created_by;type:int(11);not null" json:"created_by"`
 	UpdatedBy  int32 `gorm:"column:updated_by;type:int(11);not null" json:"updated_by"`
+	CreatedAt_t string `gorm:"column:created_at;type:int(11);" json:"created_at_t"`
 }
 
 // TableName Report's table name

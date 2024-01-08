@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -125,33 +126,32 @@ func UpdateProductUser(c *gin.Context, db *gorm.DB) {
 		return
 	}
 	if *inputTutor.Quantity != productuser.Quantity {
-	if product.Stock != 0 {
-		k := 0
-		if *inputTutor.Quantity < productuser.Quantity {
-			k = int(productuser.Quantity - *inputTutor.Quantity)
-			k += int(product.Stock)
+		if product.Stock != 0 {
+			k := 0
+			if *inputTutor.Quantity < productuser.Quantity {
+				k = int(productuser.Quantity - *inputTutor.Quantity)
+				k += int(product.Stock)
+			} else {
+				k = int(*inputTutor.Quantity - productuser.Quantity)
+				k = int(product.Stock) - k
+			}
+			fmt.Println(k)
+			if k < 0 {
+				session.Set("error", "product "+product.Name+" tidak memiliki stok yang cukup")
+				session.Save()
+				c.Redirect(http.StatusSeeOther, "/product-user")
+				return
+			}
+			db.Debug().Table("product").Where("id=?", inputTutor.ProductID).Updates(map[string]interface{}{
+				"stock": k,
+			})
 		} else {
-			k = int(*inputTutor.Quantity - productuser.Quantity)
-			k = int(product.Stock) - k
-		}
-		fmt.Println(k)
-		if k < 0 {
-			session.Set("error", "product "+product.Name+" tidak memiliki stok yang cukup")
+			session.Set("error", "product "+product.Name+" tidak memiliki persedian stok")
 			session.Save()
 			c.Redirect(http.StatusSeeOther, "/product-user")
 			return
 		}
-		db.Debug().Table("product").Where("id=?", inputTutor.ProductID).Updates(map[string]interface{}{
-			"stock": k,
-		})
-	} else {
-		session.Set("error", "product "+product.Name+" tidak memiliki persedian stok")
-		session.Save()
-		c.Redirect(http.StatusSeeOther, "/product-user")
-		return
 	}
-   }
-
 
 	err = db.Debug().Model(&inputTutor).Where("id=?", id).Updates(&inputTutor).Error
 	if err != nil {
@@ -168,39 +168,61 @@ func UpdateProductUser(c *gin.Context, db *gorm.DB) {
 func IndexProductUser(c *gin.Context, db *gorm.DB) {
 	var productusers []model.ProductUser
 	month, _ := strconv.Atoi(c.Query("month"))
+	day, _ := strconv.Atoi(c.Query("day"))
 	year, _ := strconv.Atoi(c.Query("year"))
 	query := db.Debug().Model(&model.ProductUser{}).
 		Preload("Product").
 		Find(&productusers)
 
-	if month != 0 && year != 0 {
-		query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year).
+	if day != 0 && month != 0 && year != 0 {
+		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+	} else if day != 0 && month != 0 {
+		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
 			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
-	} else {
-		if month != 0 {
-			query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
-		}
-		if year != 0 {
-			query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
-		}
+	} else if month != 0 && year != 0 {
+		query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+	} else if day != 0 {
+		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
+	} else if month != 0 {
+		query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+	} else if year != 0 {
+		query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
 	}
+
 	var tot float64 = 0
+	var totmember float64 = 0
+	var totnonmember float64 = 0
 	query.Find(&productusers)
 	for i := range productusers {
 		fmt.Println("Quantity:", productusers[i].Quantity)
 		fmt.Println("PV:", productusers[i].Product.Pv)
 		tot += (float64(productusers[i].Quantity) * float64(productusers[i].Product.Pv)) * 5 / 100
+		if productusers[i].CategoriPrice == 1 {
+			totmember += (float64(productusers[i].Quantity) * float64(productusers[i].Product.PriceMember))
+		}
+		if productusers[i].CategoriPrice == 2 {
+			totnonmember += (float64(productusers[i].Quantity) * float64(productusers[i].Product.PriceNonmember))
+		}
 	}
 
 	formattedPrice := strconv.FormatFloat(tot, 'f', 2, 64)
+	formattedPrice1 := strconv.FormatFloat(totmember, 'f', 2, 64)
+	formattedPrice2 := strconv.FormatFloat(totnonmember, 'f', 2, 64)
 
 	// Pembulatan nilai untuk harga
 	formattedPriceFloat, _ := strconv.ParseFloat(formattedPrice, 64)
+	formattedPriceFloat1, _ := strconv.ParseFloat(formattedPrice1, 64)
+	formattedPriceFloat2, _ := strconv.ParseFloat(formattedPrice2, 64)
 
 	// Format dengan pemisah ribuan
 	formattedString := formatCurrency(formattedPriceFloat)
+	formattedString1 := formatCurrency(formattedPriceFloat1)
+	formattedString2 := formatCurrency(formattedPriceFloat2)
 	session := sessions.Default(c)
-	c.HTML(http.StatusOK, "product_user.html", gin.H{"tot": formattedString, "Error": session.Get("error"), "AuthURL": os.Getenv("AUTH_ADMIN_URL"), "urllogout": os.Getenv("AUTH_URL") + "/login?client_id=" + fmt.Sprintf("%s"+"%s://%s", "https", c.Request.URL.Scheme, c.Request.Host)})
+	c.HTML(http.StatusOK, "product_user.html", gin.H{"totnonmember": formattedString2, "totmember": formattedString1, "tot": formattedString, "Error": session.Get("error"), "AuthURL": os.Getenv("AUTH_ADMIN_URL"), "urllogout": os.Getenv("AUTH_URL") + "/login?client_id=" + fmt.Sprintf("%s"+"%s://%s", "https", c.Request.URL.Scheme, c.Request.Host)})
 }
 func formatCurrency(price float64) string {
 	formatted := fmt.Sprintf("%.2f", price)
@@ -214,6 +236,7 @@ func formatCurrency(price float64) string {
 
 func GetDataProductUser(c *gin.Context, db *gorm.DB) {
 	month, _ := strconv.Atoi(c.PostForm("month"))
+	day, _ := strconv.Atoi(c.PostForm("day"))
 	year, _ := strconv.Atoi(c.PostForm("year"))
 	page, _ := strconv.Atoi(c.PostForm("start"))
 	pageSize, _ := strconv.Atoi(c.PostForm("length"))
@@ -234,16 +257,22 @@ func GetDataProductUser(c *gin.Context, db *gorm.DB) {
 		Order(orderColumn + " " + orderDir).
 		Find(&productusers)
 
-	if month != 0 && year != 0 {
-		query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year).
+	if day != 0 && month != 0 && year != 0 {
+		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+	} else if day != 0 && month != 0 {
+		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
 			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
-	} else {
-		if month != 0 {
-			query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
-		}
-		if year != 0 {
-			query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
-		}
+	} else if month != 0 && year != 0 {
+		query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+	} else if day != 0 {
+		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
+	} else if month != 0 {
+		query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+	} else if year != 0 {
+		query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
 	}
 
 	query.Count(&totalRecords).
@@ -254,6 +283,19 @@ func GetDataProductUser(c *gin.Context, db *gorm.DB) {
 	if query.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": query.Error.Error()})
 		return
+	}
+	for i := range productusers {
+		jakartaLocation, err1 := time.LoadLocation("Asia/Jakarta")
+		if err1 != nil {
+			// Handle error jika gagal memuat zona waktu
+			c.JSON(http.StatusInternalServerError, gin.H{"error": query.Error.Error()})
+			return
+		}
+		if productusers[i].CreatedAt != 0 {
+			date := time.Unix(int64(productusers[i].CreatedAt), 0)
+			date = date.In(jakartaLocation)
+			productusers[i].CreatedAt_t = date.Format("2006-01-02 15:04")
+		}
 	}
 
 	numPages := int(math.Ceil(float64(totalRecords) / float64(pageSize)))

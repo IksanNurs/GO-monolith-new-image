@@ -300,7 +300,6 @@ func ActionCreateOrder(c *gin.Context, db *gorm.DB) {
 				firstSuccess := true
 				k := model.InputOrder{
 					BundleID: &bundleid,
-					UserID:   int32(userStruct.ID),
 				}
 				order.BundleID = &bundleid
 				result := db.Debug().Where(k).FirstOrCreate(&order)

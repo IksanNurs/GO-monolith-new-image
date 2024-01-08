@@ -114,7 +114,7 @@
                         <li class="nav-item">
                             <a href="/product-user" class="nav-link">
                                 <i class="nav-icon fa fa-fw fa-user-circle"></i>
-                                <p>Product User</p>
+                                <p>Penjualan</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -2688,6 +2688,7 @@
         ///===================================================================
     const urlParams = new URLSearchParams(window.location.search);
     let month1 = urlParams.get('month');
+    let day1 = urlParams.get('day');
     switch (month1) {
             case '1':
                 month1 = 'Januari';
@@ -2749,11 +2750,14 @@
                     const urlParams = new URLSearchParams(window.location.search);
                     const month = urlParams.get('month');
                     const year = urlParams.get('year');
+                    const day = urlParams.get('day');
+                    document.getElementById('daySelect').value=day || '';
                     document.getElementById('monthSelect').value=month || '';
                     document.getElementById('yearSelect').value=year|| '';
 
 
                     // Menetapkan nilai parameter ke dalam objek d untuk dikirim ke server
+                    d.day = day || d.day || '';
                     d.month = month || d.month || '';
                     d.year = year || d.year || '';
                     d.start = d.start || 0;
@@ -2822,6 +2826,16 @@
                         return ""
                     }
                 }, 
+                       {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.Product.stock != 0 && data.Product.stock != null) {
+                            return `<div class="text-center" style="white-space:nowrap"> ${new Intl.NumberFormat().format(data.Product.stock)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                }, 
                  {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
@@ -2880,7 +2894,15 @@
                         }
                         return ""
                     }
-                },  
+                },
+                  {
+                    "data": null,
+                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+    
+                              return `<div class="text-right" style="white-space:nowrap">${data.created_at_t
+                                  }</div>`
+                      }
+                },   
             ],
             "ordering": true, // Enable sorting
             "order": [
@@ -2889,8 +2911,11 @@
         });
     
         var title_name= 'product-user'
+          if (day1!=null){
+           title_name += "_"+day1
+        }
         if (month1!=null){
-           title_name += "_"+month1
+           title_name += "/"+month1
         }
         if (year1!=null){
             title_name += '/' + year1
@@ -2926,10 +2951,12 @@
                 "type": "POST",
                 "data": function (d) {
                     const urlParams = new URLSearchParams(window.location.search);
-                    const month = urlParams.get('month');
+                   const month = urlParams.get('month');
                     const year = urlParams.get('year');
+                    const day = urlParams.get('day');
 
                     // Menetapkan nilai parameter ke dalam objek d untuk dikirim ke server
+                    d.day = day || d.day || '';
                     d.month = month || d.month || '';
                     d.year = year || d.year || '';
                     d.start = d.start || 0;
@@ -2981,6 +3008,16 @@
                         "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
                             if (data.quantity != 0 && data.quantity != null) {
                                 return `<div class="text-center" style="white-space:nowrap">${new Intl.NumberFormat().format(data.quantity)
+                                    }</div>`
+                            }
+                            return ""
+                        }
+                    }, 
+                           {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.Product.stock != 0 && data.Product.stock != null) {
+                                return `<div class="text-center" style="white-space:nowrap"> ${new Intl.NumberFormat().format(data.Product.stock)
                                     }</div>`
                             }
                             return ""
@@ -3045,6 +3082,14 @@
                         return ""
                     }
                 },
+                   {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+
+                            return `<div class="text-right" style="white-space:nowrap">${data.created_at_t
+                                }</div>`
+                        }
+                    },   
             ],
             "ordering": true, // Enable sorting
             "order": [
@@ -3073,11 +3118,14 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 const month = urlParams.get('month');
                 const year = urlParams.get('year');
+                const day = urlParams.get('day');
+                document.getElementById('daySelect').value = day || '';
                 document.getElementById('monthSelect').value = month || '';
                 document.getElementById('yearSelect').value = year || '';
 
 
                 // Menetapkan nilai parameter ke dalam objek d untuk dikirim ke server
+                d.day = day || d.day || '';
                 d.month = month || d.month || '';
                 d.year = year || d.year || '';
                 d.start = d.start || 0;
@@ -3174,6 +3222,14 @@
                     return ""
                 }
             },
+                    {
+                "data": null,
+                "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+
+                    return `<div class="text-right" style="white-space:nowrap">${data.created_at_t
+                        }</div>`
+                }
+            },  
            
         ],
         "ordering": true, // Enable sorting
@@ -3183,12 +3239,15 @@
     });
 
     var title_name= 'product'
-    if (month1!=null){
-        title_name += "_"+month1
-    }
-    if (year1!=null){
-        title_name += '/' + year1
-    }
+        if (day1 != null) {
+            title_name += "_" + day1
+        }
+        if (month1 != null) {
+            title_name += "/" + month1
+        }
+        if (year1 != null) {
+            title_name += '/' + year1
+        }
     $('#dataproduct1').DataTable({
             "processing": true,
             "serverSide": true,
@@ -3218,8 +3277,11 @@
                     const urlParams = new URLSearchParams(window.location.search);
                     const month = urlParams.get('month');
                     const year = urlParams.get('year');
+                    const day = urlParams.get('day');
+
 
                     // Menetapkan nilai parameter ke dalam objek d untuk dikirim ke server
+                    d.day = day || d.day || '';
                     d.month = month || d.month || '';
                     d.year = year || d.year || '';
                     d.start = d.start || 0;
@@ -3299,6 +3361,14 @@
                         return ""
                     }
                 },
+                        {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+
+                        return `<div class="text-right" style="white-space:nowrap">${data.created_at_t
+                            }</div>`
+                    }
+                },  
                     
             ],
             "ordering": true, // Enable sorting
@@ -3372,13 +3442,39 @@
                         return null
                     }
                 },
+                {
+                    "data": "id"
+                },
                   {
                     "data": "name"
                 },
                 {
                     "data": "email"
                 },
-
+                   {
+                    "data": "phone"
+                },
+                   {
+                    "data": "alamat"
+                },
+                   {
+                    "data": "state"
+                },
+                   {
+                    "data": "join_date"
+                },
+                   {
+                    "data": null,
+                       "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
+                        if (data.categori_user==2){
+                            return "Member"
+                        }
+                          if (data.categori_user==3){
+                            return "Non Member"
+                        }
+                        return ""
+                    }
+                },
            
             ],
             "ordering": true, // Enable sorting
@@ -3405,13 +3501,16 @@
                 "type": "POST",
                 "data": function (d) {
                     const urlParams = new URLSearchParams(window.location.search);
-                    const month = urlParams.get('month');
+                           const month = urlParams.get('month');
                     const year = urlParams.get('year');
+                    const day = urlParams.get('day');
+                    document.getElementById('daySelect').value = day || '';
                     document.getElementById('monthSelect').value = month || '';
                     document.getElementById('yearSelect').value = year || '';
 
 
                     // Menetapkan nilai parameter ke dalam objek d untuk dikirim ke server
+                    d.day = day || d.day || '';
                     d.month = month || d.month || '';
                     d.year = year || d.year || '';
                     d.start = d.start || 0;
@@ -3498,6 +3597,14 @@
                         return ""
                     }
                 },
+                        {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+
+                        return `<div class="text-right" style="white-space:nowrap">${data.created_at_t
+                            }</div>`
+                    }
+                },  
             ],
             "ordering": true, // Enable sorting
             "order": [
@@ -3506,8 +3613,11 @@
         });
 
         var title_name = 'laporan laba-rugi'
+      if (day1 != null) {
+            title_name += "_" + day1
+        }
         if (month1 != null) {
-            title_name += "_" + month1
+            title_name += "/" + month1
         }
         if (year1 != null) {
             title_name += '/' + year1
@@ -3559,11 +3669,12 @@
                 "type": "POST",
                 "data": function (d) {
                     const urlParams = new URLSearchParams(window.location.search);
-                    const month = urlParams.get('month');
+                              const month = urlParams.get('month');
                     const year = urlParams.get('year');
+                    const day = urlParams.get('day');
 
                     // Menetapkan nilai parameter ke dalam objek d untuk dikirim ke server
-                    d.month = month || d.month || '';
+                    d.day = day || d.day || '';
                     d.year = year || d.year || '';
                     d.start = d.start || 0;
                     d.length = d.length || 10;

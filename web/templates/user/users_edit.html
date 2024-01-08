@@ -23,6 +23,10 @@
 <div class="card mb-4">
     <div class="card-body">
         <form action="/api/update-user/{{ .Data.ID }}" method="POST">
+                <div class="form-group">
+                <label for="id">ID/No.Member</label>
+                <input type="number" name="id" placeholder="Masukkan id" value="{{ .Data.ID }}" required class="form-control">
+            </div>
             <div class="form-group">
                 <label for="username">Nama</label>
                 <input type="text" name="name" placeholder="Masukkan nama" required class="form-control"
@@ -31,6 +35,31 @@
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" name="email" placeholder="Masukkan email" required="required" class="form-control" value="{{ .Data.Email }}">
+            </div>
+            <div class="form-group">
+                <label for="phone">No HP/WA</label>
+                <input type="text" name="phone" placeholder="Masukkan no HP/WA" value="{{ .Data.Phone }}" required="required" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="state">Negara</label>
+                <input type="text" name="state" placeholder="Masukkan no negara" value="{{ .Data.State }}" required="required" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="alamat">Alamat</label>
+                <input type="text" name="alamat" placeholder="Masukkan alamat" value="{{ .Data.Alamat }}" required="required" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="join_date">Tanggal Bergabung</label>
+                <input type="text" name="join_date" value="{{ .Data.JoinDate }}" placeholder="Masukkan tanggal bergabung" required="required"
+                    class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="categori_user">Kategori</label>
+                <select name="categori_user" required="required" class="form-control">
+                    <option value="" selected="selected">Pilih</option>
+                    <option value="2" {{ if eq .Data.CategoriUser 2 }} selected="selected" {{ end }}>Member</option>
+                    <option value="3" {{ if eq .Data.CategoriUser 3 }} selected="selected" {{ end }}>Non Member</option>
+                </select>
             </div>
             <div>
                 <button type="submit" class="btn btn-primary">Submit</button>
