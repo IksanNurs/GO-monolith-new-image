@@ -15,6 +15,18 @@ import (
 	"gorm.io/gorm"
 )
 
+func ClearSessionInfoAndError(c *gin.Context) {
+	// Hapus sesi di sini
+	session := sessions.Default(c)
+	session.Delete("info")
+	session.Delete("error")
+	session.Delete("success")
+	session.Save()
+
+	c.JSON(http.StatusOK, gin.H{"message": "Session cleared"})
+}
+
+
 func IndexLogin(c *gin.Context) {
 	session := sessions.Default(c)
 	if session.Get("id") != nil {
@@ -46,7 +58,7 @@ func OauthToken(c *gin.Context, db *gorm.DB) {
 		// 	}
 		// }
 
-		if !slices.Contains(spl, strconv.Itoa(int(*user.ID))) {
+		if !slices.Contains(spl, strconv.Itoa(int(user.ID))) {
 			c.JSON(http.StatusBadRequest, gin.H{"error_title": "Gagal Login", "error_text": "anda tidak memiliki akses, hubungi admin"})
 			return
 		}

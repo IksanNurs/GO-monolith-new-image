@@ -135,6 +135,7 @@ func GetDataUser(c *gin.Context, db *gorm.DB) {
 	searchQuery, queryParams := buildSearchQueryUser(searchValue)
 	query := db.Debug().Model(&model.User{}).
 		Where(searchQuery, queryParams...).
+		Where("id!=?",1).
 		Count(&totalRecords).
 		Limit(pageSize).Offset(page).
 		Order(orderColumn + " " + orderDir).

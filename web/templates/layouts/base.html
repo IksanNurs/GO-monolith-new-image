@@ -2856,6 +2856,26 @@
                         return ""
                     }
                 }, 
+                    {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
+                        if (data.diskon != 0 && data.diskon != null) {
+                            return `<div class="text-right" style="white-space:nowrap">${new Intl.NumberFormat().format(data.diskon)
+                                }%</div>`
+                        }
+                        return ""
+                    }
+                }, 
+                 {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
+                        if (data.diskon != 0 && data.diskon != null) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format((data.diskon/100)* data.Product.price_nonmember)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                }, 
                   {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
@@ -3043,6 +3063,26 @@
                         return ""
                     }
                 },
+                  {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
+                            if (data.diskon != 0 && data.diskon != null) {
+                                return `<div class="text-right" style="white-space:nowrap">${new Intl.NumberFormat().format(data.diskon)
+                                    }%</div>`
+                            }
+                            return ""
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
+                            if (data.diskon != 0 && data.diskon != null) {
+                                return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format((data.diskon / 100) * data.Product.price_nonmember)
+                                    }</div>`
+                            }
+                            return ""
+                        }
+                    }, 
                 {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
@@ -3454,11 +3494,11 @@
                    {
                     "data": "phone"
                 },
-                   {
-                    "data": "alamat"
+                     {
+                    "data": "state"
                 },
                    {
-                    "data": "state"
+                    "data": "alamat"
                 },
                    {
                     "data": "join_date"

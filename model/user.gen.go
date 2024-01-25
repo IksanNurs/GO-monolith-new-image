@@ -10,7 +10,7 @@ type SubUser struct {
 	Phone                  *string     `gorm:"column:phone;type:varchar(255)" json:"phone"`
 	Email                  *string     `gorm:"column:email;type:varchar(255)" json:"email"`
 	EducationInstitutionID *int32      `gorm:"column:education_institution_id;type:int(11)" json:"education_institution_id"`
-	Institution            Institution `gorm:"foreignkey:EducationInstitutionID" json:"Institution"`
+	
 }
 
 type UserSelect struct {
@@ -34,7 +34,7 @@ type InputUser struct {
 }
 
 type User struct {
-	ID       *int32 `gorm:"column:id;type:int(15)" json:"id"`
+	ID        int32 `gorm:"column:id;type:int(11);primaryKey" json:"id"`
 	Email    string `gorm:"column:email;type:varchar(255);primaryKey;uniqueIndex:email,priority:1" json:"email"`
 	Name     string `gorm:"column:name;type:varchar(255);not null" json:"name"`
 	Alamat   string `gorm:"column:alamat;type:varchar(255);not null" json:"alamat"`

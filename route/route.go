@@ -3,6 +3,7 @@ package route
 import (
 	"akuntansi/database"
 	"net/http"
+	"os"
 	"path/filepath"
 
 	"akuntansi/middleware"
@@ -27,11 +28,11 @@ func GetGinRoute() *gin.Engine {
 	})
 	router.Use(sessions.Sessions("mysession", store))
 
-	router.HTMLRender = loadTemplates("./web/templates")
-	router.Static("/media", "./media")
-	router.Static("/css", "./web/assets/css")
-	router.Static("/js", "./web/assets/js")
-	router.Static("/webfonts", "./web/assets/webfonts")
+	router.HTMLRender = loadTemplates(os.Getenv("PATH")+"web/templates")
+	router.Static("/media", os.Getenv("PATH")+"media")
+	router.Static("/css", os.Getenv("PATH")+"web/assets/css")
+	router.Static("/js", os.Getenv("PATH")+"web/assets/js")
+	router.Static("/webfonts", os.Getenv("PATH")+"/web/assets/webfonts")
 
 	router.GET("/login", func(c *gin.Context) {
 		handler.IndexLogin(c)
@@ -83,6 +84,9 @@ func GetGinRoute() *gin.Engine {
 	})
 
 	router.GET("/", func(c *gin.Context) {
+		c.Redirect(http.StatusSeeOther, "/login")
+	})
+	router.GET("/index.php", func(c *gin.Context) {
 		c.Redirect(http.StatusSeeOther, "/login")
 	})
 	router.GET("/logout", middleware.AuthMiddleware(db), func(c *gin.Context) {

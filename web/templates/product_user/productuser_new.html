@@ -23,6 +23,10 @@
     <div class="card-body">
         <form action="/api/create-product-user" method="POST">
             <div class="form-group">
+                <label for="created_at">Tanggal</label>
+                <input type="date" name="created_at" placeholder="Masukkan tanggal" class="form-control">
+            </div>
+            <div class="form-group">
                 <label>User</label>
                 <select id="userSelect" name="user_id" class="form-control select2 select2-hidden-accessible"
                     style="width: 100%;" aria-hidden="true">
@@ -46,6 +50,10 @@
                 <label for="quantity">Banyak Product</label>
                 <input type="number" name="quantity" placeholder="Masukkan banyak produk" required="required"
                     class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="diskon">Diskon Product</label>
+                <input type="number" name="diskon" placeholder="Masukkan diskon produk"  class="form-control">
             </div>
             <div class="form-group">
                 <label for="categori_price">Kategori Harga</label>

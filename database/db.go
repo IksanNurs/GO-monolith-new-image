@@ -1,6 +1,7 @@
 package database
 
 import (
+	"akuntansi/model"
 	"log"
 	"os"
 
@@ -20,11 +21,9 @@ func StartDB() {
 		log.Fatal(err)
 	}
 
-	 db.Logger = db.Logger.LogMode(logger.Silent)
-	// err = db.AutoMigrate(&models.User{}).Error
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	db.Logger = db.Logger.LogMode(logger.Silent)
+	db.AutoMigrate(&model.Product{}, &model.ProductUser{}, &model.User{}, model.Report{}) // Tambahkan CasbinRule ke AutoMigrate
+
 }
 
 func GetDB() *gorm.DB {

@@ -87,6 +87,24 @@ func CreateProductUser(c *gin.Context, db *gorm.DB) {
 		c.Redirect(http.StatusSeeOther, "/product-user")
 		return
 	}
+	jakartaLocation, err := time.LoadLocation("Asia/Jakarta")
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
+	dateParsed, err := time.ParseInLocation("2006-01-02", c.PostForm("created_at"), jakartaLocation)
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
+
+	// Mengonversi time.Time ke timestamp UNIX (int64)
+	timestamp := dateParsed.Unix()
+	inputTutor.CreatedAt = timestamp
 	err = db.Debug().Create(&inputTutor).Error
 	if err != nil {
 		session.Set("error", err.Error())
@@ -152,7 +170,25 @@ func UpdateProductUser(c *gin.Context, db *gorm.DB) {
 			return
 		}
 	}
+	jakartaLocation, err := time.LoadLocation("Asia/Jakarta")
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
+	fmt.Println(c.PostForm("created_at"))
+	dateParsed, err := time.ParseInLocation("2006-01-02", c.PostForm("created_at"), jakartaLocation)
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
 
+	// Mengonversi time.Time ke timestamp UNIX (int64)
+	timestamp := dateParsed.Unix()
+	inputTutor.CreatedAt = timestamp
 	err = db.Debug().Model(&inputTutor).Where("id=?", id).Updates(&inputTutor).Error
 	if err != nil {
 		fmt.Println(err.Error())
@@ -204,7 +240,11 @@ func IndexProductUser(c *gin.Context, db *gorm.DB) {
 			totmember += (float64(productusers[i].Quantity) * float64(productusers[i].Product.PriceMember))
 		}
 		if productusers[i].CategoriPrice == 2 {
-			totnonmember += (float64(productusers[i].Quantity) * float64(productusers[i].Product.PriceNonmember))
+			d := float64(productusers[i].Product.PriceNonmember)
+			if productusers[i].Diskon > 0 {
+				d = d * float64(productusers[i].Diskon)
+			}
+			totnonmember += (float64(productusers[i].Quantity) * d)
 		}
 	}
 
