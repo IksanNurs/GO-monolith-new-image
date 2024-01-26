@@ -7,11 +7,12 @@
     </div>
     {{ end }}
 
+    {{ if eq .userID 1 }}
     <a value="/user/new" class=" btn btn-primary mb-3 showModalButton" title="Tambah User"
                     size="modal-lg">
             <i class="fa fa-plus"></i>
             Tambah</a>
-
+    {{end}}
     <div class="card mb-4">
         <div class="card-body">
             <div class="table-responsive">
@@ -19,7 +20,7 @@
                 <thead class="thead-light">
                     <tr>
                         <th style="min-width: 1px; white-space: nowrap;">No</th>
-                        <th style="min-width: 1px; white-space: nowrap;">Action</th>
+                        <th style="min-width: 1px; white-space: nowrap;"></th>
                         <th>ID/No.Member</th>
                         <th>Name</th>
                         <th>Email</th>

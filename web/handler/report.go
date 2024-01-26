@@ -16,10 +16,11 @@ import (
 )
 
 func NewReport(c *gin.Context) {
-
+session := sessions.Default(c)
+	userID := session.Get("id").(int32)
 	tmpl := template.Must(template.ParseFiles(os.Getenv("PATH_SUB_BASE") + "/report/report_new.html"))
 
-	if err := tmpl.Execute(c.Writer, gin.H{"AuthURL": os.Getenv("AUTH_ADMIN_URL"), "URL": os.Getenv("AUTH_URL")}); err != nil {
+	if err := tmpl.Execute(c.Writer, gin.H{"userID":userID,"AuthURL": os.Getenv("AUTH_ADMIN_URL"), "URL": os.Getenv("AUTH_URL")}); err != nil {
 		fmt.Println(err)
 	}
 
@@ -89,7 +90,8 @@ func UpdateReport(c *gin.Context, db *gorm.DB) {
 
 func IndexReport(c *gin.Context) {
 	session := sessions.Default(c)
-	c.HTML(http.StatusOK, "report.html", gin.H{"Error": session.Get("error"), "AuthURL": os.Getenv("AUTH_ADMIN_URL"), "urllogout": os.Getenv("AUTH_URL") + "/login?client_id=" + fmt.Sprintf("%s"+"%s://%s", "https", c.Request.URL.Scheme, c.Request.Host)})
+	userID := session.Get("id").(int32)
+	c.HTML(http.StatusOK, "report.html", gin.H{"userID": userID, "Error": session.Get("error"), "AuthURL": os.Getenv("AUTH_ADMIN_URL"), "urllogout": os.Getenv("AUTH_URL") + "/login?client_id=" + fmt.Sprintf("%s"+"%s://%s", "https", c.Request.URL.Scheme, c.Request.Host)})
 }
 
 func GetDataReport(c *gin.Context, db *gorm.DB) {

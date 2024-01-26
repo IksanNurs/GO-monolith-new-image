@@ -10,10 +10,12 @@
     <div class="card-header">
         <div class="card-title w-100 d-flex justify-content-between align-items-center mb-0">
             <div class="d-flex flex-column flex-sm-row">
+                {{ if eq .userID 1 }}
                 <a value="/product-user/new" class="btn btn-primary mb-3 py-2 showModalButton" title="Tambah Product User"
                     size="modal-lg">
                     <i class="fa fa-plus"></i>
                     Tambah</a> &nbsp;&nbsp;
+                    {{ end }}
                     <table class="table mb-0" style="display: none;" id="dataproductuser1" style="width:100%">
                         <thead class="thead-light">
                             <tr>
@@ -30,6 +32,9 @@
                                 <th style="min-width: 1px; white-space: nowrap;">PV</th>
                                 <th style="min-width: 1px; white-space: nowrap;">Bonus 5%</th>
                                 <th style="min-width: 1px; white-space: nowrap;">Hasil</th>
+                                <th style="min-width: 1px; white-space: nowrap;">Metode Pembayaran</th>
+                                <th style="min-width: 1px; white-space: nowrap;">Pembayaran</th>
+                                <th style="min-width: 1px; white-space: nowrap;">Belum Bayar</th>
                                 <th style="min-width: 1px; white-space: nowrap;">Tanggal</th>
                             </tr>
                         </thead>
@@ -136,6 +141,9 @@
                         <th style="min-width: 1px; white-space: nowrap;">PV</th>
                         <th style="min-width: 1px; white-space: nowrap;">Bonus 5%</th>
                         <th style="min-width: 1px; white-space: nowrap;">Hasil</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Metode Pembayaran</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Pembayaran</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Belum Bayar</th>
                         <th style="min-width: 1px; white-space: nowrap;">Tanggal</th>
                     </tr>
                 </thead>
@@ -144,6 +152,8 @@
         <div class="mr-1">
             <div>Total Penjualan Member : Rp {{ .totmember }}</div>
             <div>Total Penjualan Non Member: Rp {{ .totnonmember }}</div>
+            <div>Total Pembayaran tunai: Rp {{ .totpaid }}</div>
+            <div>Total Belum Bayar: Rp {{ .totunpaid }}</div>
         </div>
     </div>
 </div>

@@ -18,8 +18,9 @@ import (
 func NewProduct(c *gin.Context) {
 
 	tmpl := template.Must(template.ParseFiles(os.Getenv("PATH_SUB_BASE") + "/product/product_new.html"))
-
-	if err := tmpl.Execute(c.Writer, gin.H{"AuthURL": os.Getenv("AUTH_ADMIN_URL"), "URL": os.Getenv("AUTH_URL")}); err != nil {
+	session := sessions.Default(c)
+	userID := session.Get("id").(int32)
+	if err := tmpl.Execute(c.Writer, gin.H{"userID":userID,"AuthURL": os.Getenv("AUTH_ADMIN_URL"), "URL": os.Getenv("AUTH_URL")}); err != nil {
 		fmt.Println(err)
 	}
 
@@ -53,6 +54,24 @@ func CreateProduct(c *gin.Context, db *gorm.DB) {
 		c.Redirect(http.StatusSeeOther, "/product")
 		return
 	}
+	jakartaLocation, err := time.LoadLocation("Asia/Jakarta")
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
+	dateParsed, err := time.ParseInLocation("2006-01-02", c.PostForm("created_at"), jakartaLocation)
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
+
+	// Mengonversi time.Time ke timestamp UNIX (int64)
+	timestamp := dateParsed.Unix()
+	inputTutor.CreatedAt = timestamp
 	err = db.Debug().Create(&inputTutor).Error
 	if err != nil {
 		session.Set("error", err.Error())
@@ -75,6 +94,28 @@ func UpdateProduct(c *gin.Context, db *gorm.DB) {
 		c.Redirect(http.StatusSeeOther, "/product")
 		return
 	}
+	if c.PostForm("created_at") != "" {
+		jakartaLocation, err := time.LoadLocation("Asia/Jakarta")
+		if err != nil {
+			session.Set("error", err.Error())
+			session.Save()
+			c.Redirect(http.StatusSeeOther, "/product-user")
+			return
+		}
+		fmt.Println(c.PostForm("created_at"))
+		dateParsed, err := time.ParseInLocation("2006-01-02", c.PostForm("created_at"), jakartaLocation)
+		if err != nil {
+			session.Set("error", err.Error())
+			session.Save()
+			c.Redirect(http.StatusSeeOther, "/product-user")
+			return
+		}
+
+		// Mengonversi time.Time ke timestamp UNIX (int64)
+		timestamp := dateParsed.Unix()
+		inputTutor.CreatedAt = timestamp
+	}
+
 	err = db.Debug().Model(&inputTutor).Where("id=?", id).Updates(&inputTutor).Error
 	if err != nil {
 		fmt.Println(err.Error())
@@ -89,7 +130,8 @@ func UpdateProduct(c *gin.Context, db *gorm.DB) {
 
 func IndexProduct(c *gin.Context) {
 	session := sessions.Default(c)
-	c.HTML(http.StatusOK, "product.html", gin.H{"Error": session.Get("error"), "AuthURL": os.Getenv("AUTH_ADMIN_URL"), "urllogout": os.Getenv("AUTH_URL") + "/login?client_id=" + fmt.Sprintf("%s"+"%s://%s", "https", c.Request.URL.Scheme, c.Request.Host)})
+	userID := session.Get("id").(int32)
+	c.HTML(http.StatusOK, "product.html", gin.H{"userID": userID, "Error": session.Get("error"), "AuthURL": os.Getenv("AUTH_ADMIN_URL"), "urllogout": os.Getenv("AUTH_URL") + "/login?client_id=" + fmt.Sprintf("%s"+"%s://%s", "https", c.Request.URL.Scheme, c.Request.Host)})
 }
 
 func GetDataProduct(c *gin.Context, db *gorm.DB) {

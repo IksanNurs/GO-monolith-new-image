@@ -24,7 +24,7 @@
         <form action="/api/create-product-user" method="POST">
             <div class="form-group">
                 <label for="created_at">Tanggal</label>
-                <input type="date" name="created_at" placeholder="Masukkan tanggal" class="form-control">
+                <input type="date" name="created_at" placeholder="Masukkan tanggal" required class="form-control">
             </div>
             <div class="form-group">
                 <label>User</label>
@@ -63,6 +63,23 @@
                     <option value="2">Harga Non Member</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="status_paid">Metode Pembayaran</label>
+                <select name="status_paid" required="required" class="form-control">
+                    <option value="" selected="selected">Pilih</option>
+                    <option value="1">Tunai</option>
+                    <option value="2">Bank BCA NII</option>
+                    <option value="3">Bank NII Jakarta</option>
+                </select>
+            </div>
+                <div class="form-group">
+                    <label for="paid">Pembayaran</label>
+                    <input type="number" name="paid" placeholder="Masukkan besaran biaya" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="unpaid">Belum Bayar</label>
+                    <input type="number" name="unpaid" placeholder="Masukkan besaran biaya" class="form-control">
+                </div>
             <div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>

@@ -34,10 +34,11 @@ func EditUser(c *gin.Context, db *gorm.DB) {
 }
 
 func NewUser(c *gin.Context) {
-
+    session := sessions.Default(c)
+	userID := session.Get("id").(int32)
 	tmpl := template.Must(template.ParseFiles(os.Getenv("PATH_SUB_BASE") + "/user/users_new.html"))
 
-	if err := tmpl.Execute(c.Writer, gin.H{"AuthURL": os.Getenv("AUTH_ADMIN_URL"), "URL": os.Getenv("AUTH_URL")}); err != nil {
+	if err := tmpl.Execute(c.Writer, gin.H{"userID":userID,"AuthURL": os.Getenv("AUTH_ADMIN_URL"), "URL": os.Getenv("AUTH_URL")}); err != nil {
 		fmt.Println(err)
 	}
 
@@ -89,7 +90,8 @@ func UpdateUser(c *gin.Context, db *gorm.DB) {
 
 func IndexUser(c *gin.Context) {
 	session := sessions.Default(c)
-	c.HTML(http.StatusOK, "users.html", gin.H{"Error": session.Get("error"), "AuthURL": os.Getenv("AUTH_ADMIN_URL"), "urllogout": os.Getenv("AUTH_URL") + "/login?client_id=" + fmt.Sprintf("%s"+"%s://%s", "https", c.Request.URL.Scheme, c.Request.Host)})
+	userID := session.Get("id").(int32)
+	c.HTML(http.StatusOK, "users.html", gin.H{"userID":userID,"Error": session.Get("error"), "AuthURL": os.Getenv("AUTH_ADMIN_URL"), "urllogout": os.Getenv("AUTH_URL") + "/login?client_id=" + fmt.Sprintf("%s"+"%s://%s", "https", c.Request.URL.Scheme, c.Request.Host)})
 }
 
 func ActionGetAllUserCPNS(c *gin.Context, db *gorm.DB) {
@@ -135,7 +137,7 @@ func GetDataUser(c *gin.Context, db *gorm.DB) {
 	searchQuery, queryParams := buildSearchQueryUser(searchValue)
 	query := db.Debug().Model(&model.User{}).
 		Where(searchQuery, queryParams...).
-		Where("id!=?",1).
+		Where("id!=? AND id!=?", 1, 2).
 		Count(&totalRecords).
 		Limit(pageSize).Offset(page).
 		Order(orderColumn + " " + orderDir).

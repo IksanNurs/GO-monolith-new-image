@@ -26,7 +26,7 @@ type InputProduct struct {
 	PriceMember    int32  `gorm:"column:price_member;type:int(11);not null" json:"price_member" form:"price_member"`
 	Pv             int32  `gorm:"column:pv;type:int(11);not null" json:"pv" form:"pv"`
 	Stock          *int32  `gorm:"column:stock;type:int(11);not null" json:"stock" form:"stock"`
-	CreatedAt int32 `gorm:"column:created_at;type:int(11);autoCreateTime;loc:UTC" json:"created_at"`
+	CreatedAt int64 `gorm:"column:created_at;type:int(11)" json:"created_at"`
 	UpdatedAt int32 `gorm:"column:updated_at;type:int(11);autoUpdateTime;loc:UTC" json:"updated_at"`
 }
 

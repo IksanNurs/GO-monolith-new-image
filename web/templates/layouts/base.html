@@ -2802,7 +2802,7 @@
                     "data": null,
                     "orderable": false,
                     "render": function (data, type, row) { // Render HTML for the cell with added styles
-                        if (data.midtrans_payment_url == null) {
+                        if ("{{ .userID }}" == 1) {
                             return '<div style="white-space: nowrap;">' + '<a value="/product-user/edit?id=' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit User" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-product-user?id=` + data.id + `" method="POST" class="d-inline">
                         <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
                     </form>` + '</div>';
@@ -2910,6 +2910,44 @@
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
                         if (data.categori_price == 1) {
                             return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format((data.Product.pv * data.quantity) * (5 / 100))
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
+                   {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.status_paid != null && data.status_paid != 0) {
+                             if (data.status_paid==1){
+                                  return `<div class="text-right" style="white-space:nowrap">Tunai</div>`
+                             }
+                                if (data.status_paid==2) {
+                                return `<div class="text-right" style="white-space:nowrap">Bank BCA NII</div>`
+                            }
+                            if (data.status_paid==3) {
+                                return `<div class="text-right" style="white-space:nowrap">Bank NII Jakarta</div>`
+                            }
+                          
+                        }
+                        return ""
+                    }
+                },
+                {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.paid != null && data.paid != 0 ) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.paid)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
+                      {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.unpaid != null && data.unpaid != 0) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.unpaid)
                                 }</div>`
                         }
                         return ""
@@ -3122,6 +3160,44 @@
                         return ""
                     }
                 },
+                  {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.status_paid != null && data.status_paid != 0) {
+                                  if (data.status_paid == 1) {
+                                    return `<div class="text-right" style="white-space:nowrap">Tunai</div>`
+                                }
+                                if (data.status_paid == 2) {
+                                    return `<div class="text-right" style="white-space:nowrap">Bank BCA NII</div>`
+                                }
+                                if (data.status_paid == 3) {
+                                    return `<div class="text-right" style="white-space:nowrap">Bank NII Jakarta</div>`
+                                }
+
+                            }
+                            return ""
+                        }
+                    },
+                 {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.paid != null && data.paid != 0) {
+                                return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.paid)
+                                    }</div>`
+                            }
+                            return ""
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.unpaid != null && data.unpaid != 0) {
+                                return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.unpaid)
+                                    }</div>`
+                            }
+                            return ""
+                        }
+                    },
                    {
                         "data": null,
                         "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
@@ -3210,7 +3286,7 @@
                 "data": null,
                 "orderable": false,
                 "render": function (data, type, row) { // Render HTML for the cell with added styles
-                    if (data.midtrans_payment_url == null) {
+                   if ("{{ .userID }}" == 1) {
                         return '<div style="white-space: nowrap;">' + '<a value="/product/edit?id=' + data.id+'" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Product" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-product?id=` + data.id +`" method="POST" class="d-inline">
                         <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
                     </form>` + '</div>';
@@ -3474,7 +3550,7 @@
                     "data": null,
                     "orderable": false,
                     "render": function (data, type, row) { // Render HTML for the cell with added styles
-                        if (data.midtrans_payment_url == null) {
+                         if ("{{ .userID }}" == 1) {
                             return '<div style="white-space: nowrap;">' + '<a value="/user/edit?id=' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit User" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-user?id=` + data.id + `" method="POST" class="d-inline">
                         <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
                     </form>` + '</div>';
@@ -3595,7 +3671,7 @@
                     "data": null,
                     "orderable": false,
                     "render": function (data, type, row) { // Render HTML for the cell with added styles
-                        if (data.midtrans_payment_url == null) {
+                        if ("{{ .userID }}" == 1) {
                             return '<div style="white-space: nowrap;">' + '<a value="/report/edit?id=' + data.id + '" class="btn btn-xs btn-light text-warning showModalButton" title="Edit Product" size="modal-lg"><i class="fa fa-pen"></i></a>&nbsp;' + `<form action="/api/delete-report?id=` + data.id + `" method="POST" class="d-inline">
                         <button type="submit" class="btn btn-xs btn-light text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"><i class="fa fa-trash"></i></button>
                     </form>` + '</div>';

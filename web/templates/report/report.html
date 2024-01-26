@@ -11,9 +11,11 @@
     <div class="card-header">
         <div class="card-title w-100 d-flex justify-content-between align-items-center mb-0">
             <div class="d-flex flex-column flex-sm-row">
+                {{ if eq .userID 1 }}
                 <a value="/report/new" class=" btn btn-primary mb-3  py-2 showModalButton" title="Tambah Item" size="modal-lg">
                     <i class="fa fa-plus"></i>
                     Tambah</a> &nbsp;&nbsp;
+                    {{ end }}
                 <table class="table mb-0" style="display: none;" id="datareport1" style="width:100%">
                     <thead class="thead-light">
                         <tr>
