@@ -3004,7 +3004,7 @@
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
                              if (data.status_paid == 5) {
                                 return `<div class="text-right badge badge-danger" style="white-space:nowrap">Belum Bayar</div>`
-                             }else if (data.paid<  (data.paid < (data.quantity * (data.Product.price_member - (data.Product.price_member * (data.diskon / 100))))) || data.paid < (data.quantity * (data.Product.price_member - (data.Product.price_nonmember * (data.diskon / 100))))) {
+                             }else if (data.paid< (data.quantity * (data.Product.price_member - (data.Product.price_member * (data.diskon / 100)))) || data.paid < (data.quantity * (data.Product.price_member - (data.Product.price_nonmember * (data.diskon / 100))))) {
                                    if (data.diskon !=null && data.diskon!=null && (data.paid == (data.quantity *(data.Product.price_member- (data.Product.price_member*(data.diskon/100))) || data.paid == (data.Product.price_nonmember - (data.Product.price_nonmember * (data.diskon / 100)))))){
                                            return `<div class="text-right badge badge-success" style="white-space:nowrap">Lunas
                                     </div>`     

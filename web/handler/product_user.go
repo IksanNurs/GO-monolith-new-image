@@ -182,7 +182,7 @@ func CreateProductUserAngsuran(c *gin.Context, db *gorm.DB) {
 	inputTutor.Quantity=&productuser.Quantity
 	inputTutor.CategoriPrice=productuser.CategoriPrice
 	inputTutor.Diskon=&productuser.Diskon
-	inputTutor.Unpaid=&productuser.Unpaid
+	inputTutor.Unpaid=nil
 
 	err = db.Debug().Create(&inputTutor).Error
 	if err != nil {
