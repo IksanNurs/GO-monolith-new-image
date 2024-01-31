@@ -45,7 +45,7 @@ func EditReport(c *gin.Context, db *gorm.DB) {
 }
 
 func CreateReport(c *gin.Context, db *gorm.DB) {
-	var inputTutor model.Report
+	var inputTutor model.InputReport
 	session := sessions.Default(c)
 	err := c.ShouldBind(&inputTutor)
 	if err != nil {
@@ -54,6 +54,24 @@ func CreateReport(c *gin.Context, db *gorm.DB) {
 		c.Redirect(http.StatusSeeOther, "/report")
 		return
 	}
+	jakartaLocation, err := time.LoadLocation("Asia/Jakarta")
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
+	dateParsed, err := time.ParseInLocation("2006-01-02", c.PostForm("created_at"), jakartaLocation)
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
+
+	// Mengonversi time.Time ke timestamp UNIX (int64)
+	timestamp := dateParsed.Unix()
+	inputTutor.CreatedAt = timestamp
 	err = db.Debug().Create(&inputTutor).Error
 	if err != nil {
 		session.Set("error", err.Error())
@@ -66,7 +84,7 @@ func CreateReport(c *gin.Context, db *gorm.DB) {
 }
 
 func UpdateReport(c *gin.Context, db *gorm.DB) {
-	var inputTutor model.Report
+	var inputTutor model.InputReport
 	session := sessions.Default(c)
 	id := c.Param("id")
 	err := c.ShouldBind(&inputTutor)
@@ -76,6 +94,24 @@ func UpdateReport(c *gin.Context, db *gorm.DB) {
 		c.Redirect(http.StatusSeeOther, "/report")
 		return
 	}
+	jakartaLocation, err := time.LoadLocation("Asia/Jakarta")
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
+	dateParsed, err := time.ParseInLocation("2006-01-02", c.PostForm("created_at"), jakartaLocation)
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
+
+	// Mengonversi time.Time ke timestamp UNIX (int64)
+	timestamp := dateParsed.Unix()
+	inputTutor.CreatedAt = timestamp
 	err = db.Debug().Model(&inputTutor).Where("id=?", id).Updates(&inputTutor).Error
 	if err != nil {
 		fmt.Println(err.Error())

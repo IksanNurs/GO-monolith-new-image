@@ -72,8 +72,9 @@
                 <select name="status_paid" required="required" class="form-control">
                     <option value="" selected="selected">Pilih</option>
                     <option {{ if eq .Data.StatusPaid 1 }} selected="selected" {{ end }} value="1">Tunai</option>
-                    <option {{ if eq .Data.StatusPaid 2 }} selected="selected" {{ end }} value="2">Bank BCA NII</option>
                     <option {{ if eq .Data.StatusPaid 3 }} selected="selected" {{ end }} value="3">Bank NII Jakarta</option>
+                    <option {{ if eq .Data.StatusPaid 4 }} selected="selected" {{ end }} value="4">Bank BCA NII Padang</option>
+                    <option {{ if eq .Data.StatusPaid 5 }} selected="selected" {{ end }} value="5">Belum Bayar</option>
                 </select>
             </div>
             <div class="form-group">

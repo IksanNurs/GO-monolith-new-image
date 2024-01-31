@@ -20,6 +20,7 @@ type UserSelect struct {
 
 type InputUser struct {
 	ID    *int32  `gorm:"column:id;type:int(15)" json:"id" form:"id"`
+	NumberID   *int32  `gorm:"column:number_id;type:int(15)" json:"number_id" form:"number_id"`
 	Name  *string `gorm:"column:name;type:varchar(255)" json:"name" form:"name"`
 	Email *string `gorm:"column:email;type:varchar(255)" json:"email" form:"email"`
 	Alamat   string `gorm:"column:alamat;type:varchar(255);not null" json:"alamat" form:"alamat"`
@@ -37,6 +38,7 @@ type User struct {
 	ID        int32 `gorm:"column:id;type:int(11);primaryKey" json:"id"`
 	Email    string `gorm:"column:email;type:varchar(255);primaryKey;uniqueIndex:email,priority:1" json:"email"`
 	Name     string `gorm:"column:name;type:varchar(255);not null" json:"name"`
+	NumberID  int32  `gorm:"column:number_id;type:int(15)" json:"number_id" form:"number_id"`
 	Alamat   string `gorm:"column:alamat;type:varchar(255);not null" json:"alamat"`
 	State    string `gorm:"column:state;type:varchar(255);not null" json:"state"`
 	JoinDate string `gorm:"column:join_date;type:varchar(255);not null" json:"join_date"`

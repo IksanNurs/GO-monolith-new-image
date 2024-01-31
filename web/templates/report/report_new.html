@@ -25,6 +25,10 @@
 <div class="card mb-4">
     <div class="card-body">
         <form action="/api/create-report" method="POST">
+                <div class="form-group">
+                    <label for="created_at">Tanggal</label>
+                    <input type="date" name="created_at" placeholder="Masukkan tanggal" required class="form-control">
+                </div>
             <div class="form-group">
                 <label for="name">Nama</label>
                 <input type="text" name="name" placeholder="Masukkan nama" required="required" class="form-control">

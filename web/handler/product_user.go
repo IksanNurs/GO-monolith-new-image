@@ -55,7 +55,19 @@ func NewProductUser(c *gin.Context) {
 	userID := session.Get("id").(int32)
 	tmpl := template.Must(template.ParseFiles(os.Getenv("PATH_SUB_BASE") + "/product_user/productuser_new.html"))
 
-	if err := tmpl.Execute(c.Writer, gin.H{"userID":userID,"AuthURL": os.Getenv("AUTH_ADMIN_URL"), "URL": os.Getenv("AUTH_URL")}); err != nil {
+	if err := tmpl.Execute(c.Writer, gin.H{"userID": userID, "AuthURL": os.Getenv("AUTH_ADMIN_URL"), "URL": os.Getenv("AUTH_URL")}); err != nil {
+		fmt.Println(err)
+	}
+
+}
+
+func NewProductUserAngsuran(c *gin.Context) {
+
+	session := sessions.Default(c)
+	userID := session.Get("id").(int32)
+	tmpl := template.Must(template.ParseFiles(os.Getenv("PATH_SUB_BASE") + "/product_user/productuser_new_angsuran.html"))
+
+	if err := tmpl.Execute(c.Writer, gin.H{"userID": userID, "AuthURL": os.Getenv("AUTH_ADMIN_URL"), "URL": os.Getenv("AUTH_URL")}); err != nil {
 		fmt.Println(err)
 	}
 
@@ -107,6 +119,71 @@ func CreateProductUser(c *gin.Context, db *gorm.DB) {
 	// Mengonversi time.Time ke timestamp UNIX (int64)
 	timestamp := dateParsed.Unix()
 	inputTutor.CreatedAt = timestamp
+	err = db.Debug().Create(&inputTutor).Error
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
+
+	c.Redirect(http.StatusFound, "/product-user")
+}
+
+func CreateProductUserAngsuran(c *gin.Context, db *gorm.DB) {
+	var inputTutor model.InputProductUser
+	var productuser model.ProductUser
+	session := sessions.Default(c)
+	err := c.ShouldBind(&inputTutor)
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
+
+
+	jakartaLocation, err := time.LoadLocation("Asia/Jakarta")
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
+	dateParsed, err := time.ParseInLocation("2006-01-02", c.PostForm("created_at"), jakartaLocation)
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
+
+	// Mengonversi time.Time ke timestamp UNIX (int64)
+	timestamp := dateParsed.Unix()
+	inputTutor.CreatedAt = timestamp
+	dateParsed1, err := time.ParseInLocation("2006-01-02", c.PostForm("created_at_before"), jakartaLocation)
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
+
+	// Mengonversi time.Time ke timestamp UNIX (int64)
+	timestamp1 := dateParsed1.Unix()
+	err = db.Debug().Where("created_at=? AND user_id=? AND product_id=?", timestamp1, inputTutor.UserID, inputTutor.ProductID).First(&productuser).Error
+	if err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusSeeOther, "/product-user")
+		return
+	}
+	*inputTutor.Paid = *inputTutor.Paid + productuser.Paid
+	inputTutor.Quantity=&productuser.Quantity
+	inputTutor.CategoriPrice=productuser.CategoriPrice
+	inputTutor.Diskon=&productuser.Diskon
+	inputTutor.Unpaid=&productuser.Unpaid
+
 	err = db.Debug().Create(&inputTutor).Error
 	if err != nil {
 		session.Set("error", err.Error())
@@ -238,6 +315,10 @@ func IndexProductUser(c *gin.Context, db *gorm.DB) {
 	var totmember float64 = 0
 	var totnonmember float64 = 0
 	var totpaid float64 = 0
+	var tottunai float64 = 0
+	var totbca1 float64 = 0
+	var totbca2 float64 = 0
+	var totbca3 float64 = 0
 	var totunpaid float64 = 0
 	query.Find(&productusers)
 	for i := range productusers {
@@ -264,6 +345,18 @@ func IndexProductUser(c *gin.Context, db *gorm.DB) {
 		if productusers[i].Unpaid != 0 {
 			totunpaid += float64(productusers[i].Unpaid)
 		}
+		if productusers[i].Paid != 0 && productusers[i].StatusPaid == 1 {
+			tottunai += float64(productusers[i].Paid)
+		}
+		if productusers[i].Paid != 0 && productusers[i].StatusPaid == 2 {
+			totbca1 += float64(productusers[i].Paid)
+		}
+		if productusers[i].Paid != 0 && productusers[i].StatusPaid == 3 {
+			totbca2 += float64(productusers[i].Paid)
+		}
+		if productusers[i].Paid != 0 && productusers[i].StatusPaid == 4 {
+			totbca3 += float64(productusers[i].Paid)
+		}
 	}
 
 	formattedPrice := strconv.FormatFloat(tot, 'f', 2, 64)
@@ -271,6 +364,10 @@ func IndexProductUser(c *gin.Context, db *gorm.DB) {
 	formattedPrice2 := strconv.FormatFloat(totnonmember, 'f', 2, 64)
 	formattedPrice3 := strconv.FormatFloat(totpaid, 'f', 2, 64)
 	formattedPrice4 := strconv.FormatFloat(totunpaid, 'f', 2, 64)
+	formattedPrice5 := strconv.FormatFloat(tottunai, 'f', 2, 64)
+	formattedPrice6 := strconv.FormatFloat(totbca1, 'f', 2, 64)
+	formattedPrice7 := strconv.FormatFloat(totbca2, 'f', 2, 64)
+	formattedPrice8 := strconv.FormatFloat(totbca3, 'f', 2, 64)
 
 	// Pembulatan nilai untuk harga
 	formattedPriceFloat, _ := strconv.ParseFloat(formattedPrice, 64)
@@ -278,6 +375,10 @@ func IndexProductUser(c *gin.Context, db *gorm.DB) {
 	formattedPriceFloat2, _ := strconv.ParseFloat(formattedPrice2, 64)
 	formattedPriceFloat3, _ := strconv.ParseFloat(formattedPrice3, 64)
 	formattedPriceFloat4, _ := strconv.ParseFloat(formattedPrice4, 64)
+	formattedPriceFloat5, _ := strconv.ParseFloat(formattedPrice5, 64)
+	formattedPriceFloat6, _ := strconv.ParseFloat(formattedPrice6, 64)
+	formattedPriceFloat7, _ := strconv.ParseFloat(formattedPrice7, 64)
+	formattedPriceFloat8, _ := strconv.ParseFloat(formattedPrice8, 64)
 
 	// Format dengan pemisah ribuan
 	formattedString := formatCurrency(formattedPriceFloat)
@@ -285,7 +386,11 @@ func IndexProductUser(c *gin.Context, db *gorm.DB) {
 	formattedString2 := formatCurrency(formattedPriceFloat2)
 	formattedString3 := formatCurrency(formattedPriceFloat3)
 	formattedString4 := formatCurrency(formattedPriceFloat4)
-	c.HTML(http.StatusOK, "product_user.html", gin.H{"userID":userID,"totpaid": formattedString3, "totunpaid": formattedString4, "totnonmember": formattedString2, "totmember": formattedString1, "tot": formattedString, "Error": session.Get("error"), "AuthURL": os.Getenv("AUTH_ADMIN_URL"), "urllogout": os.Getenv("AUTH_URL") + "/login?client_id=" + fmt.Sprintf("%s"+"%s://%s", "https", c.Request.URL.Scheme, c.Request.Host)})
+	formattedString5 := formatCurrency(formattedPriceFloat5)
+	formattedString6 := formatCurrency(formattedPriceFloat6)
+	formattedString7 := formatCurrency(formattedPriceFloat7)
+	formattedString8 := formatCurrency(formattedPriceFloat8)
+	c.HTML(http.StatusOK, "product_user.html", gin.H{"tot1": formattedString5, "tot2": formattedString6, "tot3": formattedString7, "tot4": formattedString8, "userID": userID, "totpaid": formattedString3, "totunpaid": formattedString4, "totnonmember": formattedString2, "totmember": formattedString1, "tot": formattedString, "Error": session.Get("error"), "AuthURL": os.Getenv("AUTH_ADMIN_URL"), "urllogout": os.Getenv("AUTH_URL") + "/login?client_id=" + fmt.Sprintf("%s"+"%s://%s", "https", c.Request.URL.Scheme, c.Request.Host)})
 }
 func formatCurrency(price float64) string {
 	formatted := fmt.Sprintf("%.2f", price)

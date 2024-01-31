@@ -25,7 +25,21 @@ type Report struct {
 	CreatedAt_t string `gorm:"column:created_at;type:int(11);" json:"created_at_t"`
 }
 
+type InputReport struct {
+	ID   int32  `gorm:"column:id;type:int(11);primaryKey;autoIncrement:true" json:"id" form:"id"`
+	Name string `gorm:"column:name;type:varchar(255);not null" json:"name" form:"name"`
+	CategoriID int32 `gorm:"column:categori_id;type:int(11);not null" json:"categori_id" form:"categori_id"`
+	Price      int32 `gorm:"column:price;type:int(11);not null" json:"price" form:"price"`
+	CreatedAt  int64 `gorm:"column:created_at;type:int(11);not null" json:"created_at"`
+}
+
+
 // TableName Report's table name
 func (*Report) TableName() string {
 	return TableNameReport
 }
+
+func (*InputReport) TableName() string {
+	return TableNameReport
+}
+

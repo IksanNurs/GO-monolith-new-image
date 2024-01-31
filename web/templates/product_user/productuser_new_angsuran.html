@@ -21,19 +21,23 @@
 
 <div class="card mb-4">
     <div class="card-body">
-        <form action="/api/create-product-user" method="POST">
+        <form action="/api/create-product-user-angsuran" method="POST">
             <div class="form-group">
-                <label for="created_at">Tanggal</label>
+                <label for="created_at">Tanggal Transaksi Pelunasan</label>
                 <input type="date" name="created_at" placeholder="Masukkan tanggal" required class="form-control">
             </div>
             <div class="form-group">
+                <label for="created_at">Tanggal Transaksi Sebelumnya</label>
+                <input type="date" name="created_at_before" placeholder="Masukkan tanggal" required class="form-control">
+            </div>
+            <div class="form-group">
                 <label>User</label>
-                <select id="userSelect" name="user_id" class="form-control select2 select2-hidden-accessible"
+                <select id="userAngSelect" name="user_id" class="form-control select2 select2-hidden-accessible"
                     style="width: 100%;" aria-hidden="true">
             </div>
             <div class="form-group">
                 <label>User</label>
-                <select id="userSelect" name="user_id" class="form-control select2 select2-hidden-accessible"
+                <select id="userAngSelect" name="user_id" class="form-control select2 select2-hidden-accessible"
                     style="width: 100%;" tabindex="-1" aria-hidden="true">
             </div>
             <div class="form-group">
@@ -45,23 +49,6 @@
                 <label>Product</label>
                 <select id="productSelect" name="product_id" class="form-control select2 select2-hidden-accessible"
                     style="width: 100%;" tabindex="-1" aria-hidden="true">
-            </div>
-            <div class="form-group">
-                <label for="quantity">Banyak Product</label>
-                <input type="number" name="quantity" placeholder="Masukkan banyak produk" required="required"
-                    class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="diskon">Diskon Product</label>
-                <input type="number" name="diskon" placeholder="Masukkan diskon produk"  class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="categori_price">Kategori Harga</label>
-                <select name="categori_price" required="required" class="form-control">
-                    <option value="" selected="selected">Pilih</option>
-                    <option value="1">Harga Member</option>
-                    <option value="2">Harga Non Member</option>
-                </select>
             </div>
             <div class="form-group">
                 <label for="status_paid">Metode Pembayaran</label>
@@ -70,16 +57,11 @@
                     <option value="1">Tunai</option>
                     <option value="3">Bank NII Jakarta</option>
                     <option value="4">Bank BCA NII Padang</option>
-                    <option value="5">Belum Bayar</option>
                 </select>
             </div>
                 <div class="form-group">
                     <label for="paid">Pembayaran</label>
                     <input type="number" name="paid" placeholder="Masukkan besaran biaya" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="unpaid">Belum Bayar</label>
-                    <input type="number" name="unpaid" placeholder="Masukkan besaran biaya" class="form-control">
                 </div>
             <div>
                 <button type="submit" class="btn btn-primary">Submit</button>

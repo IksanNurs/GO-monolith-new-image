@@ -28,7 +28,7 @@ func GetGinRoute() *gin.Engine {
 	})
 	router.Use(sessions.Sessions("mysession", store))
 
-	router.HTMLRender = loadTemplates(os.Getenv("PATH")+"web/templates")
+	router.HTMLRender = loadTemplates(os.Getenv("PATH") + "web/templates")
 	router.Static("/media", os.Getenv("PATH")+"media")
 	router.Static("/css", os.Getenv("PATH")+"web/assets/css")
 	router.Static("/js", os.Getenv("PATH")+"web/assets/js")
@@ -48,6 +48,9 @@ func GetGinRoute() *gin.Engine {
 	})
 	router.GET("/product-user/new", middleware.AuthMiddleware(db), func(c *gin.Context) {
 		handler.NewProductUser(c)
+	})
+	router.GET("/product-user/new/angsuran", middleware.AuthMiddleware(db), func(c *gin.Context) {
+		handler.NewProductUserAngsuran(c)
 	})
 	router.GET("/product-user/edit", middleware.AuthMiddleware(db), func(c *gin.Context) {
 		handler.EditProductUser(c, db)
@@ -106,6 +109,9 @@ func GetGinRoute() *gin.Engine {
 		api.GET("/users", func(c *gin.Context) {
 			handler.ActionGetAllUserCPNS(c, db)
 		})
+		api.GET("/users/angsuran", func(c *gin.Context) {
+			handler.ActionGetAllUserCPNSAngsuran(c, db)
+		})
 		api.GET("/user/:id", middleware.AuthMiddleware(db), func(c *gin.Context) {
 			handler.ActionGetAllUserCPNSByID(c, db)
 		})
@@ -119,6 +125,9 @@ func GetGinRoute() *gin.Engine {
 		})
 		api.POST("/create-product-user", func(c *gin.Context) {
 			handler.CreateProductUser(c, db)
+		})
+		api.POST("/create-product-user-angsuran", func(c *gin.Context) {
+			handler.CreateProductUserAngsuran(c, db)
 		})
 		api.POST("/update-product-user/:id", func(c *gin.Context) {
 			handler.UpdateProductUser(c, db)

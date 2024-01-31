@@ -2899,6 +2899,30 @@
                   {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.categori_price == 1) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.pv * data.quantity)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
+                      {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.categori_price == 1) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.price_member * data.quantity)
+                                }</div>`
+                        }
+                            if (data.categori_price == 2) {
+                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.price_nonmember * data.quantity)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
+                  {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
                          if (data.categori_price == 1) {
                             return`<div class="text-right" style="white-space:nowrap">5%</div>`
                         }
@@ -2928,6 +2952,12 @@
                             if (data.status_paid==3) {
                                 return `<div class="text-right" style="white-space:nowrap">Bank NII Jakarta</div>`
                             }
+                            if (data.status_paid == 4) {
+                                return `<div class="text-right" style="white-space:nowrap">Bank BCA NII Padang</div>`
+                            }
+                              if (data.status_paid == 5) {
+                                return `<div class="text-right" style="white-space:nowrap">Belum Bayar</div>`
+                            }
                           
                         }
                         return ""
@@ -2951,6 +2981,40 @@
                                 }</div>`
                         }
                         return ""
+                    }
+                },
+                    {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.paid != null && data.paid != 0) {
+                             if (data.categori_price == 1 && (data.paid < (data.quantity*(data.Product.price_member - (data.Product.price_member * (data.diskon / 100)))))) {
+                                  return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format((data.quantity * (data.Product.price_member - (data.Product.price_member * (data.diskon / 100)))) - data.paid)
+                                     }</div>`
+                             }
+                                if (data.categori_price == 2 && (data.paid < (data.quantity *(data.Product.price_nonmember - (data.Product.price_nonmember * (data.diskon / 100)))))) {
+                                return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format((data.quantity * (data.Product.price_nonmember - (data.Product.price_nonmember * (data.diskon / 100)))) - data.paid)
+                                    }</div>`
+                            }
+                        }
+                        return ""
+                    }
+                },
+                     {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                             if (data.status_paid == 5) {
+                                return `<div class="text-right badge badge-danger" style="white-space:nowrap">Belum Bayar</div>`
+                             }else if (data.paid<  (data.paid < (data.quantity * (data.Product.price_member - (data.Product.price_member * (data.diskon / 100))))) || data.paid < (data.quantity * (data.Product.price_member - (data.Product.price_nonmember * (data.diskon / 100))))) {
+                                   if (data.diskon !=null && data.diskon!=null && (data.paid == (data.quantity *(data.Product.price_member- (data.Product.price_member*(data.diskon/100))) || data.paid == (data.Product.price_nonmember - (data.Product.price_nonmember * (data.diskon / 100)))))){
+                                           return `<div class="text-right badge badge-success" style="white-space:nowrap">Lunas
+                                    </div>`     
+                                   }
+                                  return `<div class="text-right badge badge-warning" style="white-space:nowrap">Belum Lunas</div>`
+                            } else {
+                                return `<div class="text-right badge badge-success" style="white-space:nowrap">Lunas
+                                    </div>`
+                            }
+                             return ""
                     }
                 },
                   {
@@ -3055,23 +3119,23 @@
                         return meta.row + meta.settings._iDisplayStart + 1;
                     }
                 },
-                {
-                    "data": "User.name"
-                },
-                {
-                    "data": "Product.name"
-                },
-                   {
+            {
+                        "data": "User.name"
+                    },
+                    {
+                        "data": "Product.name"
+                    },
+                    {
                         "data": null,
                         "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
                             if (data.quantity != 0 && data.quantity != null) {
-                                return `<div class="text-center" style="white-space:nowrap">${new Intl.NumberFormat().format(data.quantity)
+                                return `<div class="text-center" style="white-space:nowrap"> ${new Intl.NumberFormat().format(data.quantity)
                                     }</div>`
                             }
                             return ""
                         }
-                    }, 
-                           {
+                    },
+                    {
                         "data": null,
                         "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
                             if (data.Product.stock != 0 && data.Product.stock != null) {
@@ -3080,28 +3144,28 @@
                             }
                             return ""
                         }
-                    }, 
-                {
-                    "data": null,
-                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                        if (data.Product.price_member != 0 && data.Product.price_member != null) {
-                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.price_member)
-                                }</div>`
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.Product.price_member != 0 && data.Product.price_member != null) {
+                                return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.price_member)
+                                    }</div>`
+                            }
+                            return ""
                         }
-                        return ""
-                    }
-                },
-                {
-                    "data": null,
-                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
-                        if (data.Product.price_nonmember != 0 && data.Product.price_nonmember != null) {
-                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.price_nonmember)
-                                }</div>`
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
+                            if (data.Product.price_nonmember != 0 && data.Product.price_nonmember != null) {
+                                return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.price_nonmember)
+                                    }</div>`
+                            }
+                            return ""
                         }
-                        return ""
-                    }
-                },
-                  {
+                    },
+                    {
                         "data": null,
                         "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
                             if (data.diskon != 0 && data.diskon != null) {
@@ -3120,51 +3184,75 @@
                             }
                             return ""
                         }
-                    }, 
-                {
-                    "data": null,
-                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                        if (data.categori_price==2) {
-                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.price_nonmember - data.Product.price_member)
-                                }</div>`
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.categori_price == 2) {
+                                return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format((data.Product.price_nonmember - data.Product.price_member))
+                                    }</div>`
+                            }
+                            return ""
                         }
-                        return ""
-                    }
-                },
-                {
-                    "data": null,
-                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                        if (data.categori_price==1) {
-                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.pv)
-                                }</div>`
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.categori_price == 1) {
+                                return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.pv)
+                                    }</div>`
+                            }
+                            return ""
                         }
-                        return ""
-                    }
-                },
-                {
-                    "data": null,
-                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                        if (data.categori_price==1) {
-                            return `<div class="text-right" style="white-space:nowrap">5%</div>`
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.categori_price == 1) {
+                                return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.pv * data.quantity)
+                                    }</div>`
+                            }
+                            return ""
                         }
-                        return ""
-                    }
-                },
-                {
-                    "data": null,
-                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                        if (data.categori_price==1) {
-                            return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.pv * (5 / 100))
-                                }</div>`
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.categori_price == 1) {
+                                return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.price_member * data.quantity)
+                                    }</div>`
+                            }
+                            if (data.categori_price == 2) {
+                                return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.Product.price_nonmember * data.quantity)
+                                    }</div>`
+                            }
+                            return ""
                         }
-                        return ""
-                    }
-                },
-                  {
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.categori_price == 1) {
+                                return `<div class="text-right" style="white-space:nowrap">5%</div>`
+                            }
+                            return ""
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.categori_price == 1) {
+                                return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format((data.Product.pv * data.quantity) * (5 / 100))
+                                    }</div>`
+                            }
+                            return ""
+                        }
+                    },
+                    {
                         "data": null,
                         "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
                             if (data.status_paid != null && data.status_paid != 0) {
-                                  if (data.status_paid == 1) {
+                                if (data.status_paid == 1) {
                                     return `<div class="text-right" style="white-space:nowrap">Tunai</div>`
                                 }
                                 if (data.status_paid == 2) {
@@ -3173,12 +3261,18 @@
                                 if (data.status_paid == 3) {
                                     return `<div class="text-right" style="white-space:nowrap">Bank NII Jakarta</div>`
                                 }
+                                if (data.status_paid == 4) {
+                                    return `<div class="text-right" style="white-space:nowrap">Bank BCA NII Padang</div>`
+                                }
+                                if (data.status_paid == 5) {
+                                    return `<div class="text-right" style="white-space:nowrap">Belum Bayar</div>`
+                                }
 
                             }
                             return ""
                         }
                     },
-                 {
+                    {
                         "data": null,
                         "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
                             if (data.paid != null && data.paid != 0) {
@@ -3198,7 +3292,41 @@
                             return ""
                         }
                     },
-                   {
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.paid != null && data.paid != 0) {
+                                if (data.categori_price == 1 && (data.paid < (data.quantity * (data.Product.price_member - (data.Product.price_member * (data.diskon / 100)))))) {
+                                    return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format((data.quantity * (data.Product.price_member - (data.Product.price_member * (data.diskon / 100)))) - data.paid)
+                                        }</div>`
+                                }
+                                if (data.categori_price == 2 && (data.paid < (data.quantity * (data.Product.price_nonmember - (data.Product.price_nonmember * (data.diskon / 100)))))) {
+                                    return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format((data.quantity * (data.Product.price_nonmember - (data.Product.price_nonmember * (data.diskon / 100)))) - data.paid)
+                                        }</div>`
+                                }
+                            }
+                            return ""
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                            if (data.status_paid == 5) {
+                                return `<div class="text-right badge badge-danger" style="white-space:nowrap">Belum Bayar</div>`
+                            } else if (data.paid < (data.paid < (data.quantity * (data.Product.price_member - (data.Product.price_member * (data.diskon / 100))))) || data.paid < (data.quantity * (data.Product.price_member - (data.Product.price_nonmember * (data.diskon / 100))))) {
+                                if (data.diskon != null && data.diskon != null && (data.paid == (data.quantity * (data.Product.price_member - (data.Product.price_member * (data.diskon / 100))) || data.paid == (data.Product.price_nonmember - (data.Product.price_nonmember * (data.diskon / 100)))))) {
+                                    return `<div class="text-right badge badge-success" style="white-space:nowrap">Lunas
+                                    </div>`
+                                }
+                                return `<div class="text-right badge badge-warning" style="white-space:nowrap">Belum Lunas</div>`
+                            } else {
+                                return `<div class="text-right badge badge-success" style="white-space:nowrap">Lunas
+                                    </div>`
+                            }
+                            return ""
+                        }
+                    },
+                    {
                         "data": null,
                         "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
 
@@ -3206,7 +3334,7 @@
                                 }</div>`
                         }
                     },   
-            ],
+             ],
             "ordering": true, // Enable sorting
             "order": [
                 [0, "desc"]
@@ -3303,6 +3431,16 @@
                 "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
                     if (data.stock != 0 && data.stock != null) {
                         return `<div class="text-center" style="white-space:nowrap"> ${new Intl.NumberFormat().format(data.stock)
+                            }</div>`
+                    }
+                    return ""
+                }
+            },
+               {
+                "data": null,
+                "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                    if (data.total_stock != 0 && data.total_stock != null) {
+                        return `<div class="text-center" style="white-space:nowrap"> ${new Intl.NumberFormat().format(data.total_stock)
                             }</div>`
                     }
                     return ""
@@ -3447,6 +3585,16 @@
                         return ""
                     }
                 },
+                 {
+                    "data": null,
+                    "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
+                        if (data.total_stock != 0 && data.total_stock != null) {
+                            return `<div class="text-center" style="white-space:nowrap"> ${new Intl.NumberFormat().format(data.total_stock)
+                                }</div>`
+                        }
+                        return ""
+                    }
+                },
                 {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
@@ -3559,7 +3707,14 @@
                     }
                 },
                 {
-                    "data": "id"
+                    "data": "number_id",
+                    "render": function (data, type, row, meta) { // Menghitung nomor urut berdasarkan indeks halaman dan nomor urut data
+                        if(data!=0){
+                              return data
+                        }
+
+                        return ''
+                    }
                 },
                   {
                     "data": "name"
@@ -4074,6 +4229,32 @@
                         dropdownParent: $("#modal-universe"),
                         ajax: {
                             url: "/api/users",
+                            dataType: "json",
+                            type: "GET",
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    q: params.term || ""
+                                };
+                            },
+                            beforeSend: function (xhr) { // Ganti 'YOUR_JWT_TOKEN' dengan token JWT yang valid
+                                xhr.setRequestHeader("Authorization", "Bearer {{ .JWTToken }}");
+                            },
+                            processResults: function (data) {
+                                console.log(data)
+                                return { results: data.data.user };
+                            },
+                            cache: true
+                        }
+                    });
+
+                       $("#userAngSelect").select2({
+                        placeholder: "Search for a user...",
+                        minimumInputLength: 3,
+                        allowClear: true,
+                        dropdownParent: $("#modal-universe"),
+                        ajax: {
+                            url: "/api/users/angsuran",
                             dataType: "json",
                             type: "GET",
                             delay: 250,

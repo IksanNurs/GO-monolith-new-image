@@ -198,3 +198,20 @@ func DeleteUser(c *gin.Context, db *gorm.DB) {
 
 	c.Redirect(http.StatusSeeOther, "/user")
 }
+
+func ActionGetAllUserCPNSAngsuran(c *gin.Context, db *gorm.DB) {
+	var User []model.UserSelect
+	params := c.Query("q")
+	err := db.
+		Joins("INNER JOIN product_user ps ON ps.user_id=user.id").
+		Where("user.name like ?", "%"+params+"%").
+		Order("user.id desc").
+		Limit(20).
+		Find(&User).Error
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"Error": err.Error()})
+		return
+	}
+	formatter := helper.APIResponse("berhasil menampilkan user", http.StatusOK, gin.H{"user": User})
+	c.JSON(http.StatusOK, formatter)
+}

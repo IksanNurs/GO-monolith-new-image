@@ -24,6 +24,10 @@
     <div class="card-body">
         <form action="/api/update-report/{{ .Data.ID }}" method="POST">
             <div class="form-group">
+                    <label for="created_at">Tanggal</label>
+                    <input type="date" name="created_at" placeholder="Masukkan tanggal" required class="form-control">
+            </div>
+            <div class="form-group">
                 <label for="name">Nama</label>
                 <input type="text" name="name" value="{{ .Data.Name }}" placeholder="Masukkan nama" required="required" class="form-control">
             </div>

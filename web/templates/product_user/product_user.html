@@ -15,6 +15,10 @@
                     size="modal-lg">
                     <i class="fa fa-plus"></i>
                     Tambah</a> &nbsp;&nbsp;
+                <a value="/product-user/new/angsuran" class="btn btn-warning mb-3 py-2 showModalButton text-white" title="Tambah Angsuran"
+                            size="modal-lg">
+                            <i class="fa fa-credit-card"></i>
+                            Angsuran</a> &nbsp;&nbsp;
                     {{ end }}
                     <table class="table mb-0" style="display: none;" id="dataproductuser1" style="width:100%">
                         <thead class="thead-light">
@@ -30,18 +34,22 @@
                                 <th class="text-right" style="min-width: 1px; white-space: nowrap;">Harga Diskon</th>
                                 <th style="min-width: 1px; white-space: nowrap;">Selisih Harga</th>
                                 <th style="min-width: 1px; white-space: nowrap;">PV</th>
+                                <th style="min-width: 1px; white-space: nowrap;">Total PV</th>
+                                <th style="min-width: 1px; white-space: nowrap;">Total Penjualan</th>
                                 <th style="min-width: 1px; white-space: nowrap;">Bonus 5%</th>
                                 <th style="min-width: 1px; white-space: nowrap;">Hasil</th>
                                 <th style="min-width: 1px; white-space: nowrap;">Metode Pembayaran</th>
                                 <th style="min-width: 1px; white-space: nowrap;">Pembayaran</th>
                                 <th style="min-width: 1px; white-space: nowrap;">Belum Bayar</th>
+                                <th style="min-width: 1px; white-space: nowrap;">Sisa Bayar</th>
+                                <th style="min-width: 1px; white-space: nowrap;">Status Bayar</th>
                                 <th style="min-width: 1px; white-space: nowrap;">Tanggal</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <!-- Kolom kosong untuk penambahan total -->
-                                <td colspan="8"></td> <!-- Sesuaikan jumlah kolom dengan tabel Anda -->
+                                <td colspan="13"></td> <!-- Sesuaikan jumlah kolom dengan tabel Anda -->
                                 <td style="text-align: right;"><strong>Total:</strong></td>
                                 <td style="text-align: right; min-width: 1px; white-space: nowrap;"><span id="totalHasil">Rp {{ .tot }}</span>
                                 </td>
@@ -139,11 +147,15 @@
                         <th class="text-right" style="min-width: 1px; white-space: nowrap;">Harga Diskon</th>
                         <th style="min-width: 1px; white-space: nowrap;">Selisih Harga</th>
                         <th style="min-width: 1px; white-space: nowrap;">PV</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Total PV</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Total Penjualan</th>
                         <th style="min-width: 1px; white-space: nowrap;">Bonus 5%</th>
                         <th style="min-width: 1px; white-space: nowrap;">Hasil</th>
                         <th style="min-width: 1px; white-space: nowrap;">Metode Pembayaran</th>
                         <th style="min-width: 1px; white-space: nowrap;">Pembayaran</th>
                         <th style="min-width: 1px; white-space: nowrap;">Belum Bayar</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Sisa Bayar</th>
+                        <th style="min-width: 1px; white-space: nowrap;">Status Bayar</th>
                         <th style="min-width: 1px; white-space: nowrap;">Tanggal</th>
                     </tr>
                 </thead>
@@ -152,8 +164,11 @@
         <div class="mr-1">
             <div>Total Penjualan Member : Rp {{ .totmember }}</div>
             <div>Total Penjualan Non Member: Rp {{ .totnonmember }}</div>
-            <div>Total Pembayaran tunai: Rp {{ .totpaid }}</div>
+            <div>Total Pembayaran Tunai: Rp {{ .tot1 }}</div>
+            <div>Total Bank NII Jakarta: Rp {{ .tot3 }}</div>
+            <div>Total Bank BCA NII Padang: Rp {{ .tot4 }}</div>
             <div>Total Belum Bayar: Rp {{ .totunpaid }}</div>
+            <div>Total Kas: Rp {{ .totpaid }}</div>
         </div>
     </div>
 </div>

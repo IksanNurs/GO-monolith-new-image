@@ -20,7 +20,7 @@ func NewProduct(c *gin.Context) {
 	tmpl := template.Must(template.ParseFiles(os.Getenv("PATH_SUB_BASE") + "/product/product_new.html"))
 	session := sessions.Default(c)
 	userID := session.Get("id").(int32)
-	if err := tmpl.Execute(c.Writer, gin.H{"userID":userID,"AuthURL": os.Getenv("AUTH_ADMIN_URL"), "URL": os.Getenv("AUTH_URL")}); err != nil {
+	if err := tmpl.Execute(c.Writer, gin.H{"userID": userID, "AuthURL": os.Getenv("AUTH_ADMIN_URL"), "URL": os.Getenv("AUTH_URL")}); err != nil {
 		fmt.Println(err)
 	}
 
@@ -182,6 +182,17 @@ func GetDataProduct(c *gin.Context, db *gorm.DB) {
 	}
 
 	for i := range productusers {
+		var count int64
+		err := db.Debug().
+			Table("product").
+			Select("SUM(stock)").
+			Where("name=?", productusers[i].Name).
+			Scan(&count).
+			Error
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
 		jakartaLocation, err1 := time.LoadLocation("Asia/Jakarta")
 		if err1 != nil {
 			// Handle error jika gagal memuat zona waktu
@@ -193,6 +204,7 @@ func GetDataProduct(c *gin.Context, db *gorm.DB) {
 			date = date.In(jakartaLocation)
 			productusers[i].CreatedAt_t = date.Format("2006-01-02 15:04")
 		}
+		productusers[i].TotalStock=int32(count)
 	}
 
 	numPages := int(math.Ceil(float64(totalRecords) / float64(pageSize)))
