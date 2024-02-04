@@ -72,6 +72,9 @@ func GetGinRoute() *gin.Engine {
 	router.GET("/product/new", middleware.AuthMiddleware(db), func(c *gin.Context) {
 		handler.NewProduct(c)
 	})
+	router.GET("/product/new/stock", middleware.AuthMiddleware(db), func(c *gin.Context) {
+		handler.NewProductProductStock(c)
+	})
 	router.GET("/product/edit", middleware.AuthMiddleware(db), func(c *gin.Context) {
 		handler.EditProduct(c, db)
 	})
@@ -156,6 +159,9 @@ func GetGinRoute() *gin.Engine {
 		})
 		api.POST("/create-product", func(c *gin.Context) {
 			handler.CreateProduct(c, db)
+		})
+		api.POST("/create-product-stock", func(c *gin.Context) {
+			handler.CreateProductStock(c, db)
 		})
 		api.POST("/update-product/:id", func(c *gin.Context) {
 			handler.UpdateProduct(c, db)

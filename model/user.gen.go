@@ -36,7 +36,7 @@ type InputUser struct {
 
 type User struct {
 	ID        int32 `gorm:"column:id;type:int(11);primaryKey" json:"id"`
-	Email    string `gorm:"column:email;type:varchar(255);primaryKey;uniqueIndex:email,priority:1" json:"email"`
+	Email    string `gorm:"column:email;type:varchar(255);" json:"email"`
 	Name     string `gorm:"column:name;type:varchar(255);not null" json:"name"`
 	NumberID  int32  `gorm:"column:number_id;type:int(15)" json:"number_id" form:"number_id"`
 	Alamat   string `gorm:"column:alamat;type:varchar(255);not null" json:"alamat"`

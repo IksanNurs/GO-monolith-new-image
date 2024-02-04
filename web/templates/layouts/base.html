@@ -2830,7 +2830,7 @@
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
                         if (data.Product.stock != 0 && data.Product.stock != null) {
-                            return `<div class="text-center" style="white-space:nowrap"> ${new Intl.NumberFormat().format(data.Product.stock)
+                            return `<div class="text-center" style="white-space:nowrap"> ${new Intl.NumberFormat().format(data.Product.total_stock)
                                 }</div>`
                         }
                         return ""

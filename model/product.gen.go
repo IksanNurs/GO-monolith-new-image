@@ -14,7 +14,7 @@ type Product struct {
 	PriceMember    int32  `gorm:"column:price_member;type:int(11);not null" json:"price_member"`
 	Pv             int32  `gorm:"column:pv;type:int(11);not null" json:"pv"`
 	Stock          int32  `gorm:"column:stock;type:int(11);not null" json:"stock"`
-	TotalStock          int32  `gorm:"column:stock;type:int(11);not null" json:"total_stock"`
+	TotalStock          int32  `gorm:"column:total_stock;type:int(11);not null" json:"total_stock"`
 	CreatedAt int32 `gorm:"column:created_at;type:int(11);" json:"created_at"`
 	CreatedAt_t string `gorm:"column:created_at;type:int(11);" json:"created_at_t"`
 }
@@ -25,6 +25,7 @@ type InputProduct struct {
 	Name           string `gorm:"column:name;type:varchar(255);not null" json:"name" form:"name"`
 	PriceNonmember int32  `gorm:"column:price_nonmember;type:int(11);not null" json:"price_nonmember" form:"price_nonmember"`
 	PriceMember    int32  `gorm:"column:price_member;type:int(11);not null" json:"price_member" form:"price_member"`
+	TotalStock      int32  `gorm:"column:total_stock;type:int(11);not null" json:"total_stock"`
 	Pv             int32  `gorm:"column:pv;type:int(11);not null" json:"pv" form:"pv"`
 	Stock          *int32  `gorm:"column:stock;type:int(11);not null" json:"stock" form:"stock"`
 	CreatedAt int64 `gorm:"column:created_at;type:int(11)" json:"created_at"`

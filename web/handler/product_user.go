@@ -39,6 +39,7 @@ func GetDataSelectProduct(c *gin.Context, db *gorm.DB) {
 	var version []model.ProductSelect
 	err := db.
 		Where("name like ?", "%"+versionId+"%").
+		Group("name").
 		Order("id desc").
 		Find(&version).Error
 	if err != nil {
@@ -91,9 +92,9 @@ func CreateProductUser(c *gin.Context, db *gorm.DB) {
 		c.Redirect(http.StatusSeeOther, "/product-user")
 		return
 	}
-	if product.Stock != 0 {
-		db.Debug().Table("product").Where("id=?", inputTutor.ProductID).Updates(map[string]interface{}{
-			"stock": product.Stock - *inputTutor.Quantity,
+	if product.TotalStock != 0 {
+		db.Debug().Table("product").Where("name=?", product.Name).Updates(map[string]interface{}{
+			"total_stock": product.TotalStock - *inputTutor.Quantity,
 		})
 	} else {
 		session.Set("error", "product "+product.Name+" tidak memiliki persedian stok")
@@ -223,14 +224,14 @@ func UpdateProductUser(c *gin.Context, db *gorm.DB) {
 		return
 	}
 	if *inputTutor.Quantity != productuser.Quantity {
-		if product.Stock != 0 {
+		if product.TotalStock!= 0 {
 			k := 0
 			if *inputTutor.Quantity < productuser.Quantity {
 				k = int(productuser.Quantity - *inputTutor.Quantity)
-				k += int(product.Stock)
+				k += int(product.TotalStock)
 			} else {
 				k = int(*inputTutor.Quantity - productuser.Quantity)
-				k = int(product.Stock) - k
+				k = int(product.TotalStock) - k
 			}
 			fmt.Println(k)
 			if k < 0 {
@@ -239,8 +240,8 @@ func UpdateProductUser(c *gin.Context, db *gorm.DB) {
 				c.Redirect(http.StatusSeeOther, "/product-user")
 				return
 			}
-			db.Debug().Table("product").Where("id=?", inputTutor.ProductID).Updates(map[string]interface{}{
-				"stock": k,
+			db.Debug().Table("product").Where("name=?", product.Name).Updates(map[string]interface{}{
+				"total_stock": k,
 			})
 		} else {
 			session.Set("error", "product "+product.Name+" tidak memiliki persedian stok")
