@@ -182,10 +182,6 @@ func UpdateProduct(c *gin.Context, db *gorm.DB) {
 		timestamp := dateParsed.Unix()
 		inputTutor.CreatedAt = timestamp
 	}
-	inputTutor.TotalStock = 0
-	if inputTutor.Stock != nil {
-		inputTutor.TotalStock = *inputTutor.Stock
-	}
 	err = db.Debug().Model(&inputTutor).Where("id=?", id).Updates(&inputTutor).Error
 	if err != nil {
 		fmt.Println(err.Error())
