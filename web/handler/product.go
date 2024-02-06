@@ -213,13 +213,12 @@ func GetDataProduct(c *gin.Context, db *gorm.DB) {
 
 	var totalRecords int64
 	var productusers []model.Product
+
 	searchQuery, queryParams := buildSearchQueryProduct(searchValue)
+
 	query := db.Debug().Model(&model.Product{}).
-		Where(searchQuery, queryParams...).
-		Count(&totalRecords).
-		Limit(pageSize).Offset(page).
-		Order(orderColumn + " " + orderDir).
-		Find(&productusers)
+		Where(searchQuery, queryParams...)
+
 	if day != 0 && month != 0 && year != 0 {
 		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
 			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
@@ -237,7 +236,8 @@ func GetDataProduct(c *gin.Context, db *gorm.DB) {
 	} else if year != 0 {
 		query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
 	}
-	query.Count(&totalRecords).
+
+	query = query.Count(&totalRecords).
 		Limit(pageSize).Offset(page).
 		Order(orderColumn + " " + orderDir).
 		Find(&productusers)
@@ -250,8 +250,7 @@ func GetDataProduct(c *gin.Context, db *gorm.DB) {
 	for i := range productusers {
 		jakartaLocation, err1 := time.LoadLocation("Asia/Jakarta")
 		if err1 != nil {
-			// Handle error jika gagal memuat zona waktu
-			c.JSON(http.StatusInternalServerError, gin.H{"error": query.Error.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err1.Error()})
 			return
 		}
 		if productusers[i].CreatedAt != 0 {
@@ -272,6 +271,7 @@ func GetDataProduct(c *gin.Context, db *gorm.DB) {
 	}
 
 	c.JSON(http.StatusOK, response)
+
 }
 
 func getColumnProduct(idx int) string {
