@@ -143,7 +143,6 @@ func CreateProductUserAngsuran(c *gin.Context, db *gorm.DB) {
 		return
 	}
 
-
 	jakartaLocation, err := time.LoadLocation("Asia/Jakarta")
 	if err != nil {
 		session.Set("error", err.Error())
@@ -180,10 +179,10 @@ func CreateProductUserAngsuran(c *gin.Context, db *gorm.DB) {
 		return
 	}
 	*inputTutor.Paid = *inputTutor.Paid + productuser.Paid
-	inputTutor.Quantity=&productuser.Quantity
-	inputTutor.CategoriPrice=productuser.CategoriPrice
-	inputTutor.Diskon=&productuser.Diskon
-	inputTutor.Unpaid=nil
+	inputTutor.Quantity = &productuser.Quantity
+	inputTutor.CategoriPrice = productuser.CategoriPrice
+	inputTutor.Diskon = &productuser.Diskon
+	inputTutor.Unpaid = nil
 
 	err = db.Debug().Create(&inputTutor).Error
 	if err != nil {
@@ -224,7 +223,7 @@ func UpdateProductUser(c *gin.Context, db *gorm.DB) {
 		return
 	}
 	if *inputTutor.Quantity != productuser.Quantity {
-		if product.TotalStock!= 0 {
+		if product.TotalStock != 0 {
 			k := 0
 			if *inputTutor.Quantity < productuser.Quantity {
 				k = int(productuser.Quantity - *inputTutor.Quantity)
@@ -502,8 +501,15 @@ func DeleteProductUser(c *gin.Context, db *gorm.DB) {
 	session := sessions.Default(c)
 	// email := session.Get("email").(string)
 	var package1 model.ProductUser
+	var product model.Product
+	var productuser model.ProductUser
 	id := c.Query("id")
 
+	db.Where("id=?", id).First(&productuser)
+	db.Where("id=?", productuser.ProductID).First(&product)
+	db.Debug().Table("product").Where("name=?", product.Name).Updates(map[string]interface{}{
+		"total_stock": product.TotalStock + productuser.Quantity,
+	})
 	err := db.Where("id=?", id).Delete(&package1).Error
 	if err != nil {
 		session.Set("error", err.Error())

@@ -16,11 +16,11 @@ import (
 )
 
 func NewReport(c *gin.Context) {
-session := sessions.Default(c)
+	session := sessions.Default(c)
 	userID := session.Get("id").(int32)
 	tmpl := template.Must(template.ParseFiles(os.Getenv("PATH_SUB_BASE") + "/report/report_new.html"))
 
-	if err := tmpl.Execute(c.Writer, gin.H{"userID":userID,"AuthURL": os.Getenv("AUTH_ADMIN_URL"), "URL": os.Getenv("AUTH_URL")}); err != nil {
+	if err := tmpl.Execute(c.Writer, gin.H{"userID": userID, "AuthURL": os.Getenv("AUTH_ADMIN_URL"), "URL": os.Getenv("AUTH_URL")}); err != nil {
 		fmt.Println(err)
 	}
 
@@ -94,24 +94,26 @@ func UpdateReport(c *gin.Context, db *gorm.DB) {
 		c.Redirect(http.StatusSeeOther, "/report")
 		return
 	}
-	jakartaLocation, err := time.LoadLocation("Asia/Jakarta")
-	if err != nil {
-		session.Set("error", err.Error())
-		session.Save()
-		c.Redirect(http.StatusSeeOther, "/product-user")
-		return
-	}
-	dateParsed, err := time.ParseInLocation("2006-01-02", c.PostForm("created_at"), jakartaLocation)
-	if err != nil {
-		session.Set("error", err.Error())
-		session.Save()
-		c.Redirect(http.StatusSeeOther, "/product-user")
-		return
-	}
+	if c.PostForm("created_at") != "" {
+		jakartaLocation, err := time.LoadLocation("Asia/Jakarta")
+		if err != nil {
+			session.Set("error", err.Error())
+			session.Save()
+			c.Redirect(http.StatusSeeOther, "/product-user")
+			return
+		}
+		dateParsed, err := time.ParseInLocation("2006-01-02", c.PostForm("created_at"), jakartaLocation)
+		if err != nil {
+			session.Set("error", err.Error())
+			session.Save()
+			c.Redirect(http.StatusSeeOther, "/product-user")
+			return
+		}
 
-	// Mengonversi time.Time ke timestamp UNIX (int64)
-	timestamp := dateParsed.Unix()
-	inputTutor.CreatedAt = timestamp
+		// Mengonversi time.Time ke timestamp UNIX (int64)
+		timestamp := dateParsed.Unix()
+		inputTutor.CreatedAt = timestamp
+	}
 	err = db.Debug().Model(&inputTutor).Where("id=?", id).Updates(&inputTutor).Error
 	if err != nil {
 		fmt.Println(err.Error())
@@ -218,6 +220,10 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 	var totalRecords int64
 	var reportusers []model.Report
 	var reportusersbaru []model.Report
+	var totalk1 int
+	var totalk2 int
+	var totalk3 int
+	var totalk4 int
 	searchQuery, queryParams := buildSearchQueryReport(searchValue)
 	query := db.Debug().Model(&model.Report{}).
 		Where(searchQuery, queryParams...).
@@ -225,22 +231,115 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 		Limit(pageSize).Offset(page).
 		Order(orderColumn + " " + orderDir).
 		Find(&reportusers)
+	query1 := db.Table("report").Where("categori_id=?", 1).Select("SUM(price)").Scan(&totalk1)
+	query2 := db.Table("report").Where("categori_id=?", 2).Select("SUM(price)").Scan(&totalk2)
+	query3 := db.Table("report").Where("categori_id=?", 3).Select("SUM(price)").Scan(&totalk3)
+	query4 := db.Table("report").Where("categori_id=?", 4).Select("SUM(price)").Scan(&totalk4)
+	k1 := []model.Report{}
+	query5 := db.Where("categori_id=?", 1).Order("id desc").Find(&k1)
+	k2 := []model.Report{}
+	query6 := db.Where("categori_id=?", 2).Order("id desc").Find(&k2)
+	k3 := []model.Report{}
+	query7 := db.Where("categori_id=?", 3).Order("id desc").Find(&k3)
+	k4 := []model.Report{}
+	query8 := db.Where("categori_id=?", 4).Order("id desc").Find(&k4)
 	if day != 0 && month != 0 && year != 0 {
 		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
 			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
 			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query1 = query1.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query2 = query2.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query3 = query3.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query4 = query4.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query5 = query5.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query6 = query6.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query7 = query7.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query8 = query8.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+
 	} else if day != 0 && month != 0 {
 		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query1 = query1.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query2 = query2.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query3 = query3.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query4 = query4.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query5 = query5.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query6 = query6.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query7 = query7.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query8 = query8.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
 			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
 	} else if month != 0 && year != 0 {
 		query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
 			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query1 = query1.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query2 = query2.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query3 = query3.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query4 = query4.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query5 = query5.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query6 = query6.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query7 = query7.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query8 = query8.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
 	} else if day != 0 {
 		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
+		query1 = query1.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
+		query2 = query2.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
+		query3 = query3.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
+		query4 = query4.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
+		query5 = query5.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
+		query6 = query6.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
+		query7 = query7.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
+		query8 = query8.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
 	} else if month != 0 {
 		query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query1 = query1.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query2 = query2.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query3 = query3.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query4 = query4.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query5 = query5.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query6 = query6.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query7 = query7.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query8 = query8.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
 	} else if year != 0 {
 		query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query1 = query1.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query2 = query2.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query3 = query3.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query4 = query4.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query5 = query5.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query6 = query6.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query7 = query7.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query8 = query8.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
 	}
 
 	query.Count(&totalRecords).
@@ -252,14 +351,14 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": query.Error.Error()})
 		return
 	}
-	var totalk1 int
-	var totalk2 int
-	var totalk3 int
-	var totalk4 int
-	db.Table("report").Where("categori_id=?", 1).Select("SUM(price)").Scan(&totalk1)
-	db.Table("report").Where("categori_id=?", 2).Select("SUM(price)").Scan(&totalk2)
-	db.Table("report").Where("categori_id=?", 3).Select("SUM(price)").Scan(&totalk3)
-	db.Table("report").Where("categori_id=?", 4).Select("SUM(price)").Scan(&totalk4)
+	query1.Select("SUM(price)").Scan(&totalk1)
+	query2.Select("SUM(price)").Scan(&totalk2)
+	query3.Select("SUM(price)").Scan(&totalk3)
+	query4.Select("SUM(price)").Scan(&totalk4)
+	query5.Order("id desc").Find(&k1)
+	query6.Order("id desc").Find(&k2)
+	query7.Order("id desc").Find(&k3)
+	query8.Order("id desc").Find(&k4)
 
 	labausaha := totalk1 - totalk2
 	labadiluarusaha := totalk3 - totalk4
@@ -271,14 +370,6 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 	i4 := false
 	i5 := false
 	i6 := false
-	k1 := []model.Report{}
-	db.Where("categori_id=?", 1).Order("id desc").Find(&k1)
-	k2 := []model.Report{}
-	db.Where("categori_id=?", 2).Order("id desc").Find(&k2)
-	k3 := []model.Report{}
-	db.Where("categori_id=?", 3).Order("id desc").Find(&k3)
-	k4 := []model.Report{}
-	db.Where("categori_id=?", 4).Order("id desc").Find(&k4)
 	k3gab := len(k1) + len(k2) + len(k3)
 	k4gab := len(k1) + len(k2) + len(k3) + len(k4)
 	for i := range reportusers {

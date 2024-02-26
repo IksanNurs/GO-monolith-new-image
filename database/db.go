@@ -1,7 +1,6 @@
 package database
 
 import (
-	"akuntansi/model"
 	"log"
 	"os"
 
@@ -22,7 +21,7 @@ func StartDB() {
 	}
 
 	db.Logger = db.Logger.LogMode(logger.Silent)
-	db.AutoMigrate(&model.Product{}, &model.ProductUser{}, &model.User{}, model.Report{}) // Tambahkan CasbinRule ke AutoMigrate
+	//db.AutoMigrate(&model.Product{}, &model.ProductUser{}, &model.User{}, model.Report{}) // Tambahkan CasbinRule ke AutoMigrate
 
 }
 

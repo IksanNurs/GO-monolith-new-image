@@ -152,6 +152,7 @@ func CreateProductStock(c *gin.Context, db *gorm.DB) {
 
 func UpdateProduct(c *gin.Context, db *gorm.DB) {
 	var inputTutor model.InputProduct
+	var product model.Product
 	session := sessions.Default(c)
 	id := c.Param("id")
 	err := c.ShouldBind(&inputTutor)
@@ -181,6 +182,20 @@ func UpdateProduct(c *gin.Context, db *gorm.DB) {
 		// Mengonversi time.Time ke timestamp UNIX (int64)
 		timestamp := dateParsed.Unix()
 		inputTutor.CreatedAt = timestamp
+	}
+	db.Where("id=?", id).First(&product)
+	if inputTutor.Stock != nil && (*inputTutor.Stock > product.Stock) {
+		fmt.Println("hg +")
+		db.Debug().Table("product").Where("name=?", product.Name).Updates(map[string]interface{}{
+			"total_stock": product.TotalStock + (*inputTutor.Stock - product.Stock),
+		})
+	}
+	if inputTutor.Stock != nil && (*inputTutor.Stock < product.Stock) {
+		fmt.Println("hg")
+		fmt.Println(product.Name)
+		db.Debug().Table("product").Where("name=?", product.Name).Updates(map[string]interface{}{
+			"total_stock": product.TotalStock - (product.Stock-*inputTutor.Stock),
+		})
 	}
 	err = db.Debug().Model(&inputTutor).Where("id=?", id).Updates(&inputTutor).Error
 	if err != nil {
@@ -303,8 +318,13 @@ func DeleteProduct(c *gin.Context, db *gorm.DB) {
 	session := sessions.Default(c)
 	// email := session.Get("email").(string)
 	var package1 model.Product
+	var package2 model.Product
 	id := c.Query("id")
 
+	db.Where("id=?", id).First(&package2)
+	db.Debug().Table("product").Where("name=?", package2.Name).Updates(map[string]interface{}{
+		"total_stock": package2.TotalStock - package2.Stock,
+	})
 	err := db.Where("id=?", id).Delete(&package1).Error
 	if err != nil {
 		session.Set("error", err.Error())

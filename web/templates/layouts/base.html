@@ -2829,7 +2829,7 @@
                        {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                        if (data.Product.stock != 0 && data.Product.stock != null) {
+                        if (data.Product.total_stock != 0 && data.Product.total_stock != null) {
                             return `<div class="text-center" style="white-space:nowrap"> ${new Intl.NumberFormat().format(data.Product.total_stock)
                                 }</div>`
                         }
@@ -3003,7 +3003,7 @@
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
                              if (data.status_paid == 5) {
-                                return `<div class="text-right badge badge-danger" style="white-space:nowrap">Belum Bayar</div>`
+                                return `<div class="text-right badge badge-danger" style="white-space:now\rap">Belum Bayar</div>`
                              }else if (data.paid< (data.quantity * (data.Product.price_member - (data.Product.price_member * (data.diskon / 100)))) || data.paid < (data.quantity * (data.Product.price_member - (data.Product.price_nonmember * (data.diskon / 100))))) {
                                    if (data.diskon !=null && data.diskon!=null && (data.paid == (data.quantity *(data.Product.price_member- (data.Product.price_member*(data.diskon/100))) || data.paid == (data.Product.price_nonmember - (data.Product.price_nonmember * (data.diskon / 100)))))){
                                            return `<div class="text-right badge badge-success" style="white-space:nowrap">Lunas
@@ -3138,8 +3138,8 @@
                     {
                         "data": null,
                         "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
-                            if (data.Product.stock != 0 && data.Product.stock != null) {
-                                return `<div class="text-center" style="white-space:nowrap"> ${new Intl.NumberFormat().format(data.Product.stock)
+                            if (data.Product.total_stock != 0 && data.Product.total_stock != null) {
+                                return `<div class="text-center" style="white-space:nowrap"> ${new Intl.NumberFormat().format(data.Product.total_stock)
                                     }</div>`
                             }
                             return ""
@@ -3916,7 +3916,7 @@
                                  var cellValue = $('is t', this).text().trim();
 
                                  // Contoh: Jika nilai sel di kolom A sama dengan "Pendapatan Usaha", beri format cetak tebal
-                                 if (cellValue === "Pendapatan Usaha" || cellValue === "Beban Usaha" || cellValue === "Pendapatan di Luar Usaha" || cellValue === "Beban di Luar Usaha" || cellValue === "Laba Usaha" || cellValue === "Laba di Luar Usaha" || cellValue==="Laba Bersih") {
+                                 if (cellValue === "Jumlah Beban Usaha" || cellValue === "Pendapatan Usaha" || cellValue === "Beban Usaha" || cellValue === "Pendapatan di Luar Usaha" || cellValue === "Beban di Luar Usaha" || cellValue === "Laba Usaha" || cellValue === "Laba di Luar Usaha" || cellValue==="Laba Bersih") {
                                      $(this).attr('s', '2');
                                  } else {
                                      $(this).attr('s', '3');
