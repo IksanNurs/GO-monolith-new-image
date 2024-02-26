@@ -231,10 +231,10 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 		Limit(pageSize).Offset(page).
 		Order(orderColumn + " " + orderDir).
 		Find(&reportusers)
-	query1 := db.Table("report").Where("categori_id=?", 1).Select("SUM(price)").Scan(&totalk1)
-	query2 := db.Table("report").Where("categori_id=?", 2).Select("SUM(price)").Scan(&totalk2)
-	query3 := db.Table("report").Where("categori_id=?", 3).Select("SUM(price)").Scan(&totalk3)
-	query4 := db.Table("report").Where("categori_id=?", 4).Select("SUM(price)").Scan(&totalk4)
+	query1 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 1).Scan(&totalk1)
+	query2 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 2).Scan(&totalk2)
+	query3 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 3).Scan(&totalk3)
+	query4 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 4).Scan(&totalk4)
 	k1 := []model.Report{}
 	query5 := db.Where("categori_id=?", 1).Order("id desc").Find(&k1)
 	k2 := []model.Report{}
@@ -351,10 +351,10 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": query.Error.Error()})
 		return
 	}
-	query1.Select("SUM(price)").Scan(&totalk1)
-	query2.Select("SUM(price)").Scan(&totalk2)
-	query3.Select("SUM(price)").Scan(&totalk3)
-	query4.Select("SUM(price)").Scan(&totalk4)
+	query1.Scan(&totalk1)
+	query2.Scan(&totalk2)
+	query3.Scan(&totalk3)
+	query4.Scan(&totalk4)
 	query5.Order("id desc").Find(&k1)
 	query6.Order("id desc").Find(&k2)
 	query7.Order("id desc").Find(&k3)
