@@ -231,10 +231,10 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 		Limit(pageSize).Offset(page).
 		Order(orderColumn + " " + orderDir).
 		Find(&reportusers)
-	query1 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 1).Scan(&totalk1)
-	query2 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 2).Scan(&totalk2)
-	query3 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 3).Scan(&totalk3)
-	query4 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 4).Scan(&totalk4)
+	query1 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 1)
+	query2 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 2)
+	query3 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 3)
+	query4 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 4)
 	k1 := []model.Report{}
 	query5 := db.Where("categori_id=?", 1).Order("id desc").Find(&k1)
 	k2 := []model.Report{}
@@ -360,9 +360,31 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 	query7.Order("id desc").Find(&k3)
 	query8.Order("id desc").Find(&k4)
 
+	fmt.Println(totalk1)
+	fmt.Println(totalk2)
+	fmt.Println(totalk3)
+	fmt.Println(totalk4)
 	labausaha := totalk1 - totalk2
+	if totalk1 != 0 && totalk2 == 0 {
+		labausaha = totalk1
+	}
+	if totalk1 == 0 && totalk2 != 0 {
+		labausaha = totalk2
+	}
 	labadiluarusaha := totalk3 - totalk4
+	if totalk3 != 0 && totalk4 == 0 {
+		labadiluarusaha = totalk3
+	}
+	if totalk3 == 0 && totalk4 != 0 {
+		labadiluarusaha = totalk4
+	}
 	lababersih := labausaha - labadiluarusaha
+	if labausaha != 0 && labadiluarusaha == 0 {
+		lababersih = labausaha
+	}
+	if labausaha == 0 && labadiluarusaha != 0 {
+		lababersih = labadiluarusaha
+	}
 
 	i1 := false
 	i2 := false
