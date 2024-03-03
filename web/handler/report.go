@@ -226,11 +226,8 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 	var totalk4 int
 	searchQuery, queryParams := buildSearchQueryReport(searchValue)
 	query := db.Debug().Model(&model.Report{}).
-		Where(searchQuery, queryParams...).
-		Count(&totalRecords).
-		Limit(pageSize).Offset(page).
-		Order(orderColumn + " " + orderDir).
-		Find(&reportusers)
+		Where(searchQuery, queryParams...)
+
 	query1 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 1)
 	query2 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 2)
 	query3 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 3)
@@ -243,6 +240,9 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 	query7 := db.Where("categori_id=?", 3).Order("id desc").Find(&k3)
 	k4 := []model.Report{}
 	query8 := db.Where("categori_id=?", 4).Order("id desc").Find(&k4)
+	fmt.Println(c.PostForm("month"))
+	fmt.Println(c.PostForm("year"))
+	fmt.Println(c.PostForm("day"))
 	if day != 0 && month != 0 && year != 0 {
 		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
 			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
@@ -369,7 +369,7 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 		labausaha = totalk1
 	}
 	if totalk1 == 0 && totalk2 != 0 {
-		labausaha = totalk2
+		labausaha = 0
 	}
 	labadiluarusaha := totalk3 - totalk4
 	if totalk3 != 0 && totalk4 == 0 {
