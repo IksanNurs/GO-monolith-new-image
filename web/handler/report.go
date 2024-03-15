@@ -147,11 +147,7 @@ func GetDataReport(c *gin.Context, db *gorm.DB) {
 	var reportusers []model.Report
 	searchQuery, queryParams := buildSearchQueryReport(searchValue)
 	query := db.Debug().Model(&model.Report{}).
-		Where(searchQuery, queryParams...).
-		Count(&totalRecords).
-		Limit(pageSize).Offset(page).
-		Order(orderColumn + " " + orderDir).
-		Find(&reportusers)
+		Where(searchQuery, queryParams...)
 	if day != 0 && month != 0 && year != 0 {
 		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
 			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
