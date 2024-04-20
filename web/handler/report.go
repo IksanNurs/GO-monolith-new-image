@@ -214,6 +214,7 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 	orderColumn := getColumnReport(orderColumnIdx)
 
 	var totalRecords int64
+	//piutang := []model.Report{}
 	var reportusers []model.Report
 	var reportusersbaru []model.Report
 	var totalk1 int
@@ -222,7 +223,8 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 	var totalk4 int
 	searchQuery, queryParams := buildSearchQueryReport(searchValue)
 	query := db.Debug().Model(&model.Report{}).
-		Where(searchQuery, queryParams...)
+		Where(searchQuery, queryParams...).
+		Where("categori_id!=? AND categori_id!=?", 11, 12)
 
 	query1 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 1)
 	query2 := db.Table("report").Select("SUM(price)").Where("categori_id=?", 2)
@@ -236,6 +238,7 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 	query7 := db.Where("categori_id=?", 3).Order("id desc").Find(&k3)
 	k4 := []model.Report{}
 	query8 := db.Where("categori_id=?", 4).Order("id desc").Find(&k4)
+	query9 := db.Where("categori_id=?", 11)
 	fmt.Println(c.PostForm("month"))
 	fmt.Println(c.PostForm("year"))
 	fmt.Println(c.PostForm("day"))
@@ -267,6 +270,9 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 		query8 = query8.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
 			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
 			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query9 = query9.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
 
 	} else if day != 0 && month != 0 {
 		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
@@ -287,6 +293,8 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
 		query8 = query8.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
 			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query9 = query9.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day).
+			Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
 	} else if month != 0 && year != 0 {
 		query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
 			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
@@ -306,6 +314,8 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
 		query8 = query8.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
 			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query9 = query9.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month).
+			Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
 	} else if day != 0 {
 		query = query.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
 		query1 = query1.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
@@ -316,6 +326,7 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 		query6 = query6.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
 		query7 = query7.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
 		query8 = query8.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
+		query9 = query9.Where("DAY(FROM_UNIXTIME(created_at)) = ?", day)
 	} else if month != 0 {
 		query = query.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
 		query1 = query1.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
@@ -326,6 +337,7 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 		query6 = query6.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
 		query7 = query7.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
 		query8 = query8.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
+		query9 = query9.Where("MONTH(FROM_UNIXTIME(created_at)) = ?", month)
 	} else if year != 0 {
 		query = query.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
 		query1 = query1.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
@@ -336,6 +348,7 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 		query6 = query6.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
 		query7 = query7.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
 		query8 = query8.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
+		query9 = query9.Where("YEAR(FROM_UNIXTIME(created_at)) = ?", year)
 	}
 
 	query.Count(&totalRecords).
@@ -355,32 +368,42 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 	query6.Order("id desc").Find(&k2)
 	query7.Order("id desc").Find(&k3)
 	query8.Order("id desc").Find(&k4)
+	//query9.Order("id desc").Find(&piutang)
 
 	fmt.Println(totalk1)
 	fmt.Println(totalk2)
 	fmt.Println(totalk3)
 	fmt.Println(totalk4)
 	labausaha := totalk1 - totalk2
-	if totalk1 != 0 && totalk2 == 0 {
+	if totalk1 > 0 && totalk2 <= 0 {
 		labausaha = totalk1
 	}
-	if totalk1 == 0 && totalk2 != 0 {
-		labausaha = 0
+	if totalk1 <= 0 && totalk2 > 0 {
+		labausaha = totalk2
 	}
 	labadiluarusaha := totalk3 - totalk4
-	if totalk3 != 0 && totalk4 == 0 {
+	if totalk3 > 0 && totalk4 <= 0 {
 		labadiluarusaha = totalk3
 	}
-	if totalk3 == 0 && totalk4 != 0 {
+	if totalk3 <= 0 && totalk4 > 0 {
 		labadiluarusaha = totalk4
 	}
 	lababersih := labausaha - labadiluarusaha
-	if labausaha != 0 && labadiluarusaha == 0 {
+	if labausaha > 0 && labadiluarusaha <= 0 {
 		lababersih = labausaha
 	}
-	if labausaha == 0 && labadiluarusaha != 0 {
+	if labausaha <= 0 && labadiluarusaha > 0 {
 		lababersih = labadiluarusaha
 	}
+	// if labausaha <= 0 {
+	// 	labausaha = 0
+	// }
+	// if labadiluarusaha <= 0 {
+	// 	labadiluarusaha = 0
+	// }
+	// if lababersih <= 0 {
+	// 	lababersih = 0
+	// }
 
 	i1 := false
 	i2 := false
@@ -403,6 +426,9 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 				i1 = true
 			}
 		}
+		// if len(k1) == i+1 && piutang != nil {
+		// 	reportusersbaru = append(reportusersbaru, piutang...)
+		// }
 		if i+1 == len(k1) && len(k2) == 0 && len(k1) != 0 {
 			repo1 := model.Report{
 				Name:       "Laba Usaha",
@@ -538,6 +564,29 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 		}
 		reportusersbaru = append(reportusersbaru, reportusers[i])
 	}
+
+	// if len(reportusers) == 0 && piutang != nil {
+	// 	repo := model.Report{
+	// 		Name:       "Pendapatan Usaha",
+	// 		CategoriID: 6,
+	// 	}
+	// 	reportusersbaru = append(reportusersbaru, repo)
+	// 	reportusersbaru = append(reportusersbaru, piutang...)
+	// 	repo1 := model.Report{
+	// 		Name:       "Laba Usaha",
+	// 		CategoriID: 5,
+	// 		Price:      int32(labausaha),
+	// 	}
+	// 	reportusersbaru = append(reportusersbaru, repo1)
+
+	// 	repo2 := model.Report{
+	// 		Name:       "Laba Bersih",
+	// 		CategoriID: 5,
+	// 		Price:      int32(lababersih),
+	// 	}
+	// 	reportusersbaru = append(reportusersbaru, repo2)
+
+	// }
 
 	numPages := int(math.Ceil(float64(totalRecords) / float64(pageSize)))
 

@@ -3849,8 +3849,8 @@
                          if (data.categori_id == 2) {
                              j= "Beban Usaha"
                         }
-                         if (data.categori_id == 3) {
-                              j= "Pendapatan di Luar Usaha"
+                         if (data.categori_id == 11) {
+                              j= "Piutang Usaha"
                         }
                          if (data.categori_id == 4) {
                              j= "Beban di Luar Usaha"
@@ -3996,7 +3996,7 @@
                     "data": null,
                     "render": function (data, type, row, meta) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan ID
                         // console.log(meta.row)
-                          if (data.categori_id != 5 && data.categori_id != 6 && data.categori_id != 1) {
+                          if (data.categori_id != 5 && data.categori_id != 6 && data.categori_id != 1 && data.categori_id != 11) {
                               return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price)
                                   }</div>`
                           }
@@ -4014,7 +4014,7 @@
                 {
                     "data": null,
                     "render": function (data, type, row) { // Tambahkan tombol edit dengan link ke halaman edit berdasarkan 
-                        if (data.categori_id == 5 || data.categori_id == 1) {
+                        if (data.categori_id == 5 || data.categori_id == 1 || data.categori_id == 11) {
                             return `<div class="text-right" style="white-space:nowrap">Rp ${new Intl.NumberFormat().format(data.price)
                                 }</div>`
                         }
