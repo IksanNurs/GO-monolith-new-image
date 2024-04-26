@@ -451,10 +451,16 @@ func GetDataReport1(c *gin.Context, db *gorm.DB) {
 			k := model.Report{}
 			err := db.Where("id=? AND categori_id=?", reportusers[i].ID, 2).First(&k).Error
 			if err == nil {
+				repo1 := model.Report{
+					Name:       "Jumlah Pendapatan Usaha",
+					CategoriID: 5,
+					Price:      int32(totalk1),
+				}
 				repo := model.Report{
 					Name:       "Beban Usaha",
 					CategoriID: 6,
 				}
+				reportusersbaru = append(reportusersbaru, repo1)
 				reportusersbaru = append(reportusersbaru, repo)
 				i2 = true
 			}
